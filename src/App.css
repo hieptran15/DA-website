@@ -36,3 +36,37 @@
     transform: rotate(360deg);
   }
 }
+form.form_login, form.form_Register {
+  width: 350px;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 70px;
+}
+form.form_login .form-group input,form.form_Register .form-group input {
+  height: 45px;
+}
+
+form.form_login .form-group button,form.form_Register .form-group button {
+  background: orange;
+  outline: none;
+  border: none;
+  border-radius: 39px;
+}
+
+.ant-modal.content_modal .ant-modal-content {
+  border-radius: 10px;
+  background: #f9f2e8;
+}
+.edit_login {
+  padding-top: 22px;
+}
+button.btn.btn-primary.editButton_Loading.login {
+  width: 125px !important;
+}
+/* form.form_Register {position: absolute;right: 65px;
+  top: 23px;}
+
+.ant-modal.content_modal {
+    width: 1000px!important;
+    position: relative;
+} */
