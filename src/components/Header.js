@@ -2,13 +2,19 @@ import React, { useEffect } from 'react'
 import { Link,NavLink } from 'react-router-dom'
 import {Dropdown,} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { login_user } from '../actions/actions'
+import { login_user, reload_cart } from '../actions/actions'
+import { useState } from 'react'
 function Header() {
+  const [cart, setCart] = useState(null)
   const LoginState = useSelector(state => state.login)
-    const{user,loading,error,token}=LoginState
+    const{user,loading,error,token,carts}=LoginState
     const tokens=JSON.parse(localStorage.getItem('aulogin'))
     console.log(tokens)
     const dispatch = useDispatch();
+    useEffect(()=>{
+        setCart(JSON.parse(localStorage.getItem("cartItems")))
+        console.log('cartReload');
+    },[carts])
   const logoutUser=()=>{
     if(tokens||token){
             localStorage.setItem('aulogin', '')
@@ -16,6 +22,43 @@ function Header() {
             alert("logout tai khoan!")
             dispatch(login_user())
     }
+  }
+  const deleteCartItem=(res)=>{
+    const cartItem=cart.slice();
+    // setCartItems(cartItem.filter(x => x._id !== res._id))
+    localStorage.setItem("cartItems",JSON.stringify(cartItem.filter(x => x._id !== res._id)))
+    dispatch(reload_cart(res))
+  }
+  const viewCart = ()=>{
+    return(
+      <div className="shopping-item">
+                <div className="dropdown-cart-header">
+                  <span>{cart !== null ? cart.length : 0}  Items</span>
+                  <Link to="/cart">View Cart</Link>
+                </div>
+                <ul className="shopping-list">
+                 {
+                  cart !== null ? cart.map((value,key)=>{
+                     return(
+                       <li key={key}>
+                          <a onClick={()=>deleteCartItem(value)} className="remove" title="Remove this item"><i className="fa fa-remove" /></a>
+                          <a className="cart-img" href="#"><img src={value.img_url} alt="#" /></a>
+                          <h4><a href="#">{value.name}</a></h4>
+                          <p className="quantity">{value.count} - <span className="amount">{value.price}</span></p>
+                      </li>
+                     )
+                   }): <div>giỏ hàng trống</div>
+                 }
+                </ul>
+                <div className="bottom">
+                  <div className="total">
+                    <span>Total</span>
+                    <span className="total-amount">{cart !== null ? cart.reduce((a,c)=> a + c.price * c.count, 0): 0}</span>
+                  </div>
+                  <Link to="/checkout" className="btn animate">Checkout</Link>
+                </div>
+              </div>
+    )
   }
     return (
         <>
@@ -97,35 +140,9 @@ function Header() {
               <a href="#" className="single-icon"><i className="fa fa-user-circle-o" aria-hidden="true" /></a>
             </div>
             <div className="sinlge-bar shopping">
-              <Link to="/cart" className="single-icon"><i className="ti-bag" /> <span className="total-count">2</span></Link>
+              <Link to="/cart" className="single-icon"><i className="ti-bag" /> <span className="total-count">{cart !== null ? cart.length : 0}</span></Link>
               {/* Shopping Item */}
-              <div className="shopping-item">
-                <div className="dropdown-cart-header">
-                  <span>2 Items</span>
-                  <Link to="/cart">View Cart</Link>
-                </div>
-                <ul className="shopping-list">
-                  <li>
-                    <a href="#" className="remove" title="Remove this item"><i className="fa fa-remove" /></a>
-                    <a className="cart-img" href="#"><img src="images\product-1.jpg" alt="#" /></a>
-                    <h4><a href="#">Woman Ring</a></h4>
-                    <p className="quantity">1x - <span className="amount">$99.00</span></p>
-                  </li>
-                  <li>
-                    <a href="#" className="remove" title="Remove this item"><i className="fa fa-remove" /></a>
-                    <a className="cart-img" href="#"><img src="images\product-2.jpg" alt="#" /></a>
-                    <h4><a href="#">Woman Necklace</a></h4>
-                    <p className="quantity">1x - <span className="amount">$35.00</span></p>
-                  </li>
-                </ul>
-                <div className="bottom">
-                  <div className="total">
-                    <span>Total</span>
-                    <span className="total-amount">$134.00</span>
-                  </div>
-                  <Link to="/checkout" className="btn animate">Checkout</Link>
-                </div>
-              </div>
+              {viewCart()}
               {/*/ End Shopping Item */}
             </div>
           </div>

@@ -6,6 +6,8 @@ export const actionType={
     LOGIN_USER:"LOGIN_USER",
     LOGIN_USER_SUCCESS:"LOGIN_USER_SUCCESS",
     LOGIN_USER_ERROR:"LOGIN_USER_ERROR",
+
+    RELOAD_CART:"RELOAD_CART",
 }
 
 // REGISTER.................................
@@ -32,5 +34,9 @@ export const login_user_Success=(value)=>{
 }
 export const login_user_Error=(value)=>{
     return {type:actionType.LOGIN_USER_ERROR,payload:value}
+}
+//RELOAD CART......................
+export const reload_cart=(value)=>{
+    return {type:actionType.RELOAD_CART,payload:value}
 }
 
