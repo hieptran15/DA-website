@@ -1152,7 +1152,7 @@ object {
 	height: 700px;
 }
 .quickview-content {
-	padding: 40px 40px;
+	padding: 0px 0px 20px 26px;
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .quickview-content {

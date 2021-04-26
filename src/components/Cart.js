@@ -1,7 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { reload_cart } from '../actions/actions'
 
 function Cart() {
+  const [cart, setCart] = useState(null)
+  const LoginState = useSelector(state => state.login)
+  const{user,loading,error,token,carts}=LoginState
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    setCart(JSON.parse(localStorage.getItem("cartItems")))
+  },[carts]);
+  const deleteCartItem=(res)=>{
+    const cartItem=cart.slice();
+    // setCartItems(cartItem.filter(x => x._id !== res._id))
+    localStorage.setItem("cartItems",JSON.stringify(cartItem.filter(x => x._id !== res._id)))
+    dispatch(reload_cart(res))
+  }
     return (
         <>
     <div>
@@ -39,84 +55,37 @@ function Cart() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="image" data-title="No"><img src="images\cart1.jpg" alt="#" /></td>
-                <td className="product-des" data-title="Description">
-                  <p className="product-name"><a href="#">Women Dress</a></p>
-                  <p className="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-                </td>
-                <td className="price" data-title="Price"><span>$110.00 </span></td>
-                <td className="qty" data-title="Qty">{/* Input Order */}
-                  <div className="input-group">
-                    <div className="button minus">
-                      <button type="button" className="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-                        <i className="ti-minus" />
-                      </button>
-                    </div>
-                    <input type="text" name="quant[1]" className="input-number" data-min={1} data-max={100} defaultValue={1} />
-                    <div className="button plus">
-                      <button type="button" className="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-                        <i className="ti-plus" />
-                      </button>
-                    </div>
-                  </div>
-                  {/*/ End Input Order */}
-                </td>
-                <td className="total-amount" data-title="Total"><span>$220.88</span></td>
-                <td className="action" data-title="Remove"><a href="#"><i className="ti-trash remove-icon" /></a></td>
-              </tr>
-              <tr>
-                <td className="image" data-title="No"><img src="images\cart2.jpg" alt="#" /></td>
-                <td className="product-des" data-title="Description">
-                  <p className="product-name"><a href="#">Women Dress</a></p>
-                  <p className="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-                </td>
-                <td className="price" data-title="Price"><span>$110.00 </span></td>
-                <td className="qty" data-title="Qty">{/* Input Order */}
-                  <div className="input-group">
-                    <div className="button minus">
-                      <button type="button" className="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[2]">
-                        <i className="ti-minus" />
-                      </button>
-                    </div>
-                    <input type="text" name="quant[2]" className="input-number" data-min={1} data-max={100} defaultValue={2} />
-                    <div className="button plus">
-                      <button type="button" className="btn btn-primary btn-number" data-type="plus" data-field="quant[2]">
-                        <i className="ti-plus" />
-                      </button>
-                    </div>
-                  </div>
-                  {/*/ End Input Order */}
-                </td>
-                <td className="total-amount" data-title="Total"><span>$220.88</span></td>
-                <td className="action" data-title="Remove"><a href="#"><i className="ti-trash remove-icon" /></a></td>
-              </tr>
-              <tr>
-                <td className="image" data-title="No"><img src="images\cart3.jpg" alt="#" /></td>
-                <td className="product-des" data-title="Description">
-                  <p className="product-name"><a href="#">Women Dress</a></p>
-                  <p className="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-                </td>
-                <td className="price" data-title="Price"><span>$110.00 </span></td>
-                <td className="qty" data-title="Qty">{/* Input Order */}
-                  <div className="input-group">
-                    <div className="button minus">
-                      <button type="button" className="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[3]">
-                        <i className="ti-minus" />
-                      </button>
-                    </div>
-                    <input type="text" name="quant[3]" className="input-number" data-min={1} data-max={100} defaultValue={3} />
-                    <div className="button plus">
-                      <button type="button" className="btn btn-primary btn-number" data-type="plus" data-field="quant[3]">
-                        <i className="ti-plus" />
-                      </button>
-                    </div>
-                  </div>
-                  {/*/ End Input Order */}
-                </td>
-                <td className="total-amount" data-title="Total"><span>$220.88</span></td>
-                <td className="action" data-title="Remove"><a href="#"><i className="ti-trash remove-icon" /></a></td>
-              </tr>
+              { cart !== null ? cart.map((value,key)=>{
+                return(
+                  <tr key={key}>
+                    <td className="image" data-title="No"><img src={value.img_url} alt="#" /></td>
+                    <td className="product-des" data-title="Description">
+                      <p className="product-name"><a href="#">{value.name}</a></p>
+                      <p className="product-des">{value.description}</p>
+                    </td>
+                    <td className="price" data-title="Price"><span>{value.price}</span></td>
+                    <td className="qty" data-title="Qty">{/* Input Order */}
+                      <div className="input-group">
+                        <div className="button minus">
+                          <button type="button" className="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                            <i className="ti-minus" />
+                          </button>
+                        </div>
+                        <input type="text" name="quant[1]" className="input-number" data-min={1} data-max={100} value={value.count} />
+                        <div className="button plus">
+                          <button type="button" className="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
+                            <i className="ti-plus" />
+                          </button>
+                        </div>
+                      </div>
+                      {/*/ End Input Order */}
+                    </td>
+                    <td className="total-amount" data-title="Total"><span>{value.count * value.price}</span></td>
+                    <td className="action" data-title="Remove"><a onClick={()=>deleteCartItem(value)}><i className="ti-trash remove-icon" /></a></td>
+                </tr>
+                )
+              }): <div>giỏ hàng rỗng</div>
+              }
             </tbody>
           </table>
           {/*/ End Shopping Summery */}
@@ -143,10 +112,10 @@ function Cart() {
               <div className="col-lg-4 col-md-7 col-12">
                 <div className="right">
                   <ul>
-                    <li>Cart Subtotal<span>$330.00</span></li>
+                    <li>Cart Subtotal<span>{cart !== null ? cart.reduce((a,c)=> a + c.price * c.count, 0): 0}</span></li>
                     <li>Shipping<span>Free</span></li>
                     <li>You Save<span>$20.00</span></li>
-                    <li className="last">You Pay<span>$310.00</span></li>
+                    <li className="last">You Pay<span>{cart !== null ? cart.reduce((a,c)=> a + c.price * c.count, 0): 0}</span></li>
                   </ul>
                   <div className="button5">
                     <Link to="/checkout" className="btn">Checkout</Link>

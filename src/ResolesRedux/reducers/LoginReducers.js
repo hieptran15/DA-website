@@ -9,6 +9,9 @@
         case "LOGIN_USER_ERROR":{
             return{loading:false,error:action.payload}
         }
+        case "RELOAD_CART":{
+            return{carts:action.payload}
+        }
     //...................
     default:
            return state;
