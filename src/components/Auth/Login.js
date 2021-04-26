@@ -88,7 +88,7 @@ function Login() {
                         <input type="text" value={getValue.password}  onChange={(e)=>handleOnchange(e)} className="form-control form-control-sm" name="password" id aria-describedby="helpId" placeholder />
                     </div>
                     <div className="form-group">
-    <button onClick={(e)=>login(e)} className="btn btn-primary editButton_Loading login">login {loading&&<div className="loading_edit"><img src="images/loading.gif"/></div>}</button>
+                    <button onClick={(e)=>login(e)} className="btn btn-primary editButton_Loading login">login {loading&&<div className="loading_edit"><img src="images/loading.gif"/></div>}</button>
                     </div>
                     <p className="edit-register">
                         <Link to="/register" onClick={()=>showButtonRegister()}>click to Register account</Link>
