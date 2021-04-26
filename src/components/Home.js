@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import React, { useEffect } from 'react'
 import { useSelector,useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { login_user } from '../actions/actions';
 function Home() {
   // const loginState = useSelector(state => state.login)
@@ -188,7 +189,8 @@ const divStyle2 = {
                 <div className="tab-single">
                   <div className="row">
                     <div className="col-xl-3 col-lg-4 col-md-4 col-12">
-                      <div className="single-product">
+                      <Link to='/product-details'>
+                      <div className="single-product" >
                         <div className="product-img">
                           <a href="product-details.html">
                             <img className="default-img" src="images\products\p1.jpg" alt="#" />
@@ -212,6 +214,7 @@ const divStyle2 = {
                           </div>
                         </div>
                       </div>
+                      </Link>
                     </div>
                     <div className="col-xl-3 col-lg-4 col-md-4 col-12">
                       <div className="single-product">

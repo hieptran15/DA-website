@@ -6,15 +6,17 @@ import { login_user, reload_cart } from '../actions/actions'
 import { useState } from 'react'
 function Header() {
   const [cart, setCart] = useState(null)
+  const [checkActive,setCheckActive] = useState('')
   const LoginState = useSelector(state => state.login)
-    const{user,loading,error,token,carts}=LoginState
-    const tokens=JSON.parse(localStorage.getItem('aulogin'))
-    console.log(tokens)
-    const dispatch = useDispatch();
-    useEffect(()=>{
+  const{user,loading,error,token,carts}=LoginState
+  const tokens=JSON.parse(localStorage.getItem('aulogin'))
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
         setCart(JSON.parse(localStorage.getItem("cartItems")))
         console.log('cartReload');
     },[carts])
+
   const logoutUser=()=>{
     if(tokens||token){
             localStorage.setItem('aulogin', '')
@@ -22,6 +24,11 @@ function Header() {
             alert("logout tai khoan!")
             dispatch(login_user())
     }
+  }
+  const menuKey={home:'home',product:'product',service:'service',cart:'cart',checkout:'checkout',page:'page',contact:'contact'}
+  const testActive = (item)=>{
+      setCheckActive(item)
+      console.log(checkActive);
   }
   const deleteCartItem=(res)=>{
     const cartItem=cart.slice();
@@ -165,13 +172,13 @@ function Header() {
                 <div className="navbar-collapse">	
                   <div className="nav-inner">	
                     <ul className="nav main-menu menu navbar-nav">
-                      <li className="active"><NavLink to="/"  >Home</NavLink></li>
-                      <li><NavLink to="/product">Product</NavLink></li>
+                      <li><NavLink exact to="/" activeClassName="active-menu" >Home</NavLink></li>
+                      <li><NavLink to="/product" activeClassName="active-menu" >Product</NavLink></li>
                       <li><a href="#">Service</a></li>
-                      <li><a href="#">Shop<i className="ti-angle-down" /><span className="new">New</span></a>
+                      <li><a href="#">Shop<i className={`ti-angle-down`} /><span className="new">New</span></a>
                         <ul className="dropdown">
-                          <li><NavLink to="/cart" >Cart</NavLink></li>
-                          <li><Link to="/checkout">Checkout</Link></li>
+                          <li><NavLink activeClassName="active-menu" to="/cart" onClick={()=>testActive('cart')} >Cart</NavLink></li>
+                          <li><NavLink activeClassName="active-menu" to="/checkout" onClick={()=>testActive('cart')}>Checkout</NavLink></li>
                         </ul>
                       </li>
                       <li><a href="#">Pages</a></li>
@@ -180,7 +187,7 @@ function Header() {
                           <li><Link to="/blog">Blog Single Sidebar</Link></li>
                         </ul>
                       </li>
-                      <li><NavLink to="/contact">Contact Us</NavLink></li>
+                      <li><NavLink  activeClassName="active-menu" to="/contact">Contact Us</NavLink></li>
                     </ul>
                   </div>
                 </div>

@@ -223,7 +223,7 @@ function Products() {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    {data!==null?data.map((value,key)=>{
+                                    {data ? data.map((value,key)=>{
                                         return(
                                             <div key={key} className="col-lg-4 col-md-6 col-12">
                                         <div className="single-product">
@@ -259,7 +259,7 @@ function Products() {
                                     </div>
                                         )
 
-                                    }):<h>Không có sản phảm nào</h>}
+                                    }):<div>Không có sản phảm nào</div>}
                                 </div>
                             </div>
                         </div>

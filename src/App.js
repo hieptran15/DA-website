@@ -11,6 +11,7 @@ import "./App.css"
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Products from './components/Products';
+import Product_details from './components/Product_details';
 function App() {
   return (
         <div > 
@@ -25,6 +26,7 @@ function App() {
                   <Route  path="/login" component={Login}/>
                   <Route  path="/register" component={Register}/>
                   <Route  path="/product" component={Products}/>
+                  <Route  path="/product-details" component={Product_details}/>
               </Switch>
             <Footer/>
           </Router>
