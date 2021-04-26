@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { Link,NavLink } from 'react-router-dom'
-import {Dropdown,} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { login_user, reload_cart } from '../actions/actions'
 import { useState } from 'react'
+import { Menu, Dropdown } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 function Header() {
   const [cart, setCart] = useState(null)
   const [checkActive,setCheckActive] = useState('')
@@ -67,6 +68,28 @@ function Header() {
               </div>
     )
   }
+  const menu = (
+    <Menu>
+      <Menu.Item key="0">
+            <div className="d-flex align-items-center">
+                <i className="ti-user" style={{paddingRight:'10px'}} />
+                <Link to="/login">Login</Link>
+            </div>
+      </Menu.Item>
+      <Menu.Item key="1">
+          <div className="d-flex align-items-center">
+              <i className="ti-user" style={{paddingRight:'10px'}} />
+              <Link to="/register">Register</Link>
+          </div>
+      </Menu.Item>
+      <Menu.Item key="2">
+          <div className="d-flex align-items-center">
+              <i className="ti-user" style={{paddingRight:'10px'}} />
+              <Link to="/login-admin">Admin</Link>
+          </div>
+      </Menu.Item>
+    </Menu>
+  );
     return (
         <>
     {/* Header */}
@@ -91,7 +114,13 @@ function Header() {
             <ul className="list-main">
               <li><i className="ti-location-pin" /> Store location</li>
               <li><i className="ti-alarm-clock" /> <a href="#">Daily deal</a></li>
-              <li><i className="ti-user" /> <a href="#">My account</a></li>
+              <li><i className="ti-user" />
+              <Dropdown overlay={menu} trigger={['click']}>
+                <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                Account <DownOutlined />
+                </a>
+              </Dropdown>
+               </li>
               {tokens||token?<li><i className="ti-power-off"/><a onClick={()=>logoutUser()} href="#">Logout</a></li>:
               <li><i className="ti-power-off"/><Link to="/login">Login</Link></li>
               }
