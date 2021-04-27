@@ -12,6 +12,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Products from './components/Products';
 import Product_details from './components/Product_details';
+import Login_admin from './components/Admin/Auth-admin/Login_admin';
 function App() {
   return (
         <div > 
@@ -29,6 +30,7 @@ function App() {
                   <Route  path="/product-details" component={Product_details}/>
               </Switch>
             <Footer/>
+            <Route exact path="/login-admin" component={Login_admin}/>
           </Router>
         </div>
     
