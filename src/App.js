@@ -12,12 +12,12 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Products from './components/Products';
 import Product_details from './components/Product_details';
-import Login_admin from './components/Admin/Auth-admin/Login_admin';
+import LoginAdmin from './components/admin/Auth-admin/LoginAdmin';
+import DashBoards from './components/admin/Dashboards';
 function App() {
   return (
         <div > 
           <Router>
-            <Header/>
               <Switch> 
                   <Route exact path="/" component={Home}/>
                   <Route  path="/cart" component={Cart}/>
@@ -28,9 +28,9 @@ function App() {
                   <Route  path="/register" component={Register}/>
                   <Route  path="/product" component={Products}/>
                   <Route  path="/product-details" component={Product_details}/>
+                  <Route  path="/login-admin" component={LoginAdmin}/>
+                  <Route  path="/dashboard-admin" component={DashBoards}/>
               </Switch>
-            <Footer/>
-            <Route exact path="/login-admin" component={Login_admin}/>
           </Router>
         </div>
     

@@ -5,6 +5,7 @@ import { Modal, Button } from 'antd';
 import Header from './Header';
 import { useDispatch } from 'react-redux';
 import { reload_cart } from '../actions/actions';
+import Footer from './Footer';
 function Products() {
     const [data,setData]=useState(null);
     const [view,setView]=useState(null);
@@ -54,6 +55,7 @@ function Products() {
   }
     return (
         <>
+        <Header/>
             {/* Breadcrumbs */}
             <div className="breadcrumbs">
                 <div className="container">
@@ -395,6 +397,7 @@ function Products() {
                 }
                 {/* Modal end */}
             </div>
+            <Footer/>
         </>
     )
 }

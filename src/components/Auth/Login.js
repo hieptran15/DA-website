@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login_user } from '../../actions/actions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Header from '../Header';
+import Footer from '../Footer';
 function Login() {
     const [visible, setVisible] = useState(false);
     const [ShowVisible, setShowVisible] = useState(false);
@@ -57,6 +59,7 @@ function Login() {
     }
     return (
         <>
+        <Header/>
              {/* Breadcrumbs */}
                 <div className="breadcrumbs">
                     <div className="container">
@@ -107,6 +110,7 @@ function Login() {
             </Modal>
 
             </div>
+            <Footer/>
         </>
     )
 }

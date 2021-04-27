@@ -5,6 +5,8 @@ import { registers } from '../../actions/actions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link, Redirect } from 'react-router-dom';
+import Header from '../Header';
+import Footer from '../Footer';
 function Register(props) {
     const [getValue,setValue]=useState({
         name:"",
@@ -42,6 +44,7 @@ function Register(props) {
             // return <Redirect to={"/login"} />
     return (
         <> 
+            <Header/>
              {/* Breadcrumbs */}
              <div className="breadcrumbs">
                     <div className="container">
@@ -87,6 +90,7 @@ function Register(props) {
                 <ToastContainer autoClose={3000} />
                 {loading&&toast.success("Register success ! go to login")}
             </div>
+            <Footer/>
         </>
     )
 }

@@ -3,6 +3,8 @@ import React, { useEffect } from 'react'
 import { useSelector,useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { login_user } from '../actions/actions';
+import Footer from './Footer';
+import Header from './Header';
 function Home() {
   // const loginState = useSelector(state => state.login)
   
@@ -20,6 +22,7 @@ const divStyle2 = {
 };
     return (
         <>
+        <Header/>
   {/* Slider Area */}
   <section className="hero-slider">
     {/* Single Slider */}
@@ -1938,6 +1941,7 @@ const divStyle2 = {
       </div>
     </div>
   </div>
+  <Footer/>
   {/* Modal end */}
         </>
     )

@@ -3,6 +3,8 @@ import { Dropdown } from 'primereact/dropdown';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import Header from './Header';
+import Footer from './Footer';
 function Product_details() {
     const cities = [
         { name: 'New York', code: 'NY' },
@@ -13,6 +15,7 @@ function Product_details() {
     ];
     return (
         <div>
+            <Header/>
              {/* Breadcrumbs */}
                 <div className="breadcrumbs">
                     <div className="container">
@@ -114,6 +117,7 @@ function Product_details() {
                     </div>
                 </section>
                 {/*/ End Contact */}
+                <Footer/>
         </div>
     )
 }

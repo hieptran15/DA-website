@@ -1,8 +1,11 @@
 import React from 'react'
+import Footer from './Footer'
+import Header from './Header'
 
 function Contact() {
     return (
    <div>
+     <Header/>
   {/* Breadcrumbs */}
   <div className="breadcrumbs">
     <div className="container">
@@ -130,6 +133,7 @@ function Contact() {
     </div>
   </section>
   {/* End Shop Newsletter */}
+  <Footer/>
 </div>
     )
 }

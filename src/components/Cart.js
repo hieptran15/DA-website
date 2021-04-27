@@ -3,6 +3,8 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { reload_cart } from '../actions/actions'
+import Footer from './Footer'
+import Header from './Header'
 
 function Cart() {
   const [cart, setCart] = useState(null)
@@ -20,6 +22,7 @@ function Cart() {
   }
     return (
         <>
+        <Header/>
     <div>
   {/* Breadcrumbs */}
   <div className="breadcrumbs">
@@ -310,7 +313,7 @@ function Cart() {
   </div>
   {/* Modal end */}
 </div>
-
+      <Footer/>
         </>
     )
 }

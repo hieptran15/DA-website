@@ -1,8 +1,11 @@
 import React from 'react'
+import Footer from './Footer'
+import Header from './Header'
 
 function Blog_Slide_bar() {
     return (
         <div>
+          <Header/>
   {/* Breadcrumbs */}
   <div className="breadcrumbs">
     <div className="container">
@@ -241,6 +244,7 @@ function Blog_Slide_bar() {
     </div>
   </section>
   {/*/ End Blog Single */}
+  <Footer/>
   </div>
     )
 }

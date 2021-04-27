@@ -1,8 +1,11 @@
 import React from 'react'
+import Footer from './Footer'
+import Header from './Header'
 
 function CheckOut() {
     return (
      <div>
+       <Header/>
   {/* Breadcrumbs */}
   <div className="breadcrumbs">
     <div className="container">
@@ -477,6 +480,7 @@ function CheckOut() {
     </div>
   </section>
   {/* End Shop Newsletter */}
+  <Footer/>
 </div>
     )
 }
