@@ -10,9 +10,8 @@ function Home() {
   
   // console.log(loginState)
   // console.log(RegisterState)
- 
   // useEffect(()=>{
-  //   dispatch(login_user());
+  //   console.log(localStorage.getItem('userName'));
   // },[])
   const divStyle = {
     backgroundImage: 'url("/images/slider/slidecopy02.jpg")',

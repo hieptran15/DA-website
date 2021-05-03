@@ -1,0 +1,56 @@
+.ant-layout-sider-children {
+    background-color: #4e73df;
+}
+ul.ant-menu.ant-menu-dark.ant-menu-root.ant-menu-inline {
+    background-color: #4e73df;
+}
+.ant-layout-sider-trigger {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent  !important;
+}
+.ant-layout-sider-trigger span{
+    padding: 10px;
+    background-color: #f0ffff45;
+    border-radius: 50%;
+}
+.ant-layout-sider{
+    background: #4e73df;
+}
+.ant-layout-footer {
+    background: white;
+}
+ul.ant-menu.ant-menu-dark.ant-menu-inline-collapsed.ant-menu-root.ant-menu-vertical {
+    background: #4e73df;
+}
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
+    background: white;
+    border-radius: 5px;
+    margin: 0 9px;
+    width: 90%;
+}
+li.ant-menu-item.ant-menu-item-only-child {
+    color: black;
+}
+li.ant-menu-item.ant-menu-item-only-child:hover {
+    background-color: #80808052;
+    color: black;
+}
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: transparent;
+    color: #5473df;
+}
+.ant-layout-header {
+    color: #858796 !important;
+    background: white;
+    box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;
+}
+.edit-logo{
+    height:63px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+}

@@ -84,6 +84,37 @@ Version:1.0
 	padding: 0;
 	line-height: 32px;
 }
+ul.setting-admin-item{
+	position:absolute;border:1px solid #80808047;left:0;display:none;transition:0.2s;
+	margin: 0;
+	border-radius: 5px;
+	width: 100px;
+	z-index: 1000;
+	background-color: white;
+}
+ul.setting-admin-item div{
+	width: 100px;
+}
+ul.setting-admin-item div li{
+	width: 100px;
+	text-align: center;
+	padding: 8px 10px !important;
+	transition: 0.2s;
+	
+}
+ul.setting-admin-item div li:hover{
+	background-color: #f7941d36;
+}
+ul.setting-admin-item li{
+	padding: 0;
+}
+li.setting-admin{
+	position: relative;
+}
+li.setting-admin:hover ul.setting-admin-item{
+	display: block !important;
+}
+
 .get-pro {
 	position: absolute;
 	left: -80px;

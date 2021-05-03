@@ -12,8 +12,11 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Products from './components/Products';
 import Product_details from './components/Product_details';
-import LoginAdmin from './components/admin/Auth-admin/LoginAdmin';
-import DashBoards from './components/admin/Dashboards';
+
+import DashboardAdmin from './components/Admin/DashboardAdmin';
+import LoginAdmin from './components/Admin/Auth-admin/LoginAdmin';
+import ProductAdmin from './components/Admin/ProductAdmin';
+import OrderAdmin from './components/Admin/OrderAdmin';
 function App() {
   return (
         <div > 
@@ -29,7 +32,9 @@ function App() {
                   <Route  path="/product" component={Products}/>
                   <Route  path="/product-details" component={Product_details}/>
                   <Route  path="/login-admin" component={LoginAdmin}/>
-                  <Route  path="/dashboard-admin" component={DashBoards}/>
+                  <Route  path="/dashboard-admin" component={DashboardAdmin}/>
+                  <Route exact path="/Product-admin" component={ProductAdmin}/>
+                  <Route  path="/order-admin" component={OrderAdmin}/>
               </Switch>
           </Router>
         </div>

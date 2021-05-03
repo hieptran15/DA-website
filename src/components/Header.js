@@ -9,24 +9,26 @@ function Header() {
   const [cart, setCart] = useState(null)
   const [checkActive,setCheckActive] = useState('')
   const LoginState = useSelector(state => state.login)
-  const{user,loading,error,token,carts}=LoginState
+  const{user,loading,error,token,carts,role}=LoginState;
+  const roleName = JSON.parse(localStorage.getItem('role'));
   const tokens=JSON.parse(localStorage.getItem('aulogin'))
+  const userName = JSON.parse(localStorage.getItem('userName'))
   const dispatch = useDispatch();
 
   useEffect(()=>{
         setCart(JSON.parse(localStorage.getItem("cartItems")))
-        console.log('cartReload');
+        console.log(role);
+        console.log(roleName);
     },[carts])
 
   const logoutUser=()=>{
     if(tokens||token){
             localStorage.setItem('aulogin', '')
             localStorage.clear()
-            alert("logout tai khoan!")
             dispatch(login_user())
     }
   }
-  const menuKey={home:'home',product:'product',service:'service',cart:'cart',checkout:'checkout',page:'page',contact:'contact'}
+  
   const testActive = (item)=>{
       setCheckActive(item)
       console.log(checkActive);
@@ -68,28 +70,7 @@ function Header() {
               </div>
     )
   }
-  const menu = (
-    <Menu>
-      <Menu.Item key="0">
-            <div className="d-flex align-items-center">
-                <i className="ti-user" style={{paddingRight:'10px'}} />
-                <Link to="/login">Login</Link>
-            </div>
-      </Menu.Item>
-      <Menu.Item key="1">
-          <div className="d-flex align-items-center">
-              <i className="ti-user" style={{paddingRight:'10px'}} />
-              <Link to="/register">Register</Link>
-          </div>
-      </Menu.Item>
-      <Menu.Item key="2">
-          <div className="d-flex align-items-center">
-              <i className="ti-user" style={{paddingRight:'10px'}} />
-              <Link to="/login-admin">Admin</Link>
-          </div>
-      </Menu.Item>
-    </Menu>
-  );
+  
     return (
         <>
     {/* Header */}
@@ -114,16 +95,22 @@ function Header() {
             <ul className="list-main">
               <li><i className="ti-location-pin" /> Store location</li>
               <li><i className="ti-alarm-clock" /> <a href="#">Daily deal</a></li>
-              <li><i className="ti-user" />
-              <Dropdown overlay={menu} trigger={['click']}>
+              <li className="setting-admin"><i className="ti-user" />
                 <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                Account <DownOutlined />
+                  {user || userName ? userName || user : 'Account'}
                 </a>
-              </Dropdown>
+                <ul className="setting-admin-item">
+                  <div>
+                    {roleName === 'admin' || role === 'admin'?
+                  <li><i className="ti-power-off"/><Link to="/dashboard-admin">Admin</Link></li>: ''}
+                  {roleName === 'user' || role === 'user'?
+                  <li><i className="ti-power-off"/><Link to="/dashboard-admin">User</Link></li>: ''}
+                   {tokens||token?<li><i className="ti-power-off"/><a onClick={()=>logoutUser()} href="#">Logout</a></li>:
+                  <li><i className="ti-power-off"/><Link to="/login">Login</Link></li>
+                  }
+                  </div>
+                </ul>
                </li>
-              {tokens||token?<li><i className="ti-power-off"/><a onClick={()=>logoutUser()} href="#">Logout</a></li>:
-              <li><i className="ti-power-off"/><Link to="/login">Login</Link></li>
-              }
             </ul>
           </div>
           {/* End Top Right */}

@@ -4,7 +4,12 @@
             return{loading:true}
         }
         case "LOGIN_USER_SUCCESS":{
-            return{loading:false,user:action.payload,token:action.payload.data.token}
+            return{
+                loading:false,
+                user:action.payload.data.name,
+                role:action.payload.data.role,
+                token:action.payload.data.token,
+            }
         }
         case "LOGIN_USER_ERROR":{
             return{loading:false,error:action.payload}
