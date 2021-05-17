@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd';
-import './admin.css'
+import '../admin.css'
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -10,8 +10,8 @@ import {
 } from '@ant-design/icons';
 import { useState } from 'react';
 import { Route, Router, Switch } from 'react-router';
-import ProductAdmin from './ProductAdmin';
-import OrderAdmin from './OrderAdmin';
+import ProductAdmin from '../Product/ProductAdmin';
+import OrderAdmin from '../Order/OrderAdmin';
 import { Link } from 'react-router-dom';
 function DashboardAdmin() {
   const { Header, Content, Footer, Sider } = Layout;
@@ -33,10 +33,10 @@ function DashboardAdmin() {
           </div>)}
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
             <Menu.Item  key="1" icon={<PieChartOutlined />}>
-              <Link to="/Product-admin">DashBoard</Link>
+              <Link to="/dashboard-admin">DashBoard</Link>
             </Menu.Item>
             <Menu.Item key="2"  icon={<DesktopOutlined />}>
-            <Link to="/order-admin">Products</Link>
+            <Link to="/Product-admin">Products</Link>
             </Menu.Item>
             <SubMenu key="sub1" icon={<UserOutlined />} title="User">
               <Menu.Item key="3">Tom</Menu.Item>
@@ -64,10 +64,11 @@ function DashboardAdmin() {
           </Header>
           <Content style={{ margin: '0 16px' }}>
             <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>``
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
+              <Breadcrumb.Item>Home</Breadcrumb.Item>
+              <Breadcrumb.Item>dashBoard</Breadcrumb.Item>
             </Breadcrumb>
             <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+              dashBoard
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2021 Created by Ant UED</Footer>
