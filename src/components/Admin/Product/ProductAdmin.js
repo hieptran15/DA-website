@@ -96,6 +96,13 @@ function ProductAdmin() {
   }
   const saveEdit = () =>{
     console.log(product);
+    if (product.name.trim()) {
+          console.log('edit');
+          toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+    }else{
+      console.log('add');
+      toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+    }
   }
   const leftToolbarTemplate = () => {
     return (
@@ -189,9 +196,7 @@ function ProductAdmin() {
           <Header className="site-layout-background" style={{ padding: 0 }}>
             <div >
               <div className="d-flex justify-content-end">
-                <a>user</a>
-                <a>user</a>
-                <a>user</a>
+                <Link to="/">Home</Link>
               </div>
             </div>
           </Header>
@@ -200,7 +205,7 @@ function ProductAdmin() {
               <Breadcrumb.Item><Link to="/dashboard-admin">Home</Link></Breadcrumb.Item>
               <Breadcrumb.Item><Link to="/Product-admin">Products</Link></Breadcrumb.Item>
             </Breadcrumb>
-            <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+            <div className="site-layout-background" style={{ minHeight: 360 }}>
               <div className="datatable-crud-demo">
                 <Toast ref={toast} />
 
@@ -216,8 +221,7 @@ function ProductAdmin() {
                     globalFilter={globalFilter}
                     header={header}>
 
-                    <Column headerStyle={{ width: '3rem' }}></Column>
-                    <Column field="_id" header="code" sortable></Column>
+                    <Column headerStyle={{ width: '0.5rem' }}></Column>
                     <Column field="name" header="Name" sortable></Column>
                     <Column header="Image" body={imageBodyTemplate}></Column>
                     <Column field="price" header="Price" body={priceBodyTemplate} sortable></Column>
