@@ -22,6 +22,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
+import { ProgressBar } from 'primereact/progressbar';
 import { InputText } from 'primereact/inputtext';
 import './Product.css'
 function ProductAdmin() {
@@ -59,6 +60,10 @@ function ProductAdmin() {
     })
   }, []);
 
+  const onUpload = () => {
+    toast.current.show({severity: 'info', summary: 'Success', detail: 'File Uploaded'});
+}
+
   const formatCurrency = (value) => {
     return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
   }
@@ -94,8 +99,31 @@ function ProductAdmin() {
     setProduct(_product);
     console.log(e.target.value);
   }
+
+  const onCategoryChange = (e) => {
+    console.log(e);
+    let _product = {...product};
+    _product['category'] = e.value;
+    setProduct(_product);
+}
+const onImageChange = (e) => {
+  let _product = {...product};
+  _product['img_url'] = e.target.files[0];
+  setProduct(_product);
+}
+
+const onInputNumberChange = (e, name) => {
+  const val = e.value || 0;
+  let _product = {...product};
+  _product[`${name}`] = val;
+
+  setProduct(_product);
+}
   const saveEdit = () =>{
     console.log(product);
+    // Axios.post("http://localhost:8080/api/product/post-product",product).then((result) => {
+    //   console.log(result);
+    // })
     if (product.name.trim()) {
           console.log('edit');
           toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
@@ -108,7 +136,6 @@ function ProductAdmin() {
     return (
       <React.Fragment>
         <Button label="New" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={openNew} />
-        <Button label="Delete" icon="pi pi-trash" className="p-button-danger" />
       </React.Fragment>
     )
   }
@@ -234,41 +261,48 @@ function ProductAdmin() {
                 <Dialog visible={productDialog} style={{ minWidth: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                 {product.img_url && <img src={`${product.img_url}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={product.img_url} className="product-image" />}
                 <div className="p-field">
+                  <input type="file" onChange={onImageChange}/>
+                </div>
+                <div className="p-field">
                     <label htmlFor="name">Name</label>
                     <InputText id="name" onChange={(e) => onInputChange(e,'name')} value={product.name}  required autoFocus />
                     {submitted && !product.name && <small className="p-error">Name is required.</small>}
                 </div>
                 <div className="p-field">
                     <label htmlFor="description">Description</label>
-                    <InputTextarea id="description" value={product.description}  required rows={3} cols={20} />
+                    <InputTextarea id="description" onChange={(e) => onInputChange(e,'description')} value={product.description}  required rows={3} cols={20} />
                 </div>
 
                 <div className="p-field">
                     <label className="p-mb-3">Category</label>
-                    <div className="p-formgrid p-grid">
-                        <div className="p-field-radiobutton p-col-6">
-                            <RadioButton inputId="category1" name="category" value="Accessories"  checked={product.category === 'Accessories'} />
+                    <div className="p-formgrid col-12 p-grid">
+                        <div className="p-field-radiobutton p-col-3">
+                            <RadioButton inputId="category1" name="category" onChange={onCategoryChange} value="Accessories"  checked={product.category === 'Accessories'} />
                             <label htmlFor="category1">Accessories</label>
                         </div>
-                        <div className="p-field-radiobutton p-col-6">
-                            <RadioButton inputId="category2" name="category" value="Clothing" checked={product.category === 'Clothing'} />
+                        <div className="p-field-radiobutton p-col-3">
+                            <RadioButton inputId="category2" name="category" onChange={onCategoryChange} value="Clothing" checked={product.category === 'Clothing'} />
                             <label htmlFor="category2">Clothing</label>
                         </div>
-                        <div className="p-field-radiobutton p-col-6">
-                            <RadioButton inputId="category3" name="category" value="Electronics"  checked={product.category === 'Electronics'} />
+                        <div className="p-field-radiobutton p-col-3">
+                            <RadioButton inputId="category3" name="category" onChange={onCategoryChange} value="Electronics"  checked={product.category === 'Electronics'} />
                             <label htmlFor="category3">Electronics</label>
                         </div>
-                        <div className="p-field-radiobutton p-col-6">
-                            <RadioButton inputId="category4" name="category" value="Fitness"  checked={product.category === 'Fitness'} />
+                        <div className="p-field-radiobutton p-col-3">
+                            <RadioButton inputId="category4" name="category" onChange={onCategoryChange} value="Fitness"  checked={product.category === 'Fitness'} />
                             <label htmlFor="category4">Fitness</label>
                         </div>
                     </div>
+                </div>
+                <div className="p-field">
+                    <label htmlFor="brand">Brand</label>
+                    <InputTextarea id="brand" onChange={(e) => onInputChange(e,'brand')} value={product.brand}  required rows={3} cols={20} />
                 </div>
 
                 <div className="p-formgrid p-grid">
                     <div className="p-field p-col">
                         <label htmlFor="price">Price</label>
-                        <InputNumber id="price" value={product.price} mode="currency" currency="VND" locale="vi-VN" />
+                        <InputNumber id="price" onValueChange={(e) => onInputNumberChange(e, 'price')} value={product.price} mode="currency" currency="VND" locale="vi-VN" />
                     </div>
                     <div className="p-field p-col">
                     </div>
