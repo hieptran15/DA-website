@@ -49,6 +49,7 @@ function ProductAdmin() {
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
+  const [test, setTest] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
 
@@ -83,26 +84,49 @@ function ProductAdmin() {
   }
 
   const editProduct = (product) => {
-    setProduct({...product});
+    setProduct({ ...product });
     setProductDialog(true);
   }
 
-  const onInputChange = (e,name) => {
+  const onInputChange = (e, name) => {
     const val = e.target.value;
-    let _product = {...product};
+    let _product = { ...product };
     _product[`${name}`] = val;
     setProduct(_product);
     console.log(e.target.value);
   }
-  const saveEdit = () =>{
+  const onCategoryChange = (e) => {
+    let _product = { ...product };
+    _product['category'] = e.value;
+    setProduct(_product);
+  }
+  const onInputNumberChange = (e, name) => {
+    const val = e.value || 0;
+    let _product = { ...product };
+    _product[`${name}`] = val;
+
+    setProduct(_product);
+  }
+  const onImageChange = (e, name) => {
+    const data = new FormData() 
+    data.append('img_url', e.target.files[0])
+    let _product = { ...product };
+    _product[`${name}`] = data;
+
+    setProduct(_product);
+  }
+  const saveEdit = () => {
     console.log(product);
-    if (product.name.trim()) {
-          console.log('edit');
-          toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-    }else{
-      console.log('add');
-      toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-    }
+    Axios.post("http://localhost:8080/api/product/post-product",product).then(res =>{
+      console.log(res);
+    })
+    // if (product.name.trim()) {
+    //   console.log('edit');
+    //   toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+    // } else {
+    //   console.log('add');
+    //   toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+    // }
   }
   const leftToolbarTemplate = () => {
     return (
@@ -136,12 +160,12 @@ function ProductAdmin() {
 
   const actionBodyTemplate = (rowData) => {
     return (
-        <React.Fragment>
-            <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={() => editProduct(rowData)} />
-            <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" />
-        </React.Fragment>
+      <React.Fragment>
+        <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={() => editProduct(rowData)} />
+        <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" />
+      </React.Fragment>
     );
-}
+  }
 
   const header = (
     <div className="table-header">
@@ -155,10 +179,10 @@ function ProductAdmin() {
 
   const productDialogFooter = (
     <React.Fragment>
-        <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-        <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveEdit}/>
+      <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
+      <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveEdit} />
     </React.Fragment>
-);
+  );
 
   return (
     <div>
@@ -232,48 +256,50 @@ function ProductAdmin() {
                   </DataTable>
                 </div>
                 <Dialog visible={productDialog} style={{ minWidth: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-                {product.img_url && <img src={`${product.img_url}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={product.img_url} className="product-image" />}
-                <div className="p-field">
+                  {product.img_url && <img src={`${product.img_url}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={product.img_url} className="product-image" />}
+                  <div className="p-field">
+                    <input type="file" onChange={e => onImageChange(e,'img_url')}/>
+                  </div>
+                  <div className="p-field">
                     <label htmlFor="name">Name</label>
-                    <InputText id="name" onChange={(e) => onInputChange(e,'name')} value={product.name}  required autoFocus />
+                    <InputText id="name" onChange={(e) => onInputChange(e, 'name')} value={product.name} required autoFocus />
                     {submitted && !product.name && <small className="p-error">Name is required.</small>}
-                </div>
-                <div className="p-field">
+                  </div>
+                  <div className="p-field">
                     <label htmlFor="description">Description</label>
-                    <InputTextarea id="description" value={product.description}  required rows={3} cols={20} />
-                </div>
+                    <InputTextarea id="description" onChange={(e) => onInputChange(e, 'description')} value={product.description} required rows={3} cols={20} />
+                  </div>
 
-                <div className="p-field">
+                  <div className="p-field">
                     <label className="p-mb-3">Category</label>
                     <div className="p-formgrid p-grid">
-                        <div className="p-field-radiobutton p-col-6">
-                            <RadioButton inputId="category1" name="category" value="Accessories"  checked={product.category === 'Accessories'} />
-                            <label htmlFor="category1">Accessories</label>
-                        </div>
-                        <div className="p-field-radiobutton p-col-6">
-                            <RadioButton inputId="category2" name="category" value="Clothing" checked={product.category === 'Clothing'} />
-                            <label htmlFor="category2">Clothing</label>
-                        </div>
-                        <div className="p-field-radiobutton p-col-6">
-                            <RadioButton inputId="category3" name="category" value="Electronics"  checked={product.category === 'Electronics'} />
-                            <label htmlFor="category3">Electronics</label>
-                        </div>
-                        <div className="p-field-radiobutton p-col-6">
-                            <RadioButton inputId="category4" name="category" value="Fitness"  checked={product.category === 'Fitness'} />
-                            <label htmlFor="category4">Fitness</label>
-                        </div>
+                      <div className="p-field-radiobutton p-col-6">
+                        <RadioButton inputId="category1" name="category" onChange={onCategoryChange} value="Accessories" checked={product.category === 'Accessories'} />
+                        <label htmlFor="category1">Accessories</label>
+                      </div>
+                      <div className="p-field-radiobutton p-col-6">
+                        <RadioButton inputId="category2" name="category" onChange={onCategoryChange} value="Clothing" checked={product.category === 'Clothing'} />
+                        <label htmlFor="category2">Clothing</label>
+                      </div>
+                      <div className="p-field-radiobutton p-col-6">
+                        <RadioButton inputId="category3" name="category" onChange={onCategoryChange} value="Electronics" checked={product.category === 'Electronics'} />
+                        <label htmlFor="category3">Electronics</label>
+                      </div>
+                      <div className="p-field-radiobutton p-col-6">
+                        <RadioButton inputId="category4" name="category" onChange={onCategoryChange} value="Fitness" checked={product.category === 'Fitness'} />
+                        <label htmlFor="category4">Fitness</label>
+                      </div>
                     </div>
-                </div>
-
-                <div className="p-formgrid p-grid">
+                  </div>
+                  <div className="p-formgrid p-grid">
                     <div className="p-field p-col">
-                        <label htmlFor="price">Price</label>
-                        <InputNumber id="price" value={product.price} mode="currency" currency="VND" locale="vi-VN" />
+                      <label htmlFor="price">Price</label>
+                      <InputNumber id="price" name="price" onChange={(e) => onInputNumberChange(e, 'price')} value={product.price} mode="currency" currency="VND" locale="vi-VN" />
                     </div>
                     <div className="p-field p-col">
                     </div>
-                </div>
-            </Dialog>
+                  </div>
+                </Dialog>
               </div>
             </div>
           </Content>
