@@ -22,6 +22,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
+import { ProgressBar } from 'primereact/progressbar';
 import { InputText } from 'primereact/inputtext';
 import './Product.css'
 function ProductAdmin() {
@@ -49,7 +50,7 @@ function ProductAdmin() {
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
-  const [test, setTest] = useState(null);
+  const [check, setCheck] = useState(false);
   const toast = useRef(null);
   const dt = useRef(null);
 
@@ -58,7 +59,11 @@ function ProductAdmin() {
       setProducts(result.data)
       console.log(result.data);
     })
-  }, []);
+  }, [check]);
+
+  const onUpload = () => {
+    toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
+  }
 
   const formatCurrency = (value) => {
     return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
@@ -108,31 +113,49 @@ function ProductAdmin() {
     setProduct(_product);
   }
   const onImageChange = (e, name) => {
-    const data = new FormData() 
-    data.append('img_url', e.target.files[0])
-    let _product = { ...product };
-    _product[`${name}`] = data;
+    const data = new FormData()
+    data.append('image', e.target.files[0])
+    Axios.post("http://localhost:8080/api/uploads", data).then(res => {
+      let _product = { ...product };
+      _product[`${name}`] = res.data;
+      setProduct(_product);
+    })
 
-    setProduct(_product);
   }
   const saveEdit = () => {
-    console.log(product);
-    Axios.post("http://localhost:8080/api/product/post-product",product).then(res =>{
-      console.log(res);
-    })
-    // if (product.name.trim()) {
-    //   console.log('edit');
-    //   toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-    // } else {
-    //   console.log('add');
-    //   toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-    // }
+    if (product.name.trim()) {
+      console.log('edit');
+      // try {
+      //   Axios.put(`http://localhost:8080/api/product/update-product/${product._id}`, product).then(res => {
+      //     toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Add', life: 3000 });
+      //     setCheck(!check)
+      //   })
+      // } catch (error) {
+      //   console.log(error);
+      //   toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Product error', life: 3000 });
+      // }
+
+      // setSubmitted(false);
+      // setProductDialog(false);
+    } else {
+      console.log('add');
+      // try {
+      //   Axios.post("http://localhost:8080/api/product/post-product", product).then(res => {
+      //     toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+      //     setCheck(!check)
+      //   })
+      // } catch (error) {
+      //   console.log(error);
+      //   toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Product error', life: 3000 });
+      // }
+      // setSubmitted(false);
+      // setProductDialog(false);
+    }
   }
   const leftToolbarTemplate = () => {
     return (
       <React.Fragment>
         <Button label="New" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={openNew} />
-        <Button label="Delete" icon="pi pi-trash" className="p-button-danger" />
       </React.Fragment>
     )
   }
@@ -258,7 +281,7 @@ function ProductAdmin() {
                 <Dialog visible={productDialog} style={{ minWidth: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                   {product.img_url && <img src={`${product.img_url}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={product.img_url} className="product-image" />}
                   <div className="p-field">
-                    <input type="file" onChange={e => onImageChange(e,'img_url')}/>
+                    <input type="file" onChange={e => onImageChange(e, 'img_url')} />
                   </div>
                   <div className="p-field">
                     <label htmlFor="name">Name</label>
@@ -269,7 +292,6 @@ function ProductAdmin() {
                     <label htmlFor="description">Description</label>
                     <InputTextarea id="description" onChange={(e) => onInputChange(e, 'description')} value={product.description} required rows={3} cols={20} />
                   </div>
-
                   <div className="p-field">
                     <label className="p-mb-3">Category</label>
                     <div className="p-formgrid p-grid">
@@ -290,6 +312,10 @@ function ProductAdmin() {
                         <label htmlFor="category4">Fitness</label>
                       </div>
                     </div>
+                  </div>
+                  <div className="p-field">
+                    <label htmlFor="brand">Brand</label>
+                    <InputTextarea id="brand" onChange={(e) => onInputChange(e, 'brand')} value={product.brand} required rows={3} cols={20} />
                   </div>
                   <div className="p-formgrid p-grid">
                     <div className="p-field p-col">
