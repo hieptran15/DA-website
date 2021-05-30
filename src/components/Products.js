@@ -1,62 +1,70 @@
 import Axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Dialog } from 'primereact/dialog';
+import { Toast } from 'primereact/toast';
 import { Modal, Button } from 'antd';
 import Header from './Header';
 import { useDispatch } from 'react-redux';
 import { reload_cart } from '../actions/actions';
 import Footer from './Footer';
+import { Link } from 'react-router-dom';
 function Products() {
-    const [data,setData]=useState(null);
-    const [view,setView]=useState(null);
-    const [modalView,setModalView]=useState(false);
-    const [cartItems,setCartItems]=useState(localStorage.getItem("cartItems")?JSON.parse(localStorage.getItem("cartItems")):[])
-    const [number,setNumber]=useState(1)
+    const [data, setData] = useState(null);
+    const [view, setView] = useState(null);
+    const [modalView, setModalView] = useState(false);
+    const [cartItems, setCartItems] = useState(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [])
+    const [number, setNumber] = useState(1);
+    const toast = useRef(null);
     const dispatch = useDispatch();
-    useEffect(()=>{
-        Axios.get("http://localhost:8080/api/product/get-product").then((result) =>{
+    useEffect(() => {
+        Axios.get("http://localhost:8080/api/product/get-product").then((result) => {
             setData(result.data)
         })
-    },[])
-
-   const quickView = ((item)=>{
-       setView(item);
-       setNumber(1);
-       setModalView(true);
+    }, []);
+    const formatCurrency = (value) => {
+        return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+      }
+    const quickView = ((item) => {
+        setView(item);
+        setNumber(1);
+        setModalView(true);
         console.log(item);
     })
-  const reduceNumber = ()=>{
-    setNumber(number - 1)
-  }
-  const addNumber = ()=>{
-    setNumber(number + 1)
-  }
-  const closeModal = ()=>{
-    setModalView(false)
-    setNumber(1)
-  }
-  const addToCart = (res)=>{
-    //   const  cart = [{...view,count:number}];
-    const cart= cartItems.slice();
-    let alreadyInCart =false;
-    cart.forEach((item)=>{
-      if(item._id === res._id){
-        item.count++;
-        alreadyInCart=true;
-      }
-    })
-    if(!alreadyInCart){
-      cart.push({...res,count:number});
+    const reduceNumber = () => {
+        setNumber(number - 1)
     }
-     setCartItems(cart)
-    localStorage.setItem("cartItems",JSON.stringify(cart))
-      console.log(cart);
-    dispatch(reload_cart(cart))
-  }
+    const addNumber = () => {
+        setNumber(number + 1)
+    }
+    const closeModal = () => {
+        setModalView(false)
+        setNumber(1)
+    }
+    const addToCart = (res) => {
+        //   const  cart = [{...view,count:number}];
+        const cart = cartItems.slice();
+        let alreadyInCart = false;
+        cart.forEach((item) => {
+            if (item._id === res._id) {
+                item.count++;
+                alreadyInCart = true;
+            }
+        })
+        if (!alreadyInCart) {
+            cart.push({ ...res, count: number });
+        }
+        setCartItems(cart)
+        localStorage.setItem("cartItems", JSON.stringify(cart))
+        console.log(cart);
+        dispatch(reload_cart(cart));
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'ADD to cart', life: 3000 });
+        setModalView(false)
+    }
     return (
         <>
-        <Header/>
+            <Header />
             {/* Breadcrumbs */}
+            <Toast ref={toast} />
             <div className="breadcrumbs">
                 <div className="container">
                     <div className="row">
@@ -225,43 +233,37 @@ function Products() {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    {data ? data.map((value,key)=>{
-                                        return(
+                                    {data ? data.map((value, key) => {
+                                        return (
                                             <div key={key} className="col-lg-4 col-md-6 col-12">
-                                        <div className="single-product">
-                                            <div className="product-img" style={{ 
-                                                        backgroundImage: "url(" + value.img_url + ")",
-                                                        backgroundPosition: 'center',
-                                                        backgroundSize: 'cover',
-                                                        backgroundRepeat: 'no-repeat',
-                                                        height:'300px'
-                                                        }}>
-                                                <a href="#">
-                                                    <img className="default-img" />
-                                                    {/* <img className="hover-img" src="images\products\p2.jpg"  /> */}
-                                                </a>
-                                                <div className="button-head">
-                                                    <div className="product-action">
-                                                        <a data-toggle="modal" onClick={()=>quickView(value)} ><i className=" ti-eye" /><span>Quick Shop</span></a>
-                                                        <a title="Wishlist" href="#"><i className=" ti-heart " /><span>Add to Wishlist</span></a>
-                                                        <a title="Compare" href="#"><i className="ti-bar-chart-alt" /><span>Add to Compare</span></a>
+                                                <div className="single-product">
+                                                    <div className="product-img">
+                                                        <Link to={`/product-details?userId=${value._id}`}>
+                                                            <img className="default-img" src={value.img_url} />
+                                                            <img className="hover-img" src={value.img_url} />
+                                                        </Link>
+                                                        <div className="button-head">
+                                                            <div className="product-action">
+                                                                <a data-toggle="modal" onClick={() => quickView(value)} ><i className=" ti-eye" /><span>Quick Shop</span></a>
+                                                                <a title="Wishlist" href="#"><i className=" ti-heart " /><span>Add to Wishlist</span></a>
+                                                                <a title="Compare" href="#"><i className="ti-bar-chart-alt" /><span>Add to Compare</span></a>
+                                                            </div>
+                                                            <div className="product-action-2">
+                                                                <a title="Add to cart" onClick={() => addToCart(value)}>Add to cart</a>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div className="product-action-2">
-                                                        <a title="Add to cart" onClick={()=>addToCart(value)}>Add to cart</a>
+                                                    <div className="product-content">
+                                                        <h3><Link to={`/product-details?userId=${value._id}`}>{value.name}</Link></h3>
+                                                        <div className="product-price">
+                                                            <span>{formatCurrency(value.price)}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="product-content">
-                                                <h3><a href="product-details.html">{value.name}</a></h3>
-                                                <div className="product-price">
-                                                <span>{value.price}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                         )
 
-                                    }):<div>Không có sản phảm nào</div>}
+                                    }) : <div>Không có sản phảm nào</div>}
                                 </div>
                             </div>
                         </div>
@@ -292,112 +294,112 @@ function Products() {
                 {/* End Shop Newsletter */}
                 {/* Modal */}
                 {view && (
-                    <Modal footer={false} visible={modalView} width={1000} onCancel={() =>closeModal()}>
-                     <div>
-                     <div >
-                         <div >
-                             <div className="modal-body">
-                                 <div className="row no-gutters">
-                                     <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                                         {/* Product Slider */}
-                                         {/* <div className="product-gallery">
+                    <Modal footer={false} visible={modalView} width={1000} onCancel={() => closeModal()}>
+                        <div>
+                            <div >
+                                <div >
+                                    <div className="modal-body">
+                                        <div className="row no-gutters">
+                                            <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                                {/* Product Slider */}
+                                                {/* <div className="product-gallery">
                                              <div className="quickview-slider-active">
                                                  <div className="single-slider">
                                                      <img src={view ? view.img_url : ''} alt="#" />
                                                  </div>
                                              </div>
                                          </div> */}
-                                          <img src={ view.img_url ? view.img_url :''} alt="#" />
-                                         {/* End Product slider */}
-                                     </div>
-                                     <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                                         <div className="quickview-content">
-                                             <h2>{view.name ? view.name : ''}</h2>
-                                             <div className="quickview-ratting-review">
-                                                 <div className="quickview-ratting-wrap">
-                                                     <div className="quickview-ratting">
-                                                         <i className="yellow fa fa-star" />
-                                                         <i className="yellow fa fa-star" />
-                                                         <i className="yellow fa fa-star" />
-                                                         <i className="yellow fa fa-star" />
-                                                         <i className="fa fa-star" />
-                                                     </div>
-                                                     <a href="#"> (1 customer review)</a>
-                                                 </div>
-                                                 <div className="quickview-stock">
-                                                     <span><i className="fa fa-check-circle-o" /> in stock</span>
-                                                 </div>
-                                             </div>
-                                             <h3>{view.price}</h3>
-                                             <div className="quickview-peragraph">
-                                                 <p>{view.description ? view.description : ''}</p>
-                                             </div>
-                                             <div className="size">
-                                                 <div className="row">
-                                                     <div className="col-lg-6 col-12">
-                                                         <h5 className="title">Size</h5>
-                                                         <select>
-                                                             <option selected="selected">s</option>
-                                                             <option>m</option>
-                                                             <option>l</option>
-                                                             <option>xl</option>
-                                                         </select>
-                                                     </div>
-                                                     <div className="col-lg-6 col-12">
-                                                         <h5 className="title">Color</h5>
-                                                         <select>
-                                                             <option selected="selected">orange</option>
-                                                             <option>purple</option>
-                                                             <option>black</option>
-                                                             <option>pink</option>
-                                                         </select>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                             <div className="quantity">
-                                                 {/* Input Order */}
-                                                 <div className="input-group">
-                                                     <div className="button minus">
-                                                         <button type="button" disabled={number === 1} className="btn btn-primary btn-number"onClick={()=>reduceNumber()}  data-type="minus">
-                                                             <i className="ti-minus" />
-                                                         </button>
-                                                     </div>
-                                                     <input type="text"  className="input-number" data-min={1} data-max={1000} value={number} />
-                                                     <div className="button plus">
-                                                         <button type="button" className="btn btn-primary btn-number" onClick={()=>addNumber()} data-type="plus" >
-                                                             <i className="ti-plus" />
-                                                         </button>
-                                                     </div>
-                                                 </div>
-                                                 {/*/ End Input Order */}
-                                             </div>
-                                             <div className="add-to-cart">
-                                                 <a href="#" className="btn" onClick={()=>addToCart(view)}>Add to cart</a>
-                                                 <a href="#" className="btn min"><i className="ti-heart" /></a>
-                                                 <a href="#" className="btn min"><i className="fa fa-compress" /></a>
-                                             </div>
-                                             <div className="default-social">
-                                                 <h4 className="share-now">Share:</h4>
-                                                 <ul>
-                                                     <li><a className="facebook" href="#"><i className="fa fa-facebook" /></a></li>
-                                                     <li><a className="twitter" href="#"><i className="fa fa-twitter" /></a></li>
-                                                     <li><a className="youtube" href="#"><i className="fa fa-pinterest-p" /></a></li>
-                                                     <li><a className="dribbble" href="#"><i className="fa fa-google-plus" /></a></li>
-                                                 </ul>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-                 </Modal>
+                                                <img src={view.img_url ? view.img_url : ''} alt="#" />
+                                                {/* End Product slider */}
+                                            </div>
+                                            <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                                <div className="quickview-content">
+                                                    <h2>{view.name ? view.name : ''}</h2>
+                                                    <div className="quickview-ratting-review">
+                                                        <div className="quickview-ratting-wrap">
+                                                            <div className="quickview-ratting">
+                                                                <i className="yellow fa fa-star" />
+                                                                <i className="yellow fa fa-star" />
+                                                                <i className="yellow fa fa-star" />
+                                                                <i className="yellow fa fa-star" />
+                                                                <i className="fa fa-star" />
+                                                            </div>
+                                                            <a href="#"> (1 customer review)</a>
+                                                        </div>
+                                                        <div className="quickview-stock">
+                                                            <span><i className="fa fa-check-circle-o" /> in stock</span>
+                                                        </div>
+                                                    </div>
+                                                    <h3>{view.price}</h3>
+                                                    <div className="quickview-peragraph">
+                                                        <p>{view.description ? view.description : ''}</p>
+                                                    </div>
+                                                    <div className="size">
+                                                        <div className="row">
+                                                            <div className="col-lg-6 col-12">
+                                                                <h5 className="title">Size</h5>
+                                                                <select>
+                                                                    <option selected="selected">s</option>
+                                                                    <option>m</option>
+                                                                    <option>l</option>
+                                                                    <option>xl</option>
+                                                                </select>
+                                                            </div>
+                                                            <div className="col-lg-6 col-12">
+                                                                <h5 className="title">Color</h5>
+                                                                <select>
+                                                                    <option selected="selected">orange</option>
+                                                                    <option>purple</option>
+                                                                    <option>black</option>
+                                                                    <option>pink</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="quantity">
+                                                        {/* Input Order */}
+                                                        <div className="input-group">
+                                                            <div className="button minus">
+                                                                <button type="button" disabled={number === 1} className="btn btn-primary btn-number" onClick={() => reduceNumber()} data-type="minus">
+                                                                    <i className="ti-minus" />
+                                                                </button>
+                                                            </div>
+                                                            <input type="text" className="input-number" data-min={1} data-max={1000} value={number} />
+                                                            <div className="button plus">
+                                                                <button type="button" className="btn btn-primary btn-number" onClick={() => addNumber()} data-type="plus" >
+                                                                    <i className="ti-plus" />
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        {/*/ End Input Order */}
+                                                    </div>
+                                                    <div className="add-to-cart">
+                                                        <a href="#" className="btn" onClick={() => addToCart(view)}>Add to cart</a>
+                                                        <a href="#" className="btn min"><i className="ti-heart" /></a>
+                                                        <a href="#" className="btn min"><i className="fa fa-compress" /></a>
+                                                    </div>
+                                                    <div className="default-social">
+                                                        <h4 className="share-now">Share:</h4>
+                                                        <ul>
+                                                            <li><a className="facebook" href="#"><i className="fa fa-facebook" /></a></li>
+                                                            <li><a className="twitter" href="#"><i className="fa fa-twitter" /></a></li>
+                                                            <li><a className="youtube" href="#"><i className="fa fa-pinterest-p" /></a></li>
+                                                            <li><a className="dribbble" href="#"><i className="fa fa-google-plus" /></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Modal>
                 )
                 }
                 {/* Modal end */}
             </div>
-            <Footer/>
+            <Footer />
         </>
     )
 }

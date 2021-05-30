@@ -38,6 +38,9 @@ function DashboardAdmin() {
             <Menu.Item key="2"  icon={<DesktopOutlined />}>
             <Link to="/Product-admin">Products</Link>
             </Menu.Item>
+            <Menu.Item  key="3" icon={<PieChartOutlined />}>
+                <Link to="/category">Category</Link>
+              </Menu.Item>
             <SubMenu key="sub1" icon={<UserOutlined />} title="User">
               <Menu.Item key="3">Tom</Menu.Item>
               <Menu.Item key="4">Bill</Menu.Item>

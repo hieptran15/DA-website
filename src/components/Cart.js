@@ -20,6 +20,9 @@ function Cart() {
     localStorage.setItem("cartItems",JSON.stringify(cartItem.filter(x => x._id !== res._id)))
     dispatch(reload_cart(res))
   }
+  const formatCurrency = (value) => {
+    return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+  }
     return (
         <>
         <Header/>
@@ -64,9 +67,9 @@ function Cart() {
                     <td className="image" data-title="No"><img src={value.img_url} alt="#" /></td>
                     <td className="product-des" data-title="Description">
                       <p className="product-name"><a href="#">{value.name}</a></p>
-                      <p className="product-des">{value.description}</p>
+                      {/* <p className="product-des">{value.description}</p> */}
                     </td>
-                    <td className="price" data-title="Price"><span>{value.price}</span></td>
+                    <td className="price" data-title="Price"><span>{formatCurrency(value.price)}</span></td>
                     <td className="qty" data-title="Qty">{/* Input Order */}
                       <div className="input-group">
                         <div className="button minus">
@@ -83,7 +86,7 @@ function Cart() {
                       </div>
                       {/*/ End Input Order */}
                     </td>
-                    <td className="total-amount" data-title="Total"><span>{value.count * value.price}</span></td>
+                    <td className="total-amount" data-title="Total"><span>{formatCurrency(value.count * value.price)}</span></td>
                     <td className="action" data-title="Remove"><a onClick={()=>deleteCartItem(value)}><i className="ti-trash remove-icon" /></a></td>
                 </tr>
                 )
@@ -115,10 +118,10 @@ function Cart() {
               <div className="col-lg-4 col-md-7 col-12">
                 <div className="right">
                   <ul>
-                    <li>Cart Subtotal<span>{cart !== null ? cart.reduce((a,c)=> a + c.price * c.count, 0): 0}</span></li>
+                    <li>Cart Subtotal<span>{formatCurrency(cart !== null ? cart.reduce((a,c)=> a + c.price * c.count, 0): 0)}</span></li>
                     <li>Shipping<span>Free</span></li>
                     <li>You Save<span>$20.00</span></li>
-                    <li className="last">You Pay<span>{cart !== null ? cart.reduce((a,c)=> a + c.price * c.count, 0): 0}</span></li>
+                    <li className="last">You Pay<span>{formatCurrency(cart !== null ? cart.reduce((a,c)=> a + c.price * c.count, 0): 0)}</span></li>
                   </ul>
                   <div className="button5">
                     <Link to="/checkout" className="btn">Checkout</Link>

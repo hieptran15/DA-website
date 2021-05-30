@@ -17,6 +17,7 @@ import DashboardAdmin from './components/Admin/Dashboard/DashboardAdmin';
 import LoginAdmin from './components/Admin/Auth-admin/LoginAdmin';
 import ProductAdmin from './components/Admin/Product/ProductAdmin';
 import OrderAdmin from './components/Admin/Order/OrderAdmin';
+import Category from './components/Admin/Category/Category';
 function App() {
   return (
         <div > 
@@ -31,6 +32,7 @@ function App() {
                   <Route  path="/register" component={Register}/>
                   <Route  path="/product" component={Products}/>
                   <Route  path="/product-details" component={Product_details}/>
+                  <Route  path="/category" component={Category}/>
                   <Route  path="/login-admin" component={LoginAdmin}/>
                   <Route  path="/dashboard-admin" component={DashboardAdmin}/>
                   <Route  path="/Product-admin" component={ProductAdmin}/>

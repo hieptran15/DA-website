@@ -45,11 +45,11 @@ function ProductAdmin() {
   const [products, setProducts] = useState(null);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
-  const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
   const [product, setProduct] = useState(emptyProduct);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
+  const [key, setKey] = useState('');
   const [check, setCheck] = useState(false);
   const toast = useRef(null);
   const dt = useRef(null);
@@ -61,16 +61,13 @@ function ProductAdmin() {
     })
   }, [check]);
 
-  const onUpload = () => {
-    toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
-  }
-
   const formatCurrency = (value) => {
     return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
   }
 
-  const openNew = () => {
+  const openNew = (key) => {
     setProduct(emptyProduct);
+    setKey(key)
     setSubmitted(false);
     setProductDialog(true);
   }
@@ -84,13 +81,10 @@ function ProductAdmin() {
     setDeleteProductDialog(false);
   }
 
-  const hideDeleteProductsDialog = () => {
-    setDeleteProductsDialog(false);
-  }
-
-  const editProduct = (product) => {
+  const editProduct = (product, key) => {
     setProduct({ ...product });
     setProductDialog(true);
+    setKey(key)
   }
 
   const onInputChange = (e, name) => {
@@ -123,39 +117,63 @@ function ProductAdmin() {
 
   }
   const saveEdit = () => {
-    if (product.name.trim()) {
-      console.log('edit');
-      // try {
-      //   Axios.put(`http://localhost:8080/api/product/update-product/${product._id}`, product).then(res => {
-      //     toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Add', life: 3000 });
-      //     setCheck(!check)
-      //   })
-      // } catch (error) {
-      //   console.log(error);
-      //   toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Product error', life: 3000 });
-      // }
+    console.log('key', key);
+    if (key === 'edit') {
+      try {
+        Axios.put(`http://localhost:8080/api/product/update-product/${product._id}`, product).then(res => {
+          toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+          setCheck(!check)
+        })
+      } catch (error) {
+        console.log(error);
+        toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Product error', life: 3000 });
+      }
 
-      // setSubmitted(false);
-      // setProductDialog(false);
+      setSubmitted(false);
+      setProductDialog(false);
     } else {
-      console.log('add');
-      // try {
-      //   Axios.post("http://localhost:8080/api/product/post-product", product).then(res => {
-      //     toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-      //     setCheck(!check)
-      //   })
-      // } catch (error) {
-      //   console.log(error);
-      //   toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Product error', life: 3000 });
-      // }
-      // setSubmitted(false);
-      // setProductDialog(false);
+      try {
+        Axios.post("http://localhost:8080/api/product/post-product", product).then(res => {
+          toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Add', life: 3000 });
+          setCheck(!check)
+        })
+      } catch (error) {
+        console.log(error);
+        toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Product error', life: 3000 });
+      }
+      setSubmitted(false);
+      setProductDialog(false);
     }
+  }
+  const openDeleteProduct = (product) => {
+    setProduct({ ...product });
+    setDeleteProductDialog(true)
+  }
+  const deleteProductDialogFooter = () => {
+    return(
+       <React.Fragment>
+          <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteProductDialog} />
+          <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteProduct} />
+      </React.Fragment>
+    )
+  }
+  const deleteProduct = () => {
+       try {
+      Axios.delete(`http://localhost:8080/api/product/delete-product/${product._id}`).then(res => {
+        setCheck(!check);
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+      })
+    } catch (error) {
+      console.log(error);
+      toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Product error', life: 3000 });
+    }
+    setDeleteProductDialog(false);
+    setProduct(emptyProduct);
   }
   const leftToolbarTemplate = () => {
     return (
       <React.Fragment>
-        <Button label="New" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={openNew} />
+        <Button label="New" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={() => openNew('add')} />
       </React.Fragment>
     )
   }
@@ -184,8 +202,8 @@ function ProductAdmin() {
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={() => editProduct(rowData)} />
-        <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" />
+        <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={() => editProduct(rowData, 'edit')} />
+        <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" onClick={() => openDeleteProduct(rowData)} />
       </React.Fragment>
     );
   }
@@ -225,6 +243,9 @@ function ProductAdmin() {
             <Menu.Item key="2" icon={<DesktopOutlined />}>
               <Link to="/Product-admin">Products</Link>
             </Menu.Item>
+            <Menu.Item  key="3" icon={<PieChartOutlined />}>
+                <Link to="/category">Category</Link>
+              </Menu.Item>
             <SubMenu key="sub1" icon={<UserOutlined />} title="User">
               <Menu.Item key="3">Tom</Menu.Item>
               <Menu.Item key="4">Bill</Menu.Item>
@@ -324,6 +345,12 @@ function ProductAdmin() {
                     </div>
                     <div className="p-field p-col">
                     </div>
+                  </div>
+                </Dialog>
+                <Dialog visible={deleteProductDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+                  <div className="confirmation-content">
+                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem' }} />
+                    {product && <span>Are you sure you want to delete <b>{product.name}</b>?</span>}
                   </div>
                 </Dialog>
               </div>
