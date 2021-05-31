@@ -102,9 +102,9 @@ function Header() {
                 <ul className="setting-admin-item">
                   <div>
                     {roleName === 'admin' || role === 'admin'?
-                  <li><i className="ti-power-off"/><Link to="/dashboard-admin">Admin</Link></li>: ''}
+                  <li><i className="ti-power-off"/><Link to="/home-admin">Admin</Link></li>: ''}
                   {roleName === 'user' || role === 'user'?
-                  <li><i className="ti-power-off"/><Link to="/dashboard-admin">User</Link></li>: ''}
+                  <li><i className="ti-power-off"/><Link to="/home-admin">User</Link></li>: ''}
                    {tokens||token?<li><i className="ti-power-off"/><a onClick={()=>logoutUser()} href="#">Logout</a></li>:
                   <li><i className="ti-power-off"/><Link to="/login">Login</Link></li>
                   }

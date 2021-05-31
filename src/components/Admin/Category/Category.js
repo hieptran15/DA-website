@@ -1,85 +1,187 @@
-import React from 'react'
-import { Layout, Menu, Breadcrumb } from 'antd';
+import React from 'react';
 import '../admin.css'
-import {
-  DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import { useState } from 'react';
-import { Route, Router, Switch } from 'react-router';
-import ProductAdmin from '../Product/ProductAdmin';
-import OrderAdmin from '../Order/OrderAdmin';
-import { Link } from 'react-router-dom';
-
+import Axios from 'axios'
+import { useState, useEffect, useRef } from 'react';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
+import { Toolbar } from 'primereact/toolbar';
+import { Dialog } from 'primereact/dialog';
+import { InputText } from 'primereact/inputtext';
 function Category() {
-    const { Header, Content, Footer, Sider } = Layout;
-    const { SubMenu } = Menu;
-    const [collapsed, setCollapsed]=useState(false);
-    const toggler = ()=>{
-      setCollapsed(!collapsed)
+  let emptyCategory = {
+    category: '',
+  };
+  const [globalFilter, setGlobalFilter] = useState(null);
+  const [category, setCategory] = useState([]);
+  const [key, setKey] = useState('');
+  const [categoryDialog, setCategoryDialog] = useState(false);
+  const [deleteCategoryDialog, setDeleteProductDialog] = useState(false);
+  const [valueCategory, setValueCategory] = useState('')
+  const [submitted, setSubmitted] = useState(false);
+  const [check, setCheck] = useState(false);
+  const [categoryItem, setCategoryItem] = useState(emptyCategory);
+  const toast = useRef(null);
+  const dt = useRef(null);
+
+  useEffect(() => {
+    Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
+      setCategory(result.data)
+    })
+  }, [check]);
+
+  const openNew = (key) => {
+    setKey(key);
+    setCategoryItem(emptyCategory);
+    setSubmitted(false);
+    setCategoryDialog(true);
+  };
+
+  const hideDialog = () => {
+    setSubmitted(false);
+    setCategoryDialog(false);
+  }
+
+  const saveEdit = () => {
+    if (key === 'add') {
+      try {
+        Axios.post("http://localhost:8080/api/category/post-category", categoryItem).then(res => {
+          toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Category Add', life: 3000 });
+          setCheck(!check)
+        })
+      } catch (error) {
+        console.log(error);
+        toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Add error', life: 3000 });
+      };
+    } else {
+      try {
+        Axios.put(`http://localhost:8080/api/category/update-category/${categoryItem._id}`, categoryItem).then(res => {
+          toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Category updates', life: 3000 });
+          setCheck(!check)
+        })
+      } catch (error) {
+        console.log(error);
+        toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'update error', life: 3000 });
+      };
     }
+
+    setSubmitted(false);
+    setCategoryDialog(false);
+  }
+
+  const editCategory = (item, key) => {
+    setKey(key);
+    setCategoryItem({ ...item });
+    setCategoryDialog(true);
+  }
+  const openDeleteCategory = (item) => {
+    setCategoryItem({ ...item });
+    setDeleteProductDialog(true)
+  }
+  const onInputChange = (e, name) => {
+    const val = e.target.value;
+    let _category = { ...categoryItem };
+    _category[`${name}`] = val;
+    setCategoryItem(_category);
+  };
+
+  const deleteCategory = () => {
+    try {
+      Axios.delete(`http://localhost:8080/api/category/delete-category/${categoryItem._id}`).then(res => {
+        setCheck(!check);
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Category Deleted', life: 3000 });
+      })
+    } catch (error) {
+      console.log(error);
+      toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'delete error', life: 3000 });
+    };
+    setDeleteProductDialog(false);
+  }
+
+  const hideDeleteProductDialog = () => {
+    setDeleteProductDialog(false);
+  }
+
+  const deleteProductDialogFooter = () => {
     return (
-        <div>
-        <Layout style={{ minHeight: '100vh' }}>
-          <Sider collapsible collapsed={collapsed} onCollapse={()=>toggler()}>
-            {!collapsed &&(<div className="edit-logo">
-            <i style={{paddingRight:'5px'}} class="fa fa-google-wallet"></i>
-            <b>SHOP ADMIN</b>
-            </div>)}
-            {collapsed &&(<div className="edit-logo">
-            <i class="fa fa-google-wallet"></i>
-            </div>)}
-            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-              <Menu.Item  key="1" icon={<PieChartOutlined />}>
-                <Link to="/dashboard-admin">DashBoard</Link>
-              </Menu.Item>
-              <Menu.Item key="2"  icon={<DesktopOutlined />}>
-              <Link to="/Product-admin">Products</Link>
-              </Menu.Item>
-              <Menu.Item  key="3" icon={<PieChartOutlined />}>
-                <Link to="/category">Category</Link>
-              </Menu.Item>
-              <SubMenu key="sub1" icon={<UserOutlined />} title="User">
-                <Menu.Item key="3">Tom</Menu.Item>
-                <Menu.Item key="4">Bill</Menu.Item>
-                <Menu.Item key="5">Alex</Menu.Item>
-              </SubMenu>
-              <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
-                <Menu.Item key="6">Team 1</Menu.Item>
-                <Menu.Item key="8">Team 2</Menu.Item>
-              </SubMenu>
-              <Menu.Item key="9" icon={<FileOutlined />}>
-                Files
-              </Menu.Item>
-            </Menu>
-          </Sider>
-          <Layout className="site-layout">
-            <Header className="site-layout-background" style={{ padding: 0 }}>
-              <div >
-                <div className="d-flex justify-content-end">
-                  <a>user</a>
-                  <a>user</a>
-                  <a>user</a>
-                </div>
-              </div>
-            </Header>
-            <Content style={{ margin: '0 16px' }}>
-              <Breadcrumb style={{ margin: '16px 0' }}>
-                <Breadcrumb.Item>Home</Breadcrumb.Item>
-                <Breadcrumb.Item>Category</Breadcrumb.Item>
-              </Breadcrumb>
-              <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-                category
-              </div>
-            </Content>
-            <Footer style={{ textAlign: 'center' }}>Ant Design ©2021 Created by Ant UED</Footer>
-          </Layout>
-        </Layout>
-      </div>
+      <React.Fragment>
+        <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteProductDialog} />
+        <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteCategory} />
+      </React.Fragment>
     )
+  }
+  const actionBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2 mr-2" onClick={() => editCategory(rowData, 'edit')} />
+        <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" onClick={() => openDeleteCategory(rowData)} />
+      </React.Fragment>
+    );
+  }
+
+  const header = (
+    <div className="table-header">
+      <h5 className="p-m-0">Manage Category</h5>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
+      </span>
+    </div>
+  );
+
+  const leftToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <Button label="New" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={() => openNew('add')} />
+      </React.Fragment>
+    )
+  };
+
+  const productDialogFooter = (
+    <React.Fragment>
+      <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
+      <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveEdit} />
+    </React.Fragment>
+  );
+
+  return (
+    <div>
+      <div className="datatable-crud-demo">
+        <Toast ref={toast} />
+
+        <div className="card">
+          <Toolbar className="p-mb-4" left={leftToolbarTemplate}></Toolbar>
+
+          <DataTable ref={dt} value={category}
+            dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            globalFilter={globalFilter}
+            let-i="rowIndex"
+            header={header}>
+            <Column headerStyle={{ width: '0.5rem' }}></Column>
+            <Column field="category" header="Name" sortable></Column>
+            <Column field="status" header="status" sortable></Column>
+            <Column header="Action" body={actionBodyTemplate}></Column>
+          </DataTable>
+        </div>
+        <Dialog visible={categoryDialog} style={{ minWidth: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+          <div className="p-field">
+            <label htmlFor="name">Name</label>
+            <InputText id="name" value={categoryItem.category} onChange={(e) => onInputChange(e, 'category')} required autoFocus />
+            {submitted && !categoryItem.category && <small className="p-error">Name is required.</small>}
+          </div>
+        </Dialog>
+        <Dialog visible={deleteCategoryDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+          <div className="confirmation-content">
+            <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem' }} />
+            {categoryItem && <span>Are you sure you want to delete <b>{categoryItem.category}</b>?</span>}
+          </div>
+        </Dialog>
+      </div>
+    </div>
+  )
 }
 
 export default Category

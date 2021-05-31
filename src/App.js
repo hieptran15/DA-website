@@ -13,14 +13,10 @@ import Register from './components/Auth/Register';
 import Products from './components/Products';
 import Product_details from './components/Product_details';
 
-import DashboardAdmin from './components/Admin/Dashboard/DashboardAdmin';
-import LoginAdmin from './components/Admin/Auth-admin/LoginAdmin';
-import ProductAdmin from './components/Admin/Product/ProductAdmin';
-import OrderAdmin from './components/Admin/Order/OrderAdmin';
-import Category from './components/Admin/Category/Category';
+import HomeAdmin from './components/Admin/HomeAdmin/HomeAdmin';
 function App() {
   return (
-        <div > 
+        <div> 
           <Router>
               <Switch> 
                   <Route exact path="/" component={Home}/>
@@ -32,11 +28,7 @@ function App() {
                   <Route  path="/register" component={Register}/>
                   <Route  path="/product" component={Products}/>
                   <Route  path="/product-details" component={Product_details}/>
-                  <Route  path="/category" component={Category}/>
-                  <Route  path="/login-admin" component={LoginAdmin}/>
-                  <Route  path="/dashboard-admin" component={DashboardAdmin}/>
-                  <Route  path="/Product-admin" component={ProductAdmin}/>
-                  <Route  path="/order-admin" component={OrderAdmin}/>
+                  <Route  path="/home-admin" component={HomeAdmin}/> 
               </Switch>
           </Router>
         </div>
