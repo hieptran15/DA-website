@@ -30,9 +30,11 @@ function ProductAdmin() {
   const [products, setProducts] = useState(null);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
+  const [category, setCategory] = useState([]);
   const [product, setProduct] = useState(emptyProduct);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [checkCategory, setCheckCategory] = useState('');
   const [globalFilter, setGlobalFilter] = useState(null);
   const [key, setKey] = useState('');
   const [check, setCheck] = useState(false);
@@ -46,6 +48,11 @@ function ProductAdmin() {
     })
   }, [check]);
 
+  useEffect(() => {
+    Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
+      setCategory(result.data)
+    })
+  }, [])
   const formatCurrency = (value) => {
     return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
   }
@@ -68,6 +75,7 @@ function ProductAdmin() {
 
   const editProduct = (product, key) => {
     setProduct({ ...product });
+    setCheckCategory(product.category)
     setProductDialog(true);
     setKey(key)
   }
@@ -237,7 +245,7 @@ function ProductAdmin() {
             <Column header="Action" body={actionBodyTemplate}></Column>
           </DataTable>
         </div>
-        <Dialog visible={productDialog} style={{ minWidth: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+        <Dialog visible={productDialog} style={{ width: '500px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
           {product.img_url && <img src={`${product.img_url}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={product.img_url} className="product-image" />}
           <div className="p-field">
             <input type="file" onChange={e => onImageChange(e, 'img_url')} />
@@ -253,23 +261,15 @@ function ProductAdmin() {
           </div>
           <div className="p-field">
             <label className="p-mb-3">Category</label>
-            <div className="p-formgrid p-grid">
-              <div className="p-field-radiobutton p-col-6">
-                <RadioButton inputId="category1" name="category" onChange={onCategoryChange} value="Accessories" checked={product.category === 'Accessories'} />
-                <label htmlFor="category1">Accessories</label>
-              </div>
-              <div className="p-field-radiobutton p-col-6">
-                <RadioButton inputId="category2" name="category" onChange={onCategoryChange} value="Clothing" checked={product.category === 'Clothing'} />
-                <label htmlFor="category2">Clothing</label>
-              </div>
-              <div className="p-field-radiobutton p-col-6">
-                <RadioButton inputId="category3" name="category" onChange={onCategoryChange} value="Electronics" checked={product.category === 'Electronics'} />
-                <label htmlFor="category3">Electronics</label>
-              </div>
-              <div className="p-field-radiobutton p-col-6">
-                <RadioButton inputId="category4" name="category" onChange={onCategoryChange} value="Fitness" checked={product.category === 'Fitness'} />
-                <label htmlFor="category4">Fitness</label>
-              </div>
+            <div className="p-formgrid p-grid d-flex flex-wrap">
+              {category ? category.map((item, index) => {
+                return (
+                  <div key={index} style={{ marginRight: "10px" }} className="p-field-radiobutton d-flex align-items-center p-col-6">
+                    <RadioButton  style={{ marginRight: "5px" }} name="category" onChange={onCategoryChange} value={item.category} checked={product.category === item.category} />
+                    <label htmlFor="category1">{item.category}</label>
+                  </div>
+                )
+              }) : <div>empty</div>}
             </div>
           </div>
           <div className="p-field">
