@@ -7,7 +7,6 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 function Home() {
   // const loginState = useSelector(state => state.login)
-
   // console.log(loginState)
   // console.log(RegisterState)
   const [category, setCategory] = useState([]);

@@ -3189,6 +3189,10 @@ ul.shopping-list {
 	line-height: 18px;
 	font-size: 13px;
 	color: #fff;
+	background-color: #f7941d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 /*======================================
    End Shopping Cart CSS

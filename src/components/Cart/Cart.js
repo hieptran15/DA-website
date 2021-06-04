@@ -77,7 +77,7 @@ function Cart() {
                 <table className="table shopping-summery">
                   <thead>
                     <tr className="main-hading">
-                      <th>PRODUCT</th>
+                      <th>Image</th>
                       <th>NAME</th>
                       <th className="text-center">UNIT PRICE</th>
                       <th className="text-center">QUANTITY</th>

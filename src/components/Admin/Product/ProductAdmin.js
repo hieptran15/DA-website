@@ -14,6 +14,8 @@ import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './Product.css'
 function ProductAdmin() {
 
@@ -85,7 +87,6 @@ function ProductAdmin() {
     let _product = { ...product };
     _product[`${name}`] = val;
     setProduct(_product);
-    console.log(e.target.value);
   }
   const onCategoryChange = (e) => {
     let _product = { ...product };
@@ -257,7 +258,13 @@ function ProductAdmin() {
           </div>
           <div className="p-field">
             <label htmlFor="description">Description</label>
-            <InputTextarea id="description" onChange={(e) => onInputChange(e, 'description')} value={product.description} required rows={3} cols={20} />
+            <CKEditor editor={ClassicEditor} data={product.description} onChange={(event, editor) => {
+              const data = editor.getData();
+              console.log({ event, editor, data });
+              let _product = { ...product };
+              _product[`description`] = data;
+              setProduct(_product);
+            }} />
           </div>
           <div className="p-field">
             <label className="p-mb-3">Category</label>
@@ -265,7 +272,7 @@ function ProductAdmin() {
               {category ? category.map((item, index) => {
                 return (
                   <div key={index} style={{ marginRight: "10px" }} className="p-field-radiobutton d-flex align-items-center p-col-6">
-                    <RadioButton  style={{ marginRight: "5px" }} name="category" onChange={onCategoryChange} value={item.category} checked={product.category === item.category} />
+                    <RadioButton style={{ marginRight: "5px" }} name="category" onChange={onCategoryChange} value={item.category} checked={product.category === item.category} />
                     <label htmlFor="category1">{item.category}</label>
                   </div>
                 )

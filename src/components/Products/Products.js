@@ -431,7 +431,7 @@ function Products() {
                                 <p style={{fontSize: "18px", fontWeight: "600"}}>{viewAddCart.name}</p>
                                 <i>số lượng: 1</i>
                                 <br/>
-                                <b>{viewAddCart.price}</b>
+                                <b>{formatCurrency(viewAddCart.price)}</b>
                             </div>
                         </div>
                         <div className="d-flex">

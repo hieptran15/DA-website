@@ -1,0 +1,49 @@
+.page-product-details{
+    border-bottom: 1px solid #EEEFF7;
+}
+.contact-Staff{
+    padding: 0px 0px 20px 26px;
+    display: flex;
+    flex-wrap: wrap;
+}
+a.staff-item {
+    width: 194px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    background: #464a51;
+    border-radius: 5px;
+    margin: 0 10px 10px 0;
+}
+
+a.staff-item .edit-text p{
+    margin: 0;
+    color: white;
+}
+.product-tab{
+ margin-top: 40px;   
+}
+ul.list-style li {
+    display: inline-block;
+    padding: 5px 20px;
+    margin: 0 30px 20px 0;
+    color: gray;
+}
+ul.list-style li.activeList{
+    border: 1px solid gray;
+    color: black;
+}
+.tab-content.edit{
+    border: 1px solid #EEEFF7;
+}
+.tab-content .description{
+    padding: 20px;
+}
+.tab-content .policy{
+    padding: 20px;
+}
+.edit-ckeditor-show{
+    height: 48px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
