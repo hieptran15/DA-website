@@ -2,9 +2,9 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { login_user } from '../actions/actions';
-import Footer from './Footer';
-import Header from './Header';
+import { login_user } from '../../actions/actions';
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
 function Home() {
   // const loginState = useSelector(state => state.login)
 
@@ -16,9 +16,18 @@ function Home() {
   useEffect(() => {
     Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
       setCategory(result.data);
-      getAllProducts(result.data[0].category);
+      if (result.data.length !== 0) {
+        getAllProducts(result.data[0].category);
+      } else {
+        getAllProducts('');
+      }
+
     })
   }, [])
+
+  const formatCurrency = (value) => {
+    return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+  }
 
   const checkActive = (value) => {
     setKeyCategory(value);
@@ -33,8 +42,7 @@ function Home() {
     setKeyCategory(value);
     if (value !== '') {
       Axios.get(`http://localhost:8080/api/product/get-product?category=${value}`).then((result) => {
-        setProducts(result.data)
-        console.log(result.data);
+        setProducts(result.data);
       })
     } else {
       setProducts([])
@@ -217,39 +225,46 @@ function Home() {
                   <div className="tab-pane fade show active" id="man" role="tabpanel">
                     <div className="tab-single">
                       <div className="row">
-                        <div className="col-xl-3 col-lg-4 col-md-4 col-12">
-                          <Link to='/product-details'>
-                            <div className="single-product" >
-                              <div className="product-img">
-                                <a href="product-details.html">
-                                  <img className="default-img" src="images\products\p1.jpg" alt="#" />
-                                  <img className="hover-img" src="images\products\p2.jpg" alt="#" />
-                                </a>
-                                <div className="button-head">
-                                  <div className="product-action">
-                                    <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i className=" ti-eye" /><span>Quick Shop</span></a>
-                                    <a title="Wishlist" href="#"><i className=" ti-heart " /><span>Add to Wishlist</span></a>
-                                    <a title="Compare" href="#"><i className="ti-bar-chart-alt" /><span>Add to Compare</span></a>
+                        {
+                          products.length !== 0 ? products.map((value, key) => {
+                            return (
+                              <div key={key} className="col-xl-3 col-lg-4 col-md-4 col-12">
+                                <Link>
+                                  <div className="single-product" >
+                                    <div className="product-img">
+                                      <Link to={`/product-details?userId=${value._id}`}>
+                                        <img className="default-img" src={value.img_url} alt="#" />
+                                        {/* <img className="hover-img" src="images\products\p2.jpg" alt="#" /> */}
+                                      </Link>
+                                      <div className="button-head">
+                                        <div className="product-action">
+                                          <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i className=" ti-eye" /><span>Quick Shop</span></a>
+                                          <a title="Wishlist" href="#"><i className=" ti-heart " /><span>Add to Wishlist</span></a>
+                                          <a title="Compare" href="#"><i className="ti-bar-chart-alt" /><span>Add to Compare</span></a>
+                                        </div>
+                                        <div className="product-action-2">
+                                          <a title="Add to cart" href="#">Add to cart</a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="product-content">
+                                      <h3><Link to={`/product-details?userId=${value._id}`}>{value.name}</Link></h3>
+                                      <div className="product-price">
+                                        <span>{formatCurrency(value.price)}</span>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div className="product-action-2">
-                                    <a title="Add to cart" href="#">Add to cart</a>
-                                  </div>
-                                </div>
+                                </Link>
                               </div>
-                              <div className="product-content">
-                                <h3><a href="product-details.html">Women Hot Collection</a></h3>
-                                <div className="product-price">
-                                  <span>$29.00</span>
-                                </div>
-                              </div>
-                            </div>
-                          </Link>
-                        </div>
+                            )
+                          }) : <h3>Không có sản phẩm nào</h3>
+                        }
+
+                      </div>
                     </div>
-                    </div>
-                  {/*/ End Single Tab */}
+                    {/*/ End Single Tab */}
+                  </div>
                 </div>
-              </div>
               </div>
             </div>
           </div>

@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login_user } from '../../actions/actions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Header from '../Header';
-import Footer from '../Footer';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 function Login() {
     const [visible, setVisible] = useState(false);
     const [ShowVisible, setShowVisible] = useState(false);

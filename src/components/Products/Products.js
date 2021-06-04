@@ -3,15 +3,17 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Dialog } from 'primereact/dialog';
 import { Toast } from 'primereact/toast';
 import { Modal, Button } from 'antd';
-import Header from './Header';
+import Header from '../Header/Header';
 import { useDispatch } from 'react-redux';
-import { reload_cart } from '../actions/actions';
-import Footer from './Footer';
-import { Link } from 'react-router-dom';
+import { reload_cart } from '../../actions/actions';
+import Footer from '../Footer/Footer';
+import { Link, NavLink } from 'react-router-dom';
 function Products() {
     const [data, setData] = useState(null);
     const [view, setView] = useState(null);
+    const [viewAddCart, setViewAddCart] = useState(null);
     const [modalView, setModalView] = useState(false);
+    const [modalViewAddCart, setModalViewAddCart] = useState(false);
     const [cartItems, setCartItems] = useState(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [])
     const [number, setNumber] = useState(1);
     const toast = useRef(null);
@@ -23,7 +25,7 @@ function Products() {
     }, []);
     const formatCurrency = (value) => {
         return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
-      }
+    }
     const quickView = ((item) => {
         setView(item);
         setNumber(1);
@@ -40,6 +42,9 @@ function Products() {
         setModalView(false)
         setNumber(1)
     }
+    const closeModalViewCart = () => {
+        setModalViewAddCart(false)
+    }
     const addToCart = (res) => {
         //   const  cart = [{...view,count:number}];
         const cart = cartItems.slice();
@@ -49,7 +54,7 @@ function Products() {
                 item.count++;
                 alreadyInCart = true;
             }
-        })
+        });
         if (!alreadyInCart) {
             cart.push({ ...res, count: number });
         }
@@ -57,8 +62,26 @@ function Products() {
         localStorage.setItem("cartItems", JSON.stringify(cart))
         console.log(cart);
         dispatch(reload_cart(cart));
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'ADD to cart', life: 3000 });
         setModalView(false)
+    }
+    const onlyAddCart = (res) => {
+        setModalViewAddCart(true)
+        setViewAddCart(res);
+        const cart = cartItems.slice();
+        let alreadyInCart = false;
+        cart.forEach((item) => {
+            if (item._id === res._id) {
+                item.count++;
+                alreadyInCart = true;
+            }
+        });
+        if (!alreadyInCart) {
+            cart.push({ ...res, count: number });
+        }
+        setCartItems(cart)
+        localStorage.setItem("cartItems", JSON.stringify(cart))
+        console.log(cart);
+        dispatch(reload_cart(cart));
     }
     return (
         <>
@@ -249,7 +272,7 @@ function Products() {
                                                                 <a title="Compare" href="#"><i className="ti-bar-chart-alt" /><span>Add to Compare</span></a>
                                                             </div>
                                                             <div className="product-action-2">
-                                                                <a title="Add to cart" onClick={() => addToCart(value)}>Add to cart</a>
+                                                                <a title="Add to cart" onClick={() => onlyAddCart(value)}>Add to cart</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -330,7 +353,7 @@ function Products() {
                                                             <span><i className="fa fa-check-circle-o" /> in stock</span>
                                                         </div>
                                                     </div>
-                                                    <h3>{view.price}</h3>
+                                                    <h3>{formatCurrency(view.price)}</h3>
                                                     <div className="quickview-peragraph">
                                                         <p>{view.description ? view.description : ''}</p>
                                                     </div>
@@ -375,10 +398,10 @@ function Products() {
                                                     </div>
                                                     <div className="add-to-cart">
                                                         <a href="#" className="btn" onClick={() => addToCart(view)}>Add to cart</a>
-                                                        <a href="#" className="btn min"><i className="ti-heart" /></a>
-                                                        <a href="#" className="btn min"><i className="fa fa-compress" /></a>
+                                                        {/* <a href="#" className="btn min"><i className="ti-heart" /></a>
+                                                        <a href="#" className="btn min"><i className="fa fa-compress" /></a> */}
                                                     </div>
-                                                    <div className="default-social">
+                                                    {/* <div className="default-social">
                                                         <h4 className="share-now">Share:</h4>
                                                         <ul>
                                                             <li><a className="facebook" href="#"><i className="fa fa-facebook" /></a></li>
@@ -386,7 +409,7 @@ function Products() {
                                                             <li><a className="youtube" href="#"><i className="fa fa-pinterest-p" /></a></li>
                                                             <li><a className="dribbble" href="#"><i className="fa fa-google-plus" /></a></li>
                                                         </ul>
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -397,6 +420,30 @@ function Products() {
                     </Modal>
                 )
                 }
+                {viewAddCart && (
+                    <Modal footer={false} centered visible={modalViewAddCart} width={500} onCancel={() => closeModalViewCart()}>
+                        <div style={{marginBottom:"15px", color: "#84b767", fontSize: "18px"}}><i style={{marginRight: '10px'}} class="fa fa-check-circle"></i>Thêm vào giỏ hàng thành công!</div>
+                        <div style={{marginBottom:"10px"}} className="d-flex">
+                            <div style={{marginRight: "25px"}}>
+                                <img src={viewAddCart.img_url} style={{width:"200px", height: "220px", objectFit: "cover"}} />
+                            </div>
+                            <div>
+                                <p style={{fontSize: "18px", fontWeight: "600"}}>{viewAddCart.name}</p>
+                                <i>số lượng: 1</i>
+                                <br/>
+                                <b>{viewAddCart.price}</b>
+                            </div>
+                        </div>
+                        <div className="d-flex">
+                            <NavLink style={{width: "50%"}} to="/cart">
+                                <button style={{width:"100%",padding: "10px",backgroundColor: "#31353d",color: "white"}}>Đi tới giỏ hàng</button>
+                            </NavLink>
+                            <NavLink style={{width: "50%"}} to="/checkout">
+                            <button style={{width:"100%",padding: "10px",backgroundColor: "#f6435b",color: "white"}}>Thanh toán</button>
+                            </NavLink>
+                        </div>
+                    </Modal>
+                )}
                 {/* Modal end */}
             </div>
             <Footer />

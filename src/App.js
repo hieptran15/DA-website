@@ -1,18 +1,19 @@
 import React from 'react'
 import {BrowserRouter as Router, Route,Switch} from "react-router-dom";
-import Footer from './components/Footer';
-import Header from './components/Header';
-import Home from './components/Home';
-import Cart from './components/Cart';
-import CheckOut from './components/CheckOut';
-import Contact from './components/Contact';
-import Blog_Slide_bar from './components/Blog_Slide_bar';
+import Footer from './components/Footer/Footer';
+import Header from './components/Header/Header';
+import Home from './components/Home/Home';
+import Cart from './components/Cart/Cart';
+import CheckOut from './components/Checkout/CheckOut';
+import Contact from './components/Contact/Contact';
+import Blog_Slide_bar from './components/Blog-slide-bar/Blog_Slide_bar';
 import "./App.css"
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
-import Products from './components/Products';
-import Product_details from './components/Product_details';
-
+import Products from './components/Products/Products';
+import Product_details from './components/Product-details/Product_details';
+import { ScrollTop } from 'primereact/scrolltop';
+import { ScrollPanel } from 'primereact/scrollpanel';
 import HomeAdmin from './components/Admin/HomeAdmin/HomeAdmin';
 function App() {
   return (

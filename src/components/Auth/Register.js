@@ -5,8 +5,8 @@ import { registers } from '../../actions/actions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link, Redirect } from 'react-router-dom';
-import Header from '../Header';
-import Footer from '../Footer';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 function Register(props) {
     const [getValue,setValue]=useState({
         name:"",

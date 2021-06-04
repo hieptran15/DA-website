@@ -1625,6 +1625,7 @@ object {
 .quickview-content .quantity {
 	display: inline-block;
 	margin-right: 10px;
+	margin-bottom: 20px;
 }
 .quickview-content .quantity .input-group {
 	width: 151px;
