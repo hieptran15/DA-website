@@ -271,7 +271,7 @@ function ProductAdmin() {
             <div className="p-formgrid p-grid d-flex flex-wrap">
               {category ? category.map((item, index) => {
                 return (
-                  <div key={index} style={{ marginRight: "10px" }} className="p-field-radiobutton d-flex align-items-center p-col-6">
+                  <div key={item._id} style={{ marginRight: "10px" }} className="p-field-radiobutton d-flex align-items-center p-col-6">
                     <RadioButton style={{ marginRight: "5px" }} name="category" onChange={onCategoryChange} value={item.category} checked={product.category === item.category} />
                     <label htmlFor="category1">{item.category}</label>
                   </div>

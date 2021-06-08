@@ -213,7 +213,7 @@ function Home() {
                   <ul className="nav nav-tabs" id="myTab" role="tablist">
                     {category ? [...category].map((item, key) => {
                       return (
-                        <li key={key} className="nav-item"><a className={"" + '' + (keyCategory !== '' ? keyCategory === item.category ? 'active' : '' : '')} onClick={() => checkActive(item.category)} data-toggle="tab" href="#man" role="tab">{item.category}</a></li>
+                        <li key={item._id} className="nav-item"><a className={"" + '' + (keyCategory !== '' ? keyCategory === item.category ? 'active' : '' : '')} onClick={() => checkActive(item.category)} data-toggle="tab" href="#man" role="tab">{item.category}</a></li>
                       )
                     }) : ''}
                   </ul>
@@ -227,7 +227,7 @@ function Home() {
                         {
                           products.length !== 0 ? products.map((value, key) => {
                             return (
-                              <div key={key} className="col-xl-3 col-lg-4 col-md-4 col-12">
+                              <div key={value._id} className="col-xl-3 col-lg-4 col-md-4 col-12">
                                 <Link>
                                   <div className="single-product" >
                                     <div className="product-img">

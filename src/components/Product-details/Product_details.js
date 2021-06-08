@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import parse from 'html-react-parser';
 import "./Project-details.css"
 function Product_details() {
-    const cities = [
+    const sizes = [
         { name: 'S', code: 'S' },
         { name: 'L', code: 'L' },
         { name: 'XL', code: 'XL' },
@@ -133,7 +133,7 @@ function Product_details() {
                                         <div className="row">
                                             <div className="col-lg-6 col-12">
                                                 <h5 className="title">Size</h5>
-                                                <Dropdown value={selectedSize} options={cities} optionLabel="name" onChange={onSizeChange} placeholder="Chọn size" />
+                                                <Dropdown value={selectedSize} options={sizes} optionLabel="name" onChange={onSizeChange} placeholder="Chọn size" />
                                             </div>
                                             <div className="col-lg-6 col-12">
                                                 <h5 className="title">Color</h5>

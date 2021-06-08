@@ -4,25 +4,69 @@ import { Dialog } from 'primereact/dialog';
 import { Toast } from 'primereact/toast';
 import { Modal, Button } from 'antd';
 import Header from '../Header/Header';
+import { Dropdown } from 'primereact/dropdown';
+import { Paginator } from 'primereact/paginator';
 import { useDispatch } from 'react-redux';
 import { reload_cart } from '../../actions/actions';
 import Footer from '../Footer/Footer';
 import { Link, NavLink } from 'react-router-dom';
+import "./Products.css"
 function Products() {
+    const limits = [3, 6, 9];
+    const sort = [{ name: 'Mặc định', code: '' }, { name: 'Giá tăng dần', code: 'lowest' }, { name: 'Giá giảm dần', code: 'heightest' }];
     const [data, setData] = useState(null);
+    const [category, setCategory] = useState([]);
+    const [limit, setLimit] = useState(3);
+    const [page, setPage] = useState(1);
+    const [typeSort, setTypeSort] = useState('');
+    const [valueSort, setValueSort] = useState({ name: 'Mặc định', code: '' });
     const [view, setView] = useState(null);
     const [viewAddCart, setViewAddCart] = useState(null);
+    const [keyCategory, setKeyCategory] = useState('');
     const [modalView, setModalView] = useState(false);
     const [modalViewAddCart, setModalViewAddCart] = useState(false);
     const [cartItems, setCartItems] = useState(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [])
     const [number, setNumber] = useState(1);
     const toast = useRef(null);
     const dispatch = useDispatch();
+
     useEffect(() => {
-        Axios.get("http://localhost:8080/api/product/get-product").then((result) => {
+        Axios.get(`http://localhost:8080/api/product/get-product?category=${keyCategory}&price=${typeSort}&limit=${limit}&page=${page}`).then((result) => {
             setData(result.data)
         })
-    }, []);
+    }, [keyCategory, limit, typeSort, page]);
+
+    useEffect(() => {
+        Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
+            setCategory(result.data);
+        })
+    }, [])
+
+    const onlimitChange = (e) => {
+        setLimit(e.value)
+    }
+
+    const onSortChange = (e) => {
+        console.log(e.value.code);
+        setTypeSort(e.value.code);
+        setValueSort(e.value)
+    }
+
+    const onKeyCategory = (e) => {
+        if (keyCategory === e) {
+            setKeyCategory('')
+        } else {
+            setKeyCategory(e)
+        }
+    }
+
+    const onBasicPageChange = (event) => {
+        // setPage(event.page);
+        console.log(event.page);
+        console.log(event.rows);
+        console.log(event);
+    }
+
     const formatCurrency = (value) => {
         return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
     }
@@ -114,13 +158,11 @@ function Products() {
                                     <div className="single-widget category">
                                         <h3 className="title">Categories</h3>
                                         <ul className="categor-list">
-                                            <li><a href="#">T-shirts</a></li>
-                                            <li><a href="#">jacket</a></li>
-                                            <li><a href="#">jeans</a></li>
-                                            <li><a href="#">sweatshirts</a></li>
-                                            <li><a href="#">trousers</a></li>
-                                            <li><a href="#">kitwears</a></li>
-                                            <li><a href="#">accessories</a></li>
+                                            {category ? category.map((value, key) => {
+                                                return (
+                                                    <li key={value._id}><a className={'' + (keyCategory === value.category ? 'activeSideBarCategory' : '')} onClick={() => onKeyCategory(value.category)}>{value.category}</a></li>
+                                                )
+                                            }) : ''}
                                         </ul>
                                     </div>
                                     {/*/ End Single Widget */}
@@ -231,25 +273,16 @@ function Products() {
                                             <div className="shop-shorter">
                                                 <div className="single-shorter">
                                                     <label>Show :</label>
-                                                    <select>
-                                                        <option selected="selected">09</option>
-                                                        <option>15</option>
-                                                        <option>25</option>
-                                                        <option>30</option>
-                                                    </select>
+                                                    <Dropdown value={limit} options={limits} onChange={onlimitChange} />
                                                 </div>
                                                 <div className="single-shorter">
                                                     <label>Sort By :</label>
-                                                    <select>
-                                                        <option selected="selected">Name</option>
-                                                        <option>Price</option>
-                                                        <option>Size</option>
-                                                    </select>
+                                                    <Dropdown value={valueSort} options={sort} optionLabel="name" placeholder="Giá..." onChange={onSortChange} />
                                                 </div>
                                             </div>
                                             <ul className="view-mode">
-                                                <li className="active"><a href="shop-grid.html"><i className="fa fa-th-large" /></a></li>
-                                                <li><a href="shop-list.html"><i className="fa fa-th-list" /></a></li>
+                                                <li disabled={page == 1} className="active"><a onClick={()=>setPage(page - 1)}><i className="fa fa-th-large" /></a></li>
+                                                <li><a onClick={()=>setPage(page + 1)}><i className="fa fa-th-list" /></a></li>
                                             </ul>
                                         </div>
                                         {/*/ End Shop Top */}
@@ -258,7 +291,7 @@ function Products() {
                                 <div className="row">
                                     {data ? data.map((value, key) => {
                                         return (
-                                            <div key={key} className="col-lg-4 col-md-6 col-12">
+                                            <div key={value._id} className="col-lg-4 col-md-6 col-12">
                                                 <div className="single-product">
                                                     <div className="product-img">
                                                         <Link to={`/product-details?userId=${value._id}`}>
@@ -287,6 +320,9 @@ function Products() {
                                         )
 
                                     }) : <div>Không có sản phảm nào</div>}
+                                </div>
+                                <div className="edit-paginator">
+                                    <Paginator first={page} rows={limit} totalRecords={data? data.length : 0} onPageChange={onBasicPageChange}></Paginator>
                                 </div>
                             </div>
                         </div>
@@ -422,24 +458,24 @@ function Products() {
                 }
                 {viewAddCart && (
                     <Modal footer={false} centered visible={modalViewAddCart} width={500} onCancel={() => closeModalViewCart()}>
-                        <div style={{marginBottom:"15px", color: "#84b767", fontSize: "18px"}}><i style={{marginRight: '10px'}} class="fa fa-check-circle"></i>Thêm vào giỏ hàng thành công!</div>
-                        <div style={{marginBottom:"10px"}} className="d-flex">
-                            <div style={{marginRight: "25px"}}>
-                                <img src={viewAddCart.img_url} style={{width:"200px", height: "220px", objectFit: "cover"}} />
+                        <div style={{ marginBottom: "15px", color: "#84b767", fontSize: "18px" }}><i style={{ marginRight: '10px' }} class="fa fa-check-circle"></i>Thêm vào giỏ hàng thành công!</div>
+                        <div style={{ marginBottom: "10px" }} className="d-flex">
+                            <div style={{ marginRight: "25px" }}>
+                                <img src={viewAddCart.img_url} style={{ width: "200px", height: "220px", objectFit: "cover" }} />
                             </div>
                             <div>
-                                <p style={{fontSize: "18px", fontWeight: "600"}}>{viewAddCart.name}</p>
+                                <p style={{ fontSize: "18px", fontWeight: "600" }}>{viewAddCart.name}</p>
                                 <i>số lượng: 1</i>
-                                <br/>
+                                <br />
                                 <b>{formatCurrency(viewAddCart.price)}</b>
                             </div>
                         </div>
                         <div className="d-flex">
-                            <NavLink style={{width: "50%"}} to="/cart">
-                                <button style={{width:"100%",padding: "10px",backgroundColor: "#31353d",color: "white"}}>Đi tới giỏ hàng</button>
+                            <NavLink style={{ width: "50%" }} to="/cart">
+                                <button style={{ width: "100%", padding: "10px", backgroundColor: "#31353d", color: "white" }}>Đi tới giỏ hàng</button>
                             </NavLink>
-                            <NavLink style={{width: "50%"}} to="/checkout">
-                            <button style={{width:"100%",padding: "10px",backgroundColor: "#f6435b",color: "white"}}>Thanh toán</button>
+                            <NavLink style={{ width: "50%" }} to="/checkout">
+                                <button style={{ width: "100%", padding: "10px", backgroundColor: "#f6435b", color: "white" }}>Thanh toán</button>
                             </NavLink>
                         </div>
                     </Modal>
