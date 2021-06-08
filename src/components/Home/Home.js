@@ -41,7 +41,7 @@ function Home() {
     setKeyCategory(value);
     if (value !== '') {
       Axios.get(`http://localhost:8080/api/product/get-product?category=${value}`).then((result) => {
-        setProducts(result.data);
+        setProducts(result.data.datas);
       })
     } else {
       setProducts([])

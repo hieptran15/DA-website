@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Footer from '../Footer/Footer'
 import Header from '../Header/Header'
-import { useFormik } from 'formik';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { InputTextarea } from 'primereact/inputtextarea';

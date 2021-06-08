@@ -44,9 +44,8 @@ function ProductAdmin() {
   const dt = useRef(null);
 
   useEffect(() => {
-    Axios.get("http://localhost:8080/api/product/get-product").then((result) => {
-      setProducts(result.data)
-      console.log(result.data);
+    Axios.get("http://localhost:8080/api/product/list-all-product").then((result) => {
+      setProducts(result.data);
     })
   }, [check]);
 
@@ -228,7 +227,7 @@ function ProductAdmin() {
 
           <DataTable ref={dt} value={products}
             selection={selectedProducts}
-            dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
+            dataKey="id" paginator rows={5} rowsPerPageOptions={[5, 10, 25]}
             onSelectionChange={(e) => setSelectedProducts(e.value)}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"

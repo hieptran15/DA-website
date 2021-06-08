@@ -5,7 +5,7 @@ import { Toast } from 'primereact/toast';
 import { Modal, Button } from 'antd';
 import Header from '../Header/Header';
 import { Dropdown } from 'primereact/dropdown';
-import { Paginator } from 'primereact/paginator';
+import { Pagination } from 'antd';
 import { useDispatch } from 'react-redux';
 import { reload_cart } from '../../actions/actions';
 import Footer from '../Footer/Footer';
@@ -23,6 +23,7 @@ function Products() {
     const [view, setView] = useState(null);
     const [viewAddCart, setViewAddCart] = useState(null);
     const [keyCategory, setKeyCategory] = useState('');
+    const [countProduct, setCountProdcut] = useState(0)
     const [modalView, setModalView] = useState(false);
     const [modalViewAddCart, setModalViewAddCart] = useState(false);
     const [cartItems, setCartItems] = useState(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [])
@@ -31,10 +32,12 @@ function Products() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        Axios.get(`http://localhost:8080/api/product/get-product?category=${keyCategory}&price=${typeSort}&limit=${limit}&page=${page}`).then((result) => {
-            setData(result.data)
+        Axios.get(`http://localhost:8080/api/product/get-product?category=${keyCategory}&price=${typeSort}&page=${page}`).then((result) => {
+            setData(result.data.datas);
+            setCountProdcut(result.data.count);
+            console.log(result.data.count);
         })
-    }, [keyCategory, limit, typeSort, page]);
+    }, [keyCategory, typeSort, page]);
 
     useEffect(() => {
         Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
@@ -61,9 +64,9 @@ function Products() {
     }
 
     const onBasicPageChange = (event) => {
-        // setPage(event.page);
-        console.log(event.page);
-        console.log(event.rows);
+        setPage(event);
+        // console.log(event.page);
+        // console.log(event.rows);
         console.log(event);
     }
 
@@ -322,7 +325,7 @@ function Products() {
                                     }) : <div>Không có sản phảm nào</div>}
                                 </div>
                                 <div className="edit-paginator">
-                                    <Paginator first={page} rows={limit} totalRecords={data? data.length : 0} onPageChange={onBasicPageChange}></Paginator>
+                                    <Pagination defaultCurrent={1} onChange={onBasicPageChange} total={countProduct} />
                                 </div>
                             </div>
                         </div>
