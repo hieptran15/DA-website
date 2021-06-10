@@ -7,15 +7,22 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import Axios from 'axios';
+import { Checkbox } from 'primereact/checkbox';
+import './Checkout.css'
+import { Redirect } from 'react-router';
+import Modal from 'antd/lib/modal/Modal';
+import { Link } from 'react-router-dom';
 function CheckOut() {
   const cities = [
-    { name: 'New York', code: 'NY' },
-    { name: 'Rome', code: 'RM' },
-    { name: 'London', code: 'LDN' },
-    { name: 'Istanbul', code: 'IST' },
-    { name: 'Paris', code: 'PRS' }
+    { name: 'Ninh Bình', code: 'NY' },
+    { name: 'Hà nội', code: 'RM' },
+    { name: 'Nam định', code: 'LDN' },
+    { name: 'Thái bình', code: 'IST' },
+    { name: 'Thành phố Hồ Chí Minh', code: 'PRS' }
   ];
-  const [cartItem, setCartItem] = useState(null)
+  const [cartItem, setCartItem] = useState(null);
+  const [keySelect, setKeySelect] = useState('');
+  const [modalViewOrderSuccess, setModalViewOrderSuccess]= useState(false);
   useEffect(() => {
     setCartItem(JSON.parse(localStorage.getItem("cartItems")))
   }, []);
@@ -50,13 +57,25 @@ function CheckOut() {
     _valueItem[`${name}`] = val;
     setFormValues(_valueItem);
   }
+  const selectCheckOut = (value)=>{
+    setKeySelect(value)
+  }
   const onSubmit = () =>{
     let _valueItem = { ...formValues, cartItems: cartItem, total: cartItem !== null ? cartItem.reduce((a, c) => a + c.price * c.count, 0) : 0 };
     console.log(_valueItem);
+    try{
       Axios.post("http://localhost:8080/api/order/post-order", _valueItem).then(res => {
         console.log(res);
+        setModalViewOrderSuccess(true)
+        setFormValues(emptyValue);
       })
+    } catch (error) {
+      console.log('error');
+    }
   }
+  const closeModalViewCart = () => {
+    setModalViewOrderSuccess(false);
+}
   return (
     <div>
       <Header />
@@ -153,9 +172,9 @@ function CheckOut() {
                   <h2>Payments</h2>
                   <div className="content">
                     <div className="checkbox">
-                      <label className="checkbox-inline" htmlFor={1}><input name="updates" id={1} type="checkbox" /> Check Payments</label>
-                      <label className="checkbox-inline" htmlFor={2}><input name="news" id={2} type="checkbox" /> Cash On Delivery</label>
-                      <label className="checkbox-inline" htmlFor={3}><input name="news" id={3} type="checkbox" /> PayPal</label>
+                      <label className="checkbox-inline" htmlFor={'1'}><Checkbox inputId="1" checked={keySelect === 'Payments'} onChange={e => selectCheckOut('Payments')} /> Check Payments</label>
+                      <label className="checkbox-inline" htmlFor={'2'}><Checkbox inputId="2" checked={keySelect === 'Delivery'} onChange={e => selectCheckOut('Delivery')} /> Cash On Delivery</label>
+                      <label className="checkbox-inline" htmlFor={'3'}><Checkbox inputId="3" checked={keySelect === 'PayPal'} onChange={e => selectCheckOut('PayPal')} /> PayPal</label>
                     </div>
                   </div>
                 </div>
@@ -170,9 +189,9 @@ function CheckOut() {
                 {/* Button Widget */}
                 <div className="single-widget get-button">
                   <div className="content">
-                    <div className="button" onClick={() => onSubmit()}>
-                      <a className="btn">proceed to checkout</a>
-                    </div>
+                    <button disabled={keySelect === '' || formValues.fullName === '' || formValues.phone === null || formValues.email === '' || formValues.address === ''} className="button" onClick={() => onSubmit()}>
+                      <a className="btn edit-process">proceed to checkout</a>
+                    </button>
                   </div>
                 </div>
                 {/*/ End Button Widget */}
@@ -247,6 +266,11 @@ function CheckOut() {
           </div>
         </div>
       </section>
+      <Modal footer={false} centered visible={modalViewOrderSuccess} width={500} onCancel={() => closeModalViewCart()}>
+        <h2 style={{color: '#63ab01'}}>Mua hàng thành công!</h2>
+        <p>Chúng tôi sẽ sớm liên hệ với bạn để giao hàng trong thời gian ngắn nhất</p>
+        <Link to="/">Tiếp tục mua hàng</Link>
+      </Modal>
       {/* End Shop Newsletter */}
       <Footer />
     </div>

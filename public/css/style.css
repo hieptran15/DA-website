@@ -3376,7 +3376,7 @@ ul.shopping-list {
 }
 .shop.checkout .single-widget .checkbox label::before {
 	position: absolute;
-	content: "";
+	
 	left: 0;
 	top: 7px;
 	width: 12px;
@@ -3387,7 +3387,7 @@ ul.shopping-list {
 }
 .shop.checkout .single-widget .checkbox label::after {
 	position: absolute;
-	content: "";
+	
 	left: 0;
 	top: 7px;
 	width: 12px;

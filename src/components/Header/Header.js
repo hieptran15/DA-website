@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, Redirect, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { login_user, reload_cart } from '../../actions/actions'
 import { useState } from 'react'
@@ -8,12 +8,15 @@ import { DownOutlined } from '@ant-design/icons';
 import './Header.css'
 function Header() {
   const [cart, setCart] = useState(null)
-  const [checkActive, setCheckActive] = useState('')
+  const [checkActive, setCheckActive] = useState('');
+  const [valueSearch, setValueSearch] = useState('')
   const LoginState = useSelector(state => state.login)
   const { user, loading, error, token, carts, role } = LoginState;
   const roleName = JSON.parse(localStorage.getItem('role'));
   const tokens = JSON.parse(localStorage.getItem('aulogin'))
-  const userName = JSON.parse(localStorage.getItem('userName'))
+  const userName = JSON.parse(localStorage.getItem('userName'));
+  const query = new URLSearchParams(useLocation().search);
+    const keySearch = query.get("search");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,6 +45,10 @@ function Header() {
   }
   const formatCurrency = (value) => {
     return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+  }
+  const onChangeInput = (e) => {
+    setValueSearch(e.target.value)
+    console.log(e.target.value);
   }
   const viewCart = () => {
     return (
@@ -151,8 +158,8 @@ function Header() {
                 <div className="search-bar-top">
                   <div className="search-bar">
                     <form>
-                      <input name="search" placeholder="Search Products Here....." type="search" />
-                      <button className="btnn"><i className="ti-search" /></button>
+                      <input onChange={(e) => onChangeInput(e)} name="search" placeholder="Search Products Here....." type="search" />
+                      <Link to={`/product?search=${valueSearch}`}><button className="btnn"><i className="ti-search" /></button></Link>
                     </form>
                   </div>
                 </div>

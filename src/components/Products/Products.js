@@ -5,24 +5,28 @@ import { Toast } from 'primereact/toast';
 import { Modal, Button } from 'antd';
 import Header from '../Header/Header';
 import { Dropdown } from 'primereact/dropdown';
-import { Pagination } from 'antd';
+import { Checkbox } from 'primereact/checkbox';
+import { Paginator } from 'primereact/paginator';
 import { useDispatch } from 'react-redux';
 import { reload_cart } from '../../actions/actions';
 import Footer from '../Footer/Footer';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import "./Products.css"
 function Products() {
-    const limits = [3, 6, 9];
     const sort = [{ name: 'Mặc định', code: '' }, { name: 'Giá tăng dần', code: 'lowest' }, { name: 'Giá giảm dần', code: 'heightest' }];
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
     const [category, setCategory] = useState([]);
-    const [limit, setLimit] = useState(3);
     const [page, setPage] = useState(1);
+    const [pageCount, setPageCount] = useState(0);
+    const [getRow, setGetRow] = useState(0);
     const [typeSort, setTypeSort] = useState('');
     const [valueSort, setValueSort] = useState({ name: 'Mặc định', code: '' });
     const [view, setView] = useState(null);
     const [viewAddCart, setViewAddCart] = useState(null);
     const [keyCategory, setKeyCategory] = useState('');
+    const [valueRange, setValueRange] = useState('')
+    const [priceMin, setPriceMin] = useState(0);
+    const [priceMax, setPriceMax] = useState(0);
     const [countProduct, setCountProdcut] = useState(0)
     const [modalView, setModalView] = useState(false);
     const [modalViewAddCart, setModalViewAddCart] = useState(false);
@@ -30,14 +34,15 @@ function Products() {
     const [number, setNumber] = useState(1);
     const toast = useRef(null);
     const dispatch = useDispatch();
-
+    const query = new URLSearchParams(useLocation().search);
+    const keySearch = query.get("search");
     useEffect(() => {
-        Axios.get(`http://localhost:8080/api/product/get-product?category=${keyCategory}&price=${typeSort}&page=${page}`).then((result) => {
+        Axios.get(`http://localhost:8080/api/product/get-product?searchKeyword=${keySearch ? keySearch : ''}&min=${priceMin}&max=${priceMax}&category=${keyCategory}&price=${typeSort}&page=${page}`).then((result) => {
             setData(result.data.datas);
             setCountProdcut(result.data.count);
-            console.log(result.data.count);
-        })
-    }, [keyCategory, typeSort, page]);
+            setPageCount(result.data.pages);
+        })     
+    }, [keyCategory, typeSort, page, keySearch, priceMin, priceMax]);
 
     useEffect(() => {
         Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
@@ -45,26 +50,25 @@ function Products() {
         })
     }, [])
 
-    const onlimitChange = (e) => {
-        setLimit(e.value)
-    }
-
     const onSortChange = (e) => {
-        console.log(e.value.code);
         setTypeSort(e.value.code);
-        setValueSort(e.value)
+        setValueSort(e.value);
+        setPage(1)
     }
 
     const onKeyCategory = (e) => {
         if (keyCategory === e) {
-            setKeyCategory('')
+            setKeyCategory('');
+            setPage(1)
         } else {
-            setKeyCategory(e)
+            setKeyCategory(e);
+            setPage(1)
         }
     }
 
     const onBasicPageChange = (event) => {
-        setPage(event);
+        setPage(event.page + 1);
+        setGetRow(event.rows)
         // console.log(event.page);
         // console.log(event.rows);
         console.log(event);
@@ -77,7 +81,6 @@ function Products() {
         setView(item);
         setNumber(1);
         setModalView(true);
-        console.log(item);
     })
     const reduceNumber = () => {
         setNumber(number - 1)
@@ -93,7 +96,6 @@ function Products() {
         setModalViewAddCart(false)
     }
     const addToCart = (res) => {
-        //   const  cart = [{...view,count:number}];
         const cart = cartItems.slice();
         let alreadyInCart = false;
         cart.forEach((item) => {
@@ -129,6 +131,25 @@ function Products() {
         localStorage.setItem("cartItems", JSON.stringify(cart))
         console.log(cart);
         dispatch(reload_cart(cart));
+    }
+
+    const arrayRange = [
+        { name: '100k - 600k', min: 100000, max: 600000 },
+        { name: '600k - 1tr', min: 600000, max: 1000000 },
+        { name: '1tr - 5tr', min: 1000000, max: 5000000 },
+    ]
+
+    const rangePrice = (value) => {
+        setValueRange(value.name)
+        if (priceMin === value.min && priceMax === value.max) {
+            setPriceMin(0);
+            setPriceMax(0);
+            setValueRange('')
+        } else {
+            setPriceMin(value.min);
+            setPriceMax(value.max);
+        }
+        setPage(1)
     }
     return (
         <>
@@ -183,15 +204,15 @@ function Products() {
                                             </div>
                                         </div>
                                         <ul className="check-box-list">
-                                            <li>
-                                                <label className="checkbox-inline" htmlFor={1}><input name="news" id={1} type="checkbox" />$20 - $50<span className="count">(3)</span></label>
-                                            </li>
-                                            <li>
-                                                <label className="checkbox-inline" htmlFor={2}><input name="news" id={2} type="checkbox" />$50 - $100<span className="count">(5)</span></label>
-                                            </li>
-                                            <li>
-                                                <label className="checkbox-inline" htmlFor={3}><input name="news" id={3} type="checkbox" />$100 - $250<span className="count">(8)</span></label>
-                                            </li>
+                                            {
+                                                arrayRange.map((value,key) => {
+                                                    return (
+                                                        <li key={key}>
+                                                            <label className="checkbox-inline" htmlFor={value.name}><Checkbox checked={valueRange === value.name} inputId={value.name} value={value.name} onChange={() => rangePrice(value)} />{value.name}<span className="count">(3)</span></label>
+                                                        </li>
+                                                    )
+                                                })
+                                            }
                                         </ul>
                                     </div>
                                     {/*/ End Shop By Price */}
@@ -275,24 +296,26 @@ function Products() {
                                         <div className="shop-top">
                                             <div className="shop-shorter">
                                                 <div className="single-shorter">
-                                                    <label>Show :</label>
-                                                    <Dropdown value={limit} options={limits} onChange={onlimitChange} />
-                                                </div>
-                                                <div className="single-shorter">
                                                     <label>Sort By :</label>
                                                     <Dropdown value={valueSort} options={sort} optionLabel="name" placeholder="Giá..." onChange={onSortChange} />
                                                 </div>
                                             </div>
-                                            <ul className="view-mode">
-                                                <li disabled={page == 1} className="active"><a onClick={()=>setPage(page - 1)}><i className="fa fa-th-large" /></a></li>
-                                                <li><a onClick={()=>setPage(page + 1)}><i className="fa fa-th-list" /></a></li>
-                                            </ul>
+                                            <div className="shop-shorter-right">
+                                                <ul className="view-mode">
+                                                    <li className="active"><a><i className="fa fa-th-large" /></a></li>
+                                                    <li><a><i className="fa fa-th-list" /></a></li>
+                                                </ul>
+                                                <div className="paginate-edit" >
+                                                    <button className={'' + (page == 1 ? 'disable' : '')} onClick={() => setPage(page - 1)} disabled={page == 1}><i class="fa fa-chevron-left"></i></button>
+                                                    <button className={'' + ((data ? data.length < 6 : 0) ? 'disable' : '')} onClick={() => setPage(page + 1)} disabled={data ? data.length < 6 : 0}><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+                                            </div>
                                         </div>
                                         {/*/ End Shop Top */}
                                     </div>
                                 </div>
                                 <div className="row">
-                                    {data ? data.map((value, key) => {
+                                    {data.length !== 0 ? data.map((value, key) => {
                                         return (
                                             <div key={value._id} className="col-lg-4 col-md-6 col-12">
                                                 <div className="single-product">
@@ -321,11 +344,10 @@ function Products() {
                                                 </div>
                                             </div>
                                         )
-
-                                    }) : <div>Không có sản phảm nào</div>}
+                                    }) : <h4 className="text-empty">Không có sản phẩm nào</h4>}
                                 </div>
                                 <div className="edit-paginator">
-                                    <Pagination defaultCurrent={1} onChange={onBasicPageChange} total={countProduct} />
+                                    <Paginator first={page} rows={6} totalRecords={countProduct} onPageChange={onBasicPageChange}></Paginator>
                                 </div>
                             </div>
                         </div>
