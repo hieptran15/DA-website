@@ -20,8 +20,8 @@ function Home() {
       } else {
         getAllProducts('');
       }
-
-    })
+    });
+    window.scrollTo(0, 0)
   }, [])
 
   const formatCurrency = (value) => {

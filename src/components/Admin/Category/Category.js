@@ -28,7 +28,8 @@ function Category() {
   useEffect(() => {
     Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
       setCategory(result.data)
-    })
+    });
+    window.scrollTo(0, 0)
   }, [check]);
 
   const openNew = (key) => {

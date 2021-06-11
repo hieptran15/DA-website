@@ -37,7 +37,8 @@ function Product_details() {
             console.log(result);
             setData(result.data);
             console.log(data);
-        })
+        });
+        window.scrollTo(0, 0)
     }, []);
 
     const formatCurrency = (value) => {

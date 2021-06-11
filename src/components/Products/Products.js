@@ -41,7 +41,8 @@ function Products() {
             setData(result.data.datas);
             setCountProdcut(result.data.count);
             setPageCount(result.data.pages);
-        })     
+        });
+        window.scrollTo(0, 0)
     }, [keyCategory, typeSort, page, keySearch, priceMin, priceMax]);
 
     useEffect(() => {

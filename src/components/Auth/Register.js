@@ -14,7 +14,11 @@ function Register(props) {
         password:""
     })
     const RegisterState = useSelector(state => state.register)
-    const{user,loading,error,status}=RegisterState
+    const{user,loading,error,status}=RegisterState;
+
+    useEffect(()=>{
+        window.scrollTo(0, 0)
+    })
     const dispatch = useDispatch();
     const redirect = props.location.search ? props.location.search.split("=")[1] : '/login';
     const handleOnchange=(e)=>{

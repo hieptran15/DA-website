@@ -46,7 +46,8 @@ function ProductAdmin() {
   useEffect(() => {
     Axios.get("http://localhost:8080/api/product/list-all-product").then((result) => {
       setProducts(result.data);
-    })
+    });
+    window.scrollTo(0, 0)
   }, [check]);
 
   useEffect(() => {
@@ -163,6 +164,9 @@ function ProductAdmin() {
     setDeleteProductDialog(false);
     setProduct(emptyProduct);
   }
+  const exportCSV = () => {
+    dt.current.exportCSV();
+  }
   const leftToolbarTemplate = () => {
     return (
       <React.Fragment>
@@ -175,7 +179,7 @@ function ProductAdmin() {
     return (
       <React.Fragment>
         <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="p-mr-2 p-d-inline-block" />
-        <Button label="Export" icon="pi pi-upload" className="p-button-help" />
+        <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
       </React.Fragment>
     )
   }

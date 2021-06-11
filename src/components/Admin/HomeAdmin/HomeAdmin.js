@@ -6,10 +6,12 @@ import {
   PieChartOutlined,
   FileOutlined,
   TeamOutlined,
+  DotChartOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { useState } from 'react';
 import Category from '../Category/Category';
+import OrderAdmin from '../Order/OrderAdmin';
 import { Link } from 'react-router-dom';
 import ProductAdmin from '../Product/ProductAdmin';
 function HomeAdmin() {
@@ -40,6 +42,9 @@ function HomeAdmin() {
             </Menu.Item>
             <Menu.Item onClick={() => setKeyCheck('3')} key="3" icon={<PieChartOutlined />}>
               <a>Category</a>
+            </Menu.Item>
+            <Menu.Item onClick={() => setKeyCheck('4')} key="4" icon={<DotChartOutlined />}>
+              <a>Order</a>
             </Menu.Item>
             <SubMenu key="sub1" icon={<UserOutlined />} title="User">
               <Menu.Item key="3">Tom</Menu.Item>
@@ -74,7 +79,7 @@ function HomeAdmin() {
               dashBoard
             </div>}
             {keyCheck === '2' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
-            <div>
+              <div>
                 <Breadcrumb style={{ margin: '16px 0' }}>
                   <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin">Home</Link></Breadcrumb.Item>
                   <Breadcrumb.Item>Products</Breadcrumb.Item>
@@ -83,13 +88,22 @@ function HomeAdmin() {
               <ProductAdmin />
             </div>}
             {keyCheck === '3' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
-            <div>
+              <div>
                 <Breadcrumb style={{ margin: '16px 0' }}>
                   <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Home</Link></Breadcrumb.Item>
                   <Breadcrumb.Item>Category</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
               <Category />
+            </div>}
+            {keyCheck === '4' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
+              <div>
+                <Breadcrumb style={{ margin: '16px 0' }}>
+                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Home</Link></Breadcrumb.Item>
+                  <Breadcrumb.Item>Order</Breadcrumb.Item>
+                </Breadcrumb>
+              </div>
+              <OrderAdmin />
             </div>}
           </Content>
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2021 Created by Ant UED</Footer>

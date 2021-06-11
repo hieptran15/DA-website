@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
+import { useEffect } from 'react';
 function Login() {
     const [visible, setVisible] = useState(false);
     const [ShowVisible, setShowVisible] = useState(false);
@@ -18,6 +19,9 @@ function Login() {
     })
     const LoginState = useSelector(state => state.login)
     const{user,loading,error,token}=LoginState
+    useEffect(()=>{
+        window.scrollTo(0, 0)
+    })
     const dispatch = useDispatch();
     const handleOnchange=(e)=>{
         e.preventDefault()

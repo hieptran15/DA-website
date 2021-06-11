@@ -18,17 +18,17 @@ import HomeAdmin from './components/Admin/HomeAdmin/HomeAdmin';
 import { useState } from 'react';
 import { useEffect } from 'react';
 function App() {
-  const [scrollClass, setScrollClass] = useState('');
-  useEffect(() => {
-    window.addEventListener('scroll', () => {
-      let activeClass = '';
-      if (window.scrollY > 500) {
-        activeClass = 'top';
-      }
-      setScrollClass(activeClass);
-      console.log(scrollClass);
-    })
-  });
+  // const [scrollClass, setScrollClass] = useState('');
+  // useEffect(() => {
+  //   window.addEventListener('scroll', () => {
+  //     let activeClass = '';
+  //     if (window.scrollY > 500) {
+  //       activeClass = 'top';
+  //     }
+  //     setScrollClass(activeClass);
+  //     console.log(scrollClass);
+  //   });
+  // });
   return (
     <div>
       <Router>

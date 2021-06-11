@@ -24,7 +24,8 @@ function CheckOut() {
   const [keySelect, setKeySelect] = useState('');
   const [modalViewOrderSuccess, setModalViewOrderSuccess]= useState(false);
   useEffect(() => {
-    setCartItem(JSON.parse(localStorage.getItem("cartItems")))
+    setCartItem(JSON.parse(localStorage.getItem("cartItems")));
+    window.scrollTo(0, 0)
   }, []);
 
   let emptyValue = {

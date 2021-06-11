@@ -12,7 +12,8 @@ function Cart() {
   const {carts } = LoginState
   const dispatch = useDispatch();
   useEffect(() => {
-    setCart(JSON.parse(localStorage.getItem("cartItems")))
+    setCart(JSON.parse(localStorage.getItem("cartItems")));
+    window.scrollTo(0, 0)
   }, [carts]);
 
   const deleteCartItem = (res) => {
