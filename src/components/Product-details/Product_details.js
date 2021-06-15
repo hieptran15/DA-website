@@ -13,20 +13,30 @@ import { useLocation } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import parse from 'html-react-parser';
-import "./Project-details.css"
+import InnerImageZoom from 'react-inner-image-zoom';
+import "./Project-details.css";
+import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css'
 function Product_details() {
     const sizes = [
         { name: 'S', code: 'S' },
         { name: 'L', code: 'L' },
         { name: 'XL', code: 'XL' },
     ];
+    const colors = [
+        { name: 'Xanh' },
+        { name: 'Đỏ' },
+        { name: 'Cam' },
+        { name: 'Vàng' },
+    ];
     const [data, setData] = useState(null);
     const [viewAddCart, setViewAddCart] = useState(null);
     const [modalViewAddCart, setModalViewAddCart] = useState(false);
     const [selectedSize, setSelectedSize] = useState('');
-    const [sizre,setSize] = useState('')
-    const [cartItems, setCartItems] = useState(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [])
-    const [checkey, setCheckey] = useState('des')
+    const [size, setSize] = useState('');
+    const [selectedColor, setSelectedColor] = useState('');
+    const [color, setColor] = useState('');
+    const [cartItems, setCartItems] = useState(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : []);
+    const [checkey, setCheckey] = useState('des');
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
     const query = new URLSearchParams(useLocation().search);
@@ -49,7 +59,10 @@ function Product_details() {
         setSelectedSize(e.value);
         setSize(e.value.name)
     }
-
+    const onColorChange = (e) => {
+        setSelectedColor(e.value)
+        setColor(e.value.name)
+    }
     const reduceNumber = () => {
         setNumber(number - 1)
     }
@@ -71,7 +84,7 @@ function Product_details() {
             }
         });
         if (!alreadyInCart) {
-            cart.push({ ...res, count: number, size: sizre !== '' ? sizre : ''});
+            cart.push({ ...res, count: number, size: size !== '' ? size : '', color: color !== '' ? color : '' });
         }
         console.log(cart);
         setCartItems(cart)
@@ -105,8 +118,9 @@ function Product_details() {
                         <div className="row">
                             <div className="col-lg-5 col-12">
                                 <div className="form-main" style={{ padding: "0" }}>
-                                    <img src={data ? data.img_url : ''} />
-                                </div>
+                                    <InnerImageZoom size="100%" src={data ? data.img_url : ''} />
+                                    {/* <img style={{ width: '100%' }} src={data ? data.img_url : ''} /> */}
+                                </div>                            
                             </div>
                             <div className="col-lg-7 col-12">
                                 <div className="quickview-content">
@@ -138,12 +152,7 @@ function Product_details() {
                                             </div>
                                             <div className="col-lg-6 col-12">
                                                 <h5 className="title">Color</h5>
-                                                <select>
-                                                    <option selected="selected">orange</option>
-                                                    <option>purple</option>
-                                                    <option>black</option>
-                                                    <option>pink</option>
-                                                </select>
+                                                <Dropdown value={selectedColor} options={colors} optionLabel="name" onChange={onColorChange} placeholder="Chọn color" />
                                             </div>
                                         </div>
                                     </div>

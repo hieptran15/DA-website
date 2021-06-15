@@ -1,0 +1,14 @@
+{
+    "language":{
+        "1": "Language"
+    },
+    "search": "Search products here...",
+    "category": "Categorys",
+    "home":{
+        "menu":{
+            "home": "Home",
+            "product": "Products",
+            "service": "Service"
+        }
+    }
+}

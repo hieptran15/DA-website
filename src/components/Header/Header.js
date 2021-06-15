@@ -3,12 +3,18 @@ import { Link, NavLink, Redirect, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { login_user, reload_cart } from '../../actions/actions'
 import { useState } from 'react'
-import { Menu, Dropdown } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Dropdown } from 'primereact/dropdown'
+import { useTranslation } from 'react-i18next';
 import './Header.css'
 function Header() {
-  const [cart, setCart] = useState(null)
+  const listLangKey = [
+    {name:'Việt Nam', code: 'vi'},
+    {name:'English', code : 'en'}
+  ]
+  const [cart, setCart] = useState(null);
   const [checkActive, setCheckActive] = useState('');
+  const [langKey, setlangKey]= useState({name:'Việt Nam', code: 'vi'},);
+  const [langSelect, setlangSelect] = useState('vi')
   const [valueSearch, setValueSearch] = useState('')
   const LoginState = useSelector(state => state.login)
   const { user, loading, error, token, carts, role } = LoginState;
@@ -19,11 +25,18 @@ function Header() {
     const keySearch = query.get("search");
   const dispatch = useDispatch();
 
+  const { t, i18n } = useTranslation();
+
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cartItems")))
     console.log(role);
     console.log(roleName);
   }, [carts])
+
+  
+  useEffect(() => {
+    i18n.changeLanguage(langSelect);
+  }, [langSelect])
 
   const logoutUser = () => {
     if (tokens || token) {
@@ -31,6 +44,11 @@ function Header() {
       localStorage.clear()
       dispatch(login_user())
     }
+  }
+
+  const onLangChange = (event) => {
+      setlangKey(event.value);
+      setlangSelect(event.value.code)
   }
 
   const testActive = (item) => {
@@ -65,7 +83,7 @@ function Header() {
                   <a onClick={() => deleteCartItem(value)} className="remove" title="Remove this item"><i className="fa fa-remove" /></a>
                   <a className="cart-img" href="#"><img src={value.img_url} alt="#" /></a>
                   <h4><a href="#">{value.name}</a></h4>
-                  <p className="quantity">{value.count} - <span className="amount">{formatCurrency(value.price)}</span></p>
+                  <p className="quantity">{value.count} x <span className="amount">{formatCurrency(value.price)}</span></p>
                 </li>
               )
             }) : <div>giỏ hàng trống</div>
@@ -104,8 +122,9 @@ function Header() {
                 {/* Top Right */}
                 <div className="right-content">
                   <ul className="list-main">
-                    <li><i className="ti-location-pin" /> Store location</li>
-                    <li><i className="ti-alarm-clock" /> <a href="#">Daily deal</a></li>
+                    {/* <li><i className="ti-location-pin" /> Store location</li>
+                    <li><i className="ti-alarm-clock" /> <a href="#">Daily deal</a></li> */}
+                    <li><a href="#">{t('language.1')}:</a><Dropdown value={langKey}  options={listLangKey} optionLabel="name" placeholder="language" onChange={onLangChange} /></li>
                     <li className="setting-admin"><i className="ti-user" />
                       <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
                         {user || userName ? userName || user : 'Account'}
@@ -113,11 +132,11 @@ function Header() {
                       <ul className="setting-admin-item">
                         <div>
                           {roleName === 'admin' || role === 'admin' ?
-                            <li><i className="ti-power-off" /><Link to="/home-admin">Admin</Link></li> : ''}
+                            <li><i className="ti-settings" /><Link to="/home-admin">Manage</Link></li> : ''}
                           {roleName === 'user' || role === 'user' ?
-                            <li><i className="ti-power-off" /><Link to="/home-admin">User</Link></li> : ''}
-                          {tokens || token ? <li><i className="ti-power-off" /><a onClick={() => logoutUser()} href="#">Logout</a></li> :
-                            <li><i className="ti-power-off" /><Link to="/login">Login</Link></li>
+                            <li><i className="ti-settings" /><Link to="/home-admin">Setting</Link></li> : ''}
+                          {tokens || token ? <li><i className="ti-unlock" /><a onClick={() => logoutUser()} href="#">Logout</a></li> :
+                            <li><i className="ti-lock" /><Link to="/login">Login</Link></li>
                           }
                         </div>
                       </ul>
@@ -158,7 +177,7 @@ function Header() {
                 <div className="search-bar-top">
                   <div className="search-bar">
                     <form>
-                      <input onChange={(e) => onChangeInput(e)} name="search" placeholder="Search Products Here....." type="search" />
+                      <input onChange={(e) => onChangeInput(e)} name="search" placeholder={t('search')} type="search" />
                       <Link to={`/product?search=${valueSearch}`}><button className="btnn"><i className="ti-search" /></button></Link>
                     </form>
                   </div>
@@ -199,9 +218,9 @@ function Header() {
                       <div className="navbar-collapse">
                         <div className="nav-inner">
                           <ul className="nav main-menu menu navbar-nav">
-                            <li><NavLink exact to="/" activeClassName="active-menu" >Home</NavLink></li>
-                            <li><NavLink to="/product" activeClassName="active-menu" >Product</NavLink></li>
-                            <li><a href="#">Service</a></li>
+                            <li><NavLink exact to="/" activeClassName="active-menu" >{t('home.menu.home')}</NavLink></li>
+                            <li><NavLink to="/product" activeClassName="active-menu" >{t('home.menu.product')}</NavLink></li>
+                            <li><a href="#">{t('home.menu.service')}</a></li>
                             <li><a href="#">Shop<i className={`ti-angle-down`} /><span className="new">New</span></a>
                               <ul className="dropdown">
                                 <li><NavLink activeClassName="active-menu" to="/cart" onClick={() => testActive('cart')} >Cart</NavLink></li>

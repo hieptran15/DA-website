@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { reload_cart } from '../../actions/actions';
 import Footer from '../Footer/Footer';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import "./Products.css"
 function Products() {
     const sort = [{ name: 'Mặc định', code: '' }, { name: 'Giá tăng dần', code: 'lowest' }, { name: 'Giá giảm dần', code: 'heightest' }];
@@ -36,6 +37,7 @@ function Products() {
     const dispatch = useDispatch();
     const query = new URLSearchParams(useLocation().search);
     const keySearch = query.get("search");
+    const { t, i18n } = useTranslation();
     useEffect(() => {
         Axios.get(`http://localhost:8080/api/product/get-product?searchKeyword=${keySearch ? keySearch : ''}&min=${priceMin}&max=${priceMax}&category=${keyCategory}&price=${typeSort}&page=${page}`).then((result) => {
             setData(result.data.datas);
@@ -181,7 +183,7 @@ function Products() {
                                 <div className="shop-sidebar">
                                     {/* Single Widget */}
                                     <div className="single-widget category">
-                                        <h3 className="title">Categories</h3>
+                                        <h3 className="title">{t('category')}</h3>
                                         <ul className="categor-list">
                                             {category ? category.map((value, key) => {
                                                 return (

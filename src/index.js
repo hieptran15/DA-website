@@ -4,14 +4,22 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
-import {Provider} from "react-redux";
+import { Provider } from "react-redux";
 import store from './redux/store/Store';
-
+import { I18nextProvider } from 'react-i18next';
+import i18next from 'i18next';
+import './i18next';
+import { Suspense } from 'react';
+i18next.init({
+  interpolation: { escapeValue: false },  // React already does escaping
+});
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <Suspense fallback={(<div>Loading ...</div>)}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </Suspense>,
   document.getElementById('root')
 );
 
