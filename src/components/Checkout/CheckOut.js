@@ -69,6 +69,7 @@ function CheckOut() {
         console.log(res);
         setModalViewOrderSuccess(true)
         setFormValues(emptyValue);
+        localStorage.setItem("cartItems", JSON.stringify([]))
       })
     } catch (error) {
       console.log('error');

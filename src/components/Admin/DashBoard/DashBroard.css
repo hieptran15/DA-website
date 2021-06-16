@@ -1,0 +1,83 @@
+.edit_order,
+.edit_product,
+.edit_customer,
+.edit_review {
+    min-height: 110px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+.edit_order {
+    background-color: #32c5d2;
+}
+.edit_order .item{
+    padding-right: 20px;
+}
+.edit_order .item p{
+    text-align: right;
+    margin-bottom: 10px;
+    color: white;
+    font-size: 34px;
+}
+.edit_order .item b{
+    font-size: 16px;
+}
+.edit_product {
+    background-color: #1280f5;
+}
+.edit_product .item{
+    padding-right: 20px;
+}
+.edit_product .item p{
+    text-align: right; 
+    margin-bottom: 10px;
+    color: white;
+    font-size: 34px;
+}
+.edit_product .item b{
+    font-size: 16px;
+}
+.edit_customer {
+    background-color: #75b6f9;
+}
+.edit_customer .item{
+    padding-right: 20px;
+}
+.edit_customer .item p{
+    text-align: right;
+    margin-bottom: 10px;
+    color: white;
+    font-size: 34px;
+}
+.edit_customer .item b{
+    font-size: 16px;
+}
+.edit_review {
+    background-color: #074f9d;
+}
+.edit_review .item{
+    padding-right: 20px;
+}
+.edit_review .item p{
+    text-align: right;
+    margin-bottom: 10px;
+    color: white;
+    font-size: 34px;
+}
+.edit_review .item b{
+    font-size: 16px;
+}
+.edit_icon{
+   position: absolute;
+   left: 0;
+   bottom: -10px;
+}
+.edit_icon i {
+    font-size: 80px;
+    opacity: .1;
+}

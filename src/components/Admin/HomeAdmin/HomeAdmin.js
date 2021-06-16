@@ -14,6 +14,7 @@ import Category from '../Category/Category';
 import OrderAdmin from '../Order/OrderAdmin';
 import { Link } from 'react-router-dom';
 import ProductAdmin from '../Product/ProductAdmin';
+import DasbBoard from '../DashBoard/DasbBoard';
 function HomeAdmin() {
   const { Header, Content, Footer, Sider } = Layout;
   const { SubMenu } = Menu;
@@ -76,7 +77,7 @@ function HomeAdmin() {
                   <Breadcrumb.Item>dashBoard</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
-              dashBoard
+              <DasbBoard/>
             </div>}
             {keyCheck === '2' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
               <div>
