@@ -381,7 +381,7 @@ function Products() {
                 {/* End Shop Newsletter */}
                 {/* Modal */}
                 {view && (
-                    <Modal footer={false} visible={modalView} width={1000} onCancel={() => closeModal()}>
+                    <Modal footer={false} centered visible={modalView} width={1000} onCancel={() => closeModal()}>
                         <div>
                             <div >
                                 <div >

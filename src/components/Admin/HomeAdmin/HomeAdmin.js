@@ -15,6 +15,9 @@ import OrderAdmin from '../Order/OrderAdmin';
 import { Link } from 'react-router-dom';
 import ProductAdmin from '../Product/ProductAdmin';
 import DasbBoard from '../DashBoard/DasbBoard';
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import "./HomeAdmin.css"
 function HomeAdmin() {
   const { Header, Content, Footer, Sider } = Layout;
   const { SubMenu } = Menu;
@@ -63,9 +66,19 @@ function HomeAdmin() {
         </Sider>
         <Layout className="site-layout">
           <Header className="site-layout-background" style={{ padding: 0 }}>
-            <div >
-              <div className="d-flex justify-content-end">
-                <Link to="/">View Home</Link>
+            <div>
+              <div style={{ marginRight: "20px" }} className="d-flex justify-content-between align-items-center">
+                <div className="d-flex" style={{height: "40px",lineHeight: "40px", marginLeft:"40px", width: "320px"}}>
+                  <input placeholder="Search..." type="text" className="edit-input"/>
+                  <button className="edit-button">Search</button>
+                </div>
+                <div className="d-flex">
+                  <Link style={{ marginRight: "20px" }} to="/"><i class="fa fa-globe"></i>View Home</Link>
+                  <div className="d-flex align-items-center edit_admin">
+                    <img src="./images/logoDefault.jpg" />
+                    <b>ADMIN</b>
+                  </div>
+                </div>
               </div>
             </div>
           </Header>
@@ -77,7 +90,7 @@ function HomeAdmin() {
                   <Breadcrumb.Item>dashBoard</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
-              <DasbBoard/>
+              <DasbBoard />
             </div>}
             {keyCheck === '2' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
               <div>

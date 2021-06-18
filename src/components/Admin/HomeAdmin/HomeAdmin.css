@@ -1,0 +1,21 @@
+.edit_admin img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+.edit-input{
+    width: 100%;
+    outline: none;
+    border: 1px solid #80808033;
+}
+.edit-button{
+    width: 75px;
+    background: #2196f3;
+    color: white;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border: none;
+    font-weight: 600;
+    outline: none !important;
+}
