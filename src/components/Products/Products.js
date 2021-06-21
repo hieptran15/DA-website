@@ -23,15 +23,16 @@ function Products() {
     const [typeSort, setTypeSort] = useState('');
     const [valueSort, setValueSort] = useState({ name: 'Mặc định', code: '' });
     const [view, setView] = useState(null);
+    const [productViewType, setProductViewType] = useState('grid')
     const [viewAddCart, setViewAddCart] = useState(null);
     const [keyCategory, setKeyCategory] = useState('');
     const [valueRange, setValueRange] = useState('')
     const [priceMin, setPriceMin] = useState(0);
     const [priceMax, setPriceMax] = useState(0);
-    const [countProduct, setCountProdcut] = useState(0)
+    const [countProduct, setCountProdcut] = useState(0);
     const [modalView, setModalView] = useState(false);
     const [modalViewAddCart, setModalViewAddCart] = useState(false);
-    const [cartItems, setCartItems] = useState(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [])
+    const [cartItems, setCartItems] = useState(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : []);
     const [number, setNumber] = useState(1);
     const toast = useRef(null);
     const dispatch = useDispatch();
@@ -97,6 +98,9 @@ function Products() {
     }
     const closeModalViewCart = () => {
         setModalViewAddCart(false)
+    }
+    const productTypeView = (e) => {
+        setProductViewType(e)
     }
     const addToCart = (res) => {
         const cart = cartItems.slice();
@@ -208,7 +212,7 @@ function Products() {
                                         </div>
                                         <ul className="check-box-list">
                                             {
-                                                arrayRange.map((value,key) => {
+                                                arrayRange.map((value, key) => {
                                                     return (
                                                         <li key={key}>
                                                             <label className="checkbox-inline" htmlFor={value.name}><Checkbox checked={valueRange === value.name} inputId={value.name} value={value.name} onChange={() => rangePrice(value)} />{value.name}<span className="count">(3)</span></label>
@@ -305,8 +309,8 @@ function Products() {
                                             </div>
                                             <div className="shop-shorter-right">
                                                 <ul className="view-mode">
-                                                    <li className="active"><a><i className="fa fa-th-large" /></a></li>
-                                                    <li><a><i className="fa fa-th-list" /></a></li>
+                                                    <li className="active"><a onClick={() => productTypeView('grid')}><i className="fa fa-th-large" /></a></li>
+                                                    <li><a onClick={() => productTypeView('list')}><i className="fa fa-th-list" /></a></li>
                                                 </ul>
                                                 <div className="paginate-edit" >
                                                     <button className={'' + (page == 1 ? 'disable' : '')} onClick={() => setPage(page - 1)} disabled={page == 1}><i class="fa fa-chevron-left"></i></button>
@@ -317,37 +321,71 @@ function Products() {
                                         {/*/ End Shop Top */}
                                     </div>
                                 </div>
-                                <div className="row">
-                                    {data.length !== 0 ? data.map((value, key) => {
-                                        return (
-                                            <div key={value._id} className="col-lg-4 col-md-6 col-12">
-                                                <div className="single-product">
-                                                    <div className="product-img">
-                                                        <Link to={`/product-details?userId=${value._id}`}>
-                                                            <img className="default-img" src={value.img_url} />
-                                                            <img className="hover-img" src={value.img_url} />
-                                                        </Link>
-                                                        <div className="button-head">
-                                                            <div className="product-action">
-                                                                <a data-toggle="modal" onClick={() => quickView(value)} ><i className=" ti-eye" /><span>Quick Shop</span></a>
-                                                                <a title="Wishlist" href="#"><i className=" ti-heart " /><span>Add to Wishlist</span></a>
-                                                                <a title="Compare" href="#"><i className="ti-bar-chart-alt" /><span>Add to Compare</span></a>
+                                <div>
+                                    {productViewType === "grid" && (
+                                        <div className="row">
+                                            {data.length !== 0 ? data.map((value, key) => {
+                                                return (
+                                                    <div key={value._id} className="col-lg-4 col-md-6 col-12">
+                                                        <div className="single-product">
+                                                            <div className="product-img">
+                                                                <Link to={`/product-details?userId=${value._id}`}>
+                                                                    <img className="default-img" src={value.img_url} />
+                                                                    <img className="hover-img" src={value.img_url} />
+                                                                </Link>
+                                                                <div className="button-head">
+                                                                    <div className="product-action">
+                                                                        <a data-toggle="modal" onClick={() => quickView(value)} ><i className=" ti-eye" /><span>Quick Shop</span></a>
+                                                                        <a title="Wishlist" href="#"><i className=" ti-heart " /><span>Add to Wishlist</span></a>
+                                                                        <a title="Compare" href="#"><i className="ti-bar-chart-alt" /><span>Add to Compare</span></a>
+                                                                    </div>
+                                                                    <div className="product-action-2">
+                                                                        <a title="Add to cart" onClick={() => onlyAddCart(value)}>Add to cart</a>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div className="product-action-2">
-                                                                <a title="Add to cart" onClick={() => onlyAddCart(value)}>Add to cart</a>
+                                                            <div className="product-content">
+                                                                <h3><Link to={`/product-details?userId=${value._id}`}>{value.name}</Link></h3>
+                                                                <div className="product-price">
+                                                                    <span>{formatCurrency(value.price)}</span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="product-content">
-                                                        <h3><Link to={`/product-details?userId=${value._id}`}>{value.name}</Link></h3>
-                                                        <div className="product-price">
-                                                            <span>{formatCurrency(value.price)}</span>
+                                                )
+                                            }) : <h4 className="text-empty">Không có sản phẩm nào</h4>}
+                                        </div>
+                                    )}
+                                    {productViewType === "list" && (
+                                        <div className="row">
+                                            {data.length !== 0 ? data.map((value, key) => {
+                                                return (
+                                                    <div key={value._id} className="col-lg-12 col-md-12 col-12">
+                                                        <div className="single-product">
+                                                            <div className="product-img">
+                                                                <Link to={`/product-details?userId=${value._id}`}>
+                                                                    <img className="default-img" src={value.img_url} />
+                                                                    <img className="hover-img" src={value.img_url} />
+                                                                </Link>                                                              
+                                                            </div>
+                                                            <div className="product-content">
+                                                                <h3><Link to={`/product-details?userId=${value._id}`}>{value.name}</Link></h3>
+                                                                <div className="product-price">
+                                                                    <span>{formatCurrency(value.price)}</span>
+                                                                </div>
+                                                                <div>
+                                                                    {value.description}
+                                                                </div>
+                                                                <div>
+                                                                    <button>xem nhanh</button>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    }) : <h4 className="text-empty">Không có sản phẩm nào</h4>}
+                                                )
+                                            }) : <h4 className="text-empty">Không có sản phẩm nào</h4>}
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="edit-paginator">
                                     <Paginator first={page} rows={6} totalRecords={countProduct} onPageChange={onBasicPageChange}></Paginator>

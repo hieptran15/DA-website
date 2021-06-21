@@ -1,17 +1,38 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { login_user } from '../../actions/actions';
+import { useDispatch } from 'react-redux';
+import { Modal } from 'antd';
+import { reload_cart } from '../../actions/actions';
+import { Link, NavLink } from 'react-router-dom';
+import { Dropdown } from 'primereact/dropdown';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 function Home() {
-  // const loginState = useSelector(state => state.login)
-  // console.log(loginState)
-  // console.log(RegisterState)
+  const sizes = [
+    { name: 'S', code: 'S' },
+    { name: 'L', code: 'L' },
+    { name: 'XL', code: 'XL' },
+  ];
+  const colors = [
+    { name: 'Xanh' },
+    { name: 'Đỏ' },
+    { name: 'Cam' },
+    { name: 'Vàng' },
+  ];
   const [category, setCategory] = useState([]);
   const [keyCategory, setKeyCategory] = useState('');
+  const [cartItems, setCartItems] = useState(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : []);
   const [products, setProducts] = useState([]);
+  const [view, setView] = useState(null);
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+  const [size, setSize] = useState('');
+  const [color, setColor] = useState('');
+  const [modalView, setModalView] = useState(false);
+  const [viewAddCart, setViewAddCart] = useState(null);
+  const [number, setNumber] = useState(1);
+  const [modalViewAddCart, setModalViewAddCart] = useState(false);
+  const dispatch = useDispatch();
   useEffect(() => {
     Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
       setCategory(result.data);
@@ -28,6 +49,15 @@ function Home() {
     return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
   }
 
+  const onSizeChange = (e) => {
+    setSelectedSize(e.value);
+    setSize(e.value.name)
+  }
+  const onColorChange = (e) => {
+    setSelectedColor(e.value)
+    setColor(e.value.name)
+  }
+
   const checkActive = (value) => {
     setKeyCategory(value);
     if (value !== '') {
@@ -35,6 +65,65 @@ function Home() {
     } else {
       setProducts([])
     }
+  }
+  const quickView = ((item) => {
+    setView(item);
+    setNumber(1);
+    setModalView(true);
+  })
+  const reduceNumber = () => {
+    setNumber(number - 1)
+  }
+  const addNumber = () => {
+    setNumber(number + 1)
+  }
+  const closeModal = () => {
+    setModalView(false)
+    setNumber(1)
+  }
+  const closeModalViewCart = () => {
+    setModalViewAddCart(false)
+  }
+
+  const addToCart = (res) => {
+    setModalViewAddCart(true)
+    const cart = cartItems.slice();
+    let alreadyInCart = false;
+    cart.forEach((item) => {
+      if (item._id === res._id) {
+        item.count++;
+        alreadyInCart = true;
+      }
+    });
+    if (!alreadyInCart) {
+      cart.push({ ...res, count: number, size: size !== '' ? size : '', color: color !== '' ? color : '' });
+    }
+    setCartItems(cart);
+    setViewAddCart(res);
+    localStorage.setItem("cartItems", JSON.stringify(cart));
+    console.log(cart);
+    dispatch(reload_cart(cart));
+    setModalView(false)
+  }
+
+  const onlyAddCart = (res) => {
+    setModalViewAddCart(true)
+    setViewAddCart(res);
+    const cart = cartItems.slice();
+    let alreadyInCart = false;
+    cart.forEach((item) => {
+      if (item._id === res._id) {
+        item.count++;
+        alreadyInCart = true;
+      }
+    });
+    if (!alreadyInCart) {
+      cart.push({ ...res, count: number });
+    }
+    setCartItems(cart)
+    localStorage.setItem("cartItems", JSON.stringify(cart))
+    console.log(cart);
+    dispatch(reload_cart(cart));
   }
 
   const getAllProducts = (value) => {
@@ -237,12 +326,12 @@ function Home() {
                                       </Link>
                                       <div className="button-head">
                                         <div className="product-action">
-                                          <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i className=" ti-eye" /><span>Quick Shop</span></a>
+                                          <a data-toggle="modal" onClick={() => quickView(value)}><i className=" ti-eye" /><span>Quick Shop</span></a>
                                           <a title="Wishlist" href="#"><i className=" ti-heart " /><span>Add to Wishlist</span></a>
                                           <a title="Compare" href="#"><i className="ti-bar-chart-alt" /><span>Add to Compare</span></a>
                                         </div>
                                         <div className="product-action-2">
-                                          <a title="Add to cart" href="#">Add to cart</a>
+                                          <a title="Add to cart" onClick={() => onlyAddCart(value)}>Add to cart</a>
                                         </div>
                                       </div>
                                     </div>
@@ -696,6 +785,125 @@ function Home() {
         </div>
       </div>
       <Footer />
+      {viewAddCart && (
+        <Modal footer={false} centered visible={modalViewAddCart} width={500} onCancel={() => closeModalViewCart()}>
+          <div style={{ marginBottom: "15px", color: "#84b767", fontSize: "18px" }}><i style={{ marginRight: '10px' }} class="fa fa-check-circle"></i>Thêm vào giỏ hàng thành công!</div>
+          <div style={{ marginBottom: "10px" }} className="d-flex">
+            <div style={{ marginRight: "25px" }}>
+              <img src={viewAddCart.img_url} style={{ width: "200px", height: "220px", objectFit: "cover" }} />
+            </div>
+            <div>
+              <p style={{ fontSize: "18px", fontWeight: "600" }}>{viewAddCart.name}</p>
+              <i>số lượng: {number}</i>
+              <br />
+              <b>{formatCurrency(viewAddCart.price)}</b>
+            </div>
+          </div>
+          <div className="d-flex">
+            <NavLink style={{ width: "50%" }} to="/cart">
+              <button style={{ width: "100%", padding: "10px", backgroundColor: "#31353d", color: "white" }}>Đi tới giỏ hàng</button>
+            </NavLink>
+            <NavLink style={{ width: "50%" }} to="/checkout">
+              <button style={{ width: "100%", padding: "10px", backgroundColor: "#f6435b", color: "white" }}>Thanh toán</button>
+            </NavLink>
+          </div>
+        </Modal>
+      )}
+      {/* Modal */}
+      {view && (
+        <Modal footer={false} centered visible={modalView} width={1000} onCancel={() => closeModal()}>
+          <div>
+            <div >
+              <div >
+                <div className="modal-body">
+                  <div className="row no-gutters">
+                    <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                      {/* Product Slider */}
+                      {/* <div className="product-gallery">
+                                             <div className="quickview-slider-active">
+                                                 <div className="single-slider">
+                                                     <img src={view ? view.img_url : ''} alt="#" />
+                                                 </div>
+                                             </div>
+                                         </div> */}
+                      <img src={view.img_url ? view.img_url : ''} alt="#" />
+                      {/* End Product slider */}
+                    </div>
+                    <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                      <div className="quickview-content">
+                        <h2>{view.name ? view.name : ''}</h2>
+                        <div className="quickview-ratting-review">
+                          <div className="quickview-ratting-wrap">
+                            <div className="quickview-ratting">
+                              <i className="yellow fa fa-star" />
+                              <i className="yellow fa fa-star" />
+                              <i className="yellow fa fa-star" />
+                              <i className="yellow fa fa-star" />
+                              <i className="fa fa-star" />
+                            </div>
+                            <a href="#"> (1 customer review)</a>
+                          </div>
+                          <div className="quickview-stock">
+                            <span><i className="fa fa-check-circle-o" /> in stock</span>
+                          </div>
+                        </div>
+                        <h3>{formatCurrency(view.price)}</h3>
+                        <div className="quickview-peragraph">
+                          <p>{view.description ? view.description : ''}</p>
+                        </div>
+                        <div className="size">
+                          <div className="row">
+                            <div className="col-lg-6 col-12">
+                              <h5 className="title">Size</h5>
+                              <Dropdown value={selectedSize} options={sizes} optionLabel="name" onChange={onSizeChange} placeholder="Chọn size" />
+                            </div>
+                            <div className="col-lg-6 col-12">
+                              <h5 className="title">Color</h5>
+                              <Dropdown value={selectedColor} options={colors} optionLabel="name" onChange={onColorChange} placeholder="Chọn color" />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="quantity">
+                          {/* Input Order */}
+                          <div className="input-group">
+                            <div className="button minus">
+                              <button type="button" disabled={number === 1} className="btn btn-primary btn-number" onClick={() => reduceNumber()} data-type="minus">
+                                <i className="ti-minus" />
+                              </button>
+                            </div>
+                            <input type="text" className="input-number" data-min={1} data-max={1000} value={number} />
+                            <div className="button plus">
+                              <button type="button" className="btn btn-primary btn-number" onClick={() => addNumber()} data-type="plus" >
+                                <i className="ti-plus" />
+                              </button>
+                            </div>
+                          </div>
+                          {/*/ End Input Order */}
+                        </div>
+                        <div className="add-to-cart">
+                          <a href="#" className="btn" onClick={() => addToCart(view)}>Add to cart</a>
+                          {/* <a href="#" className="btn min"><i className="ti-heart" /></a>
+                                                        <a href="#" className="btn min"><i className="fa fa-compress" /></a> */}
+                        </div>
+                        {/* <div className="default-social">
+                                                        <h4 className="share-now">Share:</h4>
+                                                        <ul>
+                                                            <li><a className="facebook" href="#"><i className="fa fa-facebook" /></a></li>
+                                                            <li><a className="twitter" href="#"><i className="fa fa-twitter" /></a></li>
+                                                            <li><a className="youtube" href="#"><i className="fa fa-pinterest-p" /></a></li>
+                                                            <li><a className="dribbble" href="#"><i className="fa fa-google-plus" /></a></li>
+                                                        </ul>
+                                                    </div> */}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
+      )
+      }
       {/* Modal end */}
     </>
   )

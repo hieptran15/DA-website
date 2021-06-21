@@ -22,7 +22,7 @@ function CheckOut() {
   ];
   const [cartItem, setCartItem] = useState(null);
   const [keySelect, setKeySelect] = useState('');
-  const [modalViewOrderSuccess, setModalViewOrderSuccess]= useState(false);
+  const [modalViewOrderSuccess, setModalViewOrderSuccess] = useState(false);
   useEffect(() => {
     setCartItem(JSON.parse(localStorage.getItem("cartItems")));
     window.scrollTo(0, 0)
@@ -58,13 +58,13 @@ function CheckOut() {
     _valueItem[`${name}`] = val;
     setFormValues(_valueItem);
   }
-  const selectCheckOut = (value)=>{
+  const selectCheckOut = (value) => {
     setKeySelect(value)
   }
-  const onSubmit = () =>{
+  const onSubmit = () => {
     let _valueItem = { ...formValues, cartItems: cartItem, total: cartItem !== null ? cartItem.reduce((a, c) => a + c.price * c.count, 0) : 0 };
     console.log(_valueItem);
-    try{
+    try {
       Axios.post("http://localhost:8080/api/order/post-order", _valueItem).then(res => {
         console.log(res);
         setModalViewOrderSuccess(true)
@@ -77,7 +77,7 @@ function CheckOut() {
   }
   const closeModalViewCart = () => {
     setModalViewOrderSuccess(false);
-}
+  }
   return (
     <div>
       <Header />
@@ -117,7 +117,7 @@ function CheckOut() {
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
                         <label>Email<span>*</span></label>
-                        <InputText id="email" name="email" value={formValues.email}onChange={(e) => onInputChange(e, 'email')}  />
+                        <InputText id="email" name="email" value={formValues.email} onChange={(e) => onInputChange(e, 'email')} />
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6 col-12">
@@ -129,15 +129,15 @@ function CheckOut() {
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
                         <label>Phone<span>*</span></label>
-                        <InputNumber id="phone" name="phone" value={formValues.phone} onChange={(e) => onInputNumberChange(e, 'phone')}  />
+                        <InputNumber id="phone" name="phone" value={formValues.phone} onChange={(e) => onInputNumberChange(e, 'phone')} />
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
                         <label>Postal Code<span>*</span></label>
-                        <InputNumber id="portCode" name="portCode" value={formValues.portCode} onChange={(e) => onInputNumberChange(e, 'portCode')}  />
+                        <InputNumber id="portCode" name="portCode" value={formValues.portCode} onChange={(e) => onInputNumberChange(e, 'portCode')} />
                       </div>
-                    </div> 
+                    </div>
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
                         <label>City<span>*</span></label>
@@ -269,7 +269,7 @@ function CheckOut() {
         </div>
       </section>
       <Modal footer={false} centered visible={modalViewOrderSuccess} width={500} onCancel={() => closeModalViewCart()}>
-        <h2 style={{color: '#63ab01'}}>Mua hàng thành công!</h2>
+        <h2 style={{ color: '#63ab01' }}>Mua hàng thành công!</h2>
         <p>Chúng tôi sẽ sớm liên hệ với bạn để giao hàng trong thời gian ngắn nhất</p>
         <Link to="/">Tiếp tục mua hàng</Link>
       </Modal>
