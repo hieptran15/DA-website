@@ -125,3 +125,8 @@
 .edit-selling img {
     max-width: 45px;
 }
+
+svg.highcharts-root {
+    max-width: 834px !important;
+    height: auto;
+}

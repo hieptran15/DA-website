@@ -24,6 +24,7 @@ function* sagaLoginUser(user){
                  yield put(login_user_Success(response));
                  yield localStorage.setItem('aulogin', JSON.stringify(response.data.token));
                  yield localStorage.setItem('userName', JSON.stringify(response.data.name));
+                 yield localStorage.setItem('email', JSON.stringify(response.data.email));
                  yield localStorage.setItem('role', JSON.stringify(response.data.role));
             }
     catch (error) {
