@@ -9,6 +9,7 @@ import { Checkbox } from 'primereact/checkbox';
 import { Paginator } from 'primereact/paginator';
 import { useDispatch } from 'react-redux';
 import { reload_cart } from '../../actions/actions';
+import parse from 'html-react-parser';
 import Footer from '../Footer/Footer';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +18,7 @@ function Products() {
     const sort = [{ name: 'Mặc định', code: '' }, { name: 'Giá tăng dần', code: 'lowest' }, { name: 'Giá giảm dần', code: 'heightest' }];
     const [data, setData] = useState([]);
     const [category, setCategory] = useState([]);
+    const [brands, setBrands] = useState([]);
     const [page, setPage] = useState(1);
     const [pageCount, setPageCount] = useState(0);
     const [getRow, setGetRow] = useState(0);
@@ -26,6 +28,7 @@ function Products() {
     const [productViewType, setProductViewType] = useState('grid')
     const [viewAddCart, setViewAddCart] = useState(null);
     const [keyCategory, setKeyCategory] = useState('');
+    const [keyBrand, setKeyBrand] = useState('');
     const [valueRange, setValueRange] = useState('')
     const [priceMin, setPriceMin] = useState(0);
     const [priceMax, setPriceMax] = useState(0);
@@ -40,20 +43,25 @@ function Products() {
     const keySearch = query.get("search");
     const { t, i18n } = useTranslation();
     useEffect(() => {
-        Axios.get(`http://localhost:8080/api/product/get-product?searchKeyword=${keySearch ? keySearch : ''}&min=${priceMin}&max=${priceMax}&category=${keyCategory}&price=${typeSort}&page=${page}`).then((result) => {
+        Axios.get(`http://localhost:8080/api/product/get-product?searchKeyword=${keySearch ? keySearch : ''}&min=${priceMin}&max=${priceMax}&category=${keyCategory}&brand=${keyBrand}&price=${typeSort}&page=${page}`).then((result) => {
             setData(result.data.datas);
             setCountProdcut(result.data.count);
             setPageCount(result.data.pages);
         });
-        window.scrollTo(0, 0)
-    }, [keyCategory, typeSort, page, keySearch, priceMin, priceMax]);
+    }, [keyCategory, typeSort, page, keySearch, priceMin, priceMax, keyBrand]);
 
     useEffect(() => {
         Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
             setCategory(result.data);
-        })
+        });
+        getAllBrand();
+        window.scrollTo(0, 0)
     }, [])
-
+    const getAllBrand = () =>{
+        Axios.get("http://localhost:8080/api/brand/get-all-brand").then((result) => {
+            setBrands(result.data)
+        });
+    }
     const onSortChange = (e) => {
         setTypeSort(e.value.code);
         setValueSort(e.value);
@@ -66,6 +74,16 @@ function Products() {
             setPage(1)
         } else {
             setKeyCategory(e);
+            setPage(1)
+        }
+    }
+
+    const onKeyBrand = (e) => {
+        if (keyBrand === e) {
+            setKeyBrand('');
+            setPage(1)
+        } else {
+            setKeyBrand(e);
             setPage(1)
         }
     }
@@ -196,6 +214,16 @@ function Products() {
                                             }) : ''}
                                         </ul>
                                     </div>
+                                    <div className="single-widget category">
+                                        <h3 className="title">Brands</h3>
+                                        <ul className="categor-list">
+                                            {brands ? brands.map((value, key) => {
+                                                return (
+                                                    <li key={value._id}><a className={'' + (keyBrand === value.brand ? 'activeSideBarCategory' : '')} onClick={() => onKeyBrand(value.brand)}>{value.brand}</a></li>
+                                                )
+                                            }) : ''}
+                                        </ul>
+                                    </div>
                                     {/*/ End Single Widget */}
                                     {/* Shop By Price */}
                                     <div className="single-widget range">
@@ -215,7 +243,7 @@ function Products() {
                                                 arrayRange.map((value, key) => {
                                                     return (
                                                         <li key={key}>
-                                                            <label className="checkbox-inline" htmlFor={value.name}><Checkbox checked={valueRange === value.name} inputId={value.name} value={value.name} onChange={() => rangePrice(value)} />{value.name}<span className="count">(3)</span></label>
+                                                            <label className="checkbox-inline" htmlFor={value.name}><Checkbox checked={valueRange === value.name} inputId={value.name} value={value.name} onChange={() => rangePrice(value)} />{value.name}</label>
                                                         </li>
                                                     )
                                                 })
@@ -225,7 +253,7 @@ function Products() {
                                     {/*/ End Shop By Price */}
                                     {/* Single Widget */}
                                     <div className="single-widget recent-post">
-                                        <h3 className="title">Recent post</h3>
+                                        <h3 className="title">Other products</h3>
                                         {/* Single Post */}
                                         <div className="single-post first">
                                             <div className="image">
@@ -282,18 +310,7 @@ function Products() {
                                         {/* End Single Post */}
                                     </div>
                                     {/*/ End Single Widget */}
-                                    {/* Single Widget */}
-                                    <div className="single-widget category">
-                                        <h3 className="title">Manufacturers</h3>
-                                        <ul className="categor-list">
-                                            <li><a href="#">Forever</a></li>
-                                            <li><a href="#">giordano</a></li>
-                                            <li><a href="#">abercrombie</a></li>
-                                            <li><a href="#">ecko united</a></li>
-                                            <li><a href="#">zara</a></li>
-                                        </ul>
-                                    </div>
-                                    {/*/ End Single Widget */}
+                                    {/* Single Widget */}                               
                                 </div>
                             </div>
                             <div className="col-lg-9 col-md-8 col-12">
@@ -366,7 +383,7 @@ function Products() {
                                                                 <Link to={`/product-details?userId=${value._id}`}>
                                                                     <img className="default-img" src={value.img_url} />
                                                                     <img className="hover-img" src={value.img_url} />
-                                                                </Link>                                                              
+                                                                </Link>
                                                             </div>
                                                             <div className="product-content">
                                                                 <h3><Link to={`/product-details?userId=${value._id}`}>{value.name}</Link></h3>
@@ -456,8 +473,8 @@ function Products() {
                                                         </div>
                                                     </div>
                                                     <h3>{formatCurrency(view.price)}</h3>
-                                                    <div className="quickview-peragraph">
-                                                        <p>{view.description ? view.description : ''}</p>
+                                                    <div className="quickview-peragraph edit-ckeditor-show">
+                                                        <p>{view.description ? parse(view.description) : ''}</p>
                                                     </div>
                                                     <div className="size">
                                                         <div className="row">

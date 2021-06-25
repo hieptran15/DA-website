@@ -4987,14 +4987,17 @@ button.btn.btn-primary.editButton_Loading {
     position: relative;
 }
 .loading_edit {
-    position: absolute;
+	position: absolute;
     top: 0;
     left: 0;
     width: 125px;
-    height: 47px;
+    height: 36px;
     background: #80808066;
     border-radius: 51px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .loading_edit img {
-    width: 46px;
+    width: 30px;
 }

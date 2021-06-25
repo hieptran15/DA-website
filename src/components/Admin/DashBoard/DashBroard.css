@@ -65,6 +65,7 @@
 }
 .edit_review .item {
     padding-right: 20px;
+    text-align: end;
 }
 .edit_review .item p {
     text-align: right;
@@ -129,4 +130,11 @@
 svg.highcharts-root {
     max-width: 834px !important;
     height: auto;
+}
+.list-revews .p-rating .p-rating-icon {   
+    margin-left: 0.2rem; 
+    font-size: 0.8rem;
+}
+.product_right{
+    font-weight: 600;
 }

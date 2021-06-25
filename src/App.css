@@ -37,7 +37,7 @@
   }
 }
 form.form_login, form.form_Register {
-  width: 350px;
+  max-width: 450px ;
   margin: auto;
   margin-top: 30px;
   margin-bottom: 70px;
@@ -72,4 +72,9 @@ button.btn.btn-primary.editButton_Loading.login {
 } */
 .active-menu{
   background-color: #f7941d;
+}
+.edit-ckeditor-show {
+  height: 48px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

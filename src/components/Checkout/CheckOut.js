@@ -21,13 +21,15 @@ function CheckOut() {
     { name: 'Thành phố Hồ Chí Minh', code: 'PRS' }
   ];
   const [cartItem, setCartItem] = useState(null);
-  const [keySelect, setKeySelect] = useState('');
+  const [keySelect, setKeySelect] = useState('Payments');
   const [modalViewOrderSuccess, setModalViewOrderSuccess] = useState(false);
   useEffect(() => {
     setCartItem(JSON.parse(localStorage.getItem("cartItems")));
     window.scrollTo(0, 0)
   }, []);
-
+  const formatCurrency = (value) => {
+    return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+  }
   let emptyValue = {
     fullName: '',
     email: '',
@@ -62,7 +64,7 @@ function CheckOut() {
     setKeySelect(value)
   }
   const onSubmit = () => {
-    let _valueItem = { ...formValues, cartItems: cartItem, total: cartItem !== null ? cartItem.reduce((a, c) => a + c.price * c.count, 0) : 0 };
+    let _valueItem = { ...formValues, cartItems: cartItem, total: cartItem !== null ? cartItem.reduce((a, c) => a + c.price * c.count, 0) : 0, status: "PENDING" };
     console.log(_valueItem);
     try {
       Axios.post("http://localhost:8080/api/order/post-order", _valueItem).then(res => {
@@ -106,7 +108,7 @@ function CheckOut() {
                 <h2>Make Your Checkout Here</h2>
                 <p>Please register in order to checkout more quickly</p>
                 {/* Form */}
-                <form className="form" method="post" action="#">
+                <form className="form edit-form" method="post" action="#">
                   <div className="row">
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
@@ -129,19 +131,25 @@ function CheckOut() {
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
                         <label>Phone<span>*</span></label>
-                        <InputNumber id="phone" name="phone" value={formValues.phone} onChange={(e) => onInputNumberChange(e, 'phone')} />
+                        <div>
+                          <InputNumber id="phone" name="phone" value={formValues.phone} onChange={(e) => onInputNumberChange(e, 'phone')} />
+                        </div>
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
                         <label>Postal Code<span>*</span></label>
-                        <InputNumber id="portCode" name="portCode" value={formValues.portCode} onChange={(e) => onInputNumberChange(e, 'portCode')} />
+                        <div>
+                          <InputNumber id="portCode" name="portCode" value={formValues.portCode} onChange={(e) => onInputNumberChange(e, 'portCode')} />
+                        </div>
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
                         <label>City<span>*</span></label>
-                        <Dropdown id="city" name="city" value={selectedCity} options={cities} onChange={(e) => onDropdownChange(e, 'city')} optionLabel="name" placeholder="Select a City" />
+                        <div className="edit-dropDown">
+                          <Dropdown id="city" name="city" value={selectedCity} options={cities} onChange={(e) => onDropdownChange(e, 'city')} optionLabel="name" placeholder="Select a City" />
+                        </div>
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6 col-12">
@@ -159,12 +167,22 @@ function CheckOut() {
               <div className="order-details">
                 {/* Order Widget */}
                 <div className="single-widget">
-                  <h2>CART  TOTALS</h2>
+                  <h2>ORDER ({cartItem !== null ? cartItem.length : 0} product)</h2>
                   <div className="content">
-                    <ul>
-                      <li>Sub Total<span>$330.00</span></li>
-                      <li>(+) Shipping<span>$10.00</span></li>
-                      <li className="last">Total<span>$340.00</span></li>
+                    {cartItem !== null ? cartItem.map((value, key) => {
+                      return (
+                        <div className="product-details d-flex">
+                          <div style={{ position: "relative" }} className="d-flex align-items-center ">
+                            <img src={value.img_url} />
+                            <p>{value.name}</p>
+                            <div className="product-count">{value.count}</div>
+                          </div>
+                          <p>{formatCurrency(value.price)}</p>
+                        </div>
+                      )
+                    }) : <div className="product-details">empty</div>}
+                    <ul>                    
+                      <li className="last">Total<span>{formatCurrency(cartItem !== null ? cartItem.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
                     </ul>
                   </div>
                 </div>
@@ -175,8 +193,8 @@ function CheckOut() {
                   <div className="content">
                     <div className="checkbox">
                       <label className="checkbox-inline" htmlFor={'1'}><Checkbox inputId="1" checked={keySelect === 'Payments'} onChange={e => selectCheckOut('Payments')} /> Check Payments</label>
-                      <label className="checkbox-inline" htmlFor={'2'}><Checkbox inputId="2" checked={keySelect === 'Delivery'} onChange={e => selectCheckOut('Delivery')} /> Cash On Delivery</label>
-                      <label className="checkbox-inline" htmlFor={'3'}><Checkbox inputId="3" checked={keySelect === 'PayPal'} onChange={e => selectCheckOut('PayPal')} /> PayPal</label>
+                      {/* <label className="checkbox-inline" htmlFor={'2'}><Checkbox inputId="2" checked={keySelect === 'Delivery'} onChange={e => selectCheckOut('Delivery')} /> Cash On Delivery</label>
+                      <label className="checkbox-inline" htmlFor={'3'}><Checkbox inputId="3" checked={keySelect === 'PayPal'} onChange={e => selectCheckOut('PayPal')} /> PayPal</label> */}
                     </div>
                   </div>
                 </div>

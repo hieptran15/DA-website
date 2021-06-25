@@ -9,7 +9,7 @@ import Header from '../Header/Header'
 function Cart() {
   const [cart, setCart] = useState(null)
   const LoginState = useSelector(state => state.login)
-  const {carts } = LoginState
+  const { carts } = LoginState
   const dispatch = useDispatch();
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cartItems")));

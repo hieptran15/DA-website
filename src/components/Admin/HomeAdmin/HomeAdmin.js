@@ -7,6 +7,7 @@ import {
   FileOutlined,
   TeamOutlined,
   DotChartOutlined,
+  SlackOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { useState } from 'react';
@@ -15,6 +16,8 @@ import OrderAdmin from '../Order/OrderAdmin';
 import { Link } from 'react-router-dom';
 import ProductAdmin from '../Product/ProductAdmin';
 import DasbBoard from '../DashBoard/DasbBoard';
+import Brands from '../Brands/Brands';
+import User from '../User/User';
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import "./HomeAdmin.css"
@@ -47,14 +50,20 @@ function HomeAdmin() {
             <Menu.Item onClick={() => setKeyCheck('3')} key="3" icon={<PieChartOutlined />}>
               <a>Category</a>
             </Menu.Item>
-            <Menu.Item onClick={() => setKeyCheck('4')} key="4" icon={<DotChartOutlined />}>
+            <Menu.Item onClick={() => setKeyCheck('4')} key="4" icon={<SlackOutlined />}>
+              <a>Brands</a>
+            </Menu.Item>
+            <Menu.Item onClick={() => setKeyCheck('5')} key="5" icon={<DotChartOutlined />}>
               <a>Order</a>
             </Menu.Item>
-            <SubMenu key="sub1" icon={<UserOutlined />} title="User">
+            <Menu.Item onClick={() => setKeyCheck('6')} key="6" icon={<UserOutlined />}>
+              <a>User</a>
+            </Menu.Item>
+            {/* <SubMenu key="sub1" icon={<UserOutlined />} title="User">
               <Menu.Item key="3">Tom</Menu.Item>
               <Menu.Item key="4">Bill</Menu.Item>
               <Menu.Item key="5">Alex</Menu.Item>
-            </SubMenu>
+            </SubMenu> */}
             <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
               <Menu.Item key="6">Team 1</Menu.Item>
               <Menu.Item key="8">Team 2</Menu.Item>
@@ -73,7 +82,7 @@ function HomeAdmin() {
                   <button className="edit-button">Search</button>
                 </div>
                 <div className="d-flex">
-                  <Link style={{ marginRight: "20px" }} to="/"><i class="fa fa-globe"></i>View Home</Link>
+                  <Link style={{ marginRight: "20px" }} to="/"><i class="fa fa-globe"></i>View website</Link>
                   <div className="d-flex align-items-center edit_admin">
                     <img src="./images/logoDefault.jpg" />
                     <b>ADMIN</b>
@@ -114,10 +123,28 @@ function HomeAdmin() {
               <div>
                 <Breadcrumb style={{ margin: '16px 0' }}>
                   <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Home</Link></Breadcrumb.Item>
+                  <Breadcrumb.Item>Brands</Breadcrumb.Item>
+                </Breadcrumb>
+              </div>
+              <Brands />
+            </div>}
+            {keyCheck === '5' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
+              <div>
+                <Breadcrumb style={{ margin: '16px 0' }}>
+                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Home</Link></Breadcrumb.Item>
                   <Breadcrumb.Item>Order</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
               <OrderAdmin />
+            </div>}
+            {keyCheck === '6' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
+              <div>
+                <Breadcrumb style={{ margin: '16px 0' }}>
+                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Home</Link></Breadcrumb.Item>
+                  <Breadcrumb.Item>User</Breadcrumb.Item>
+                </Breadcrumb>
+              </div>
+              <User />
             </div>}
           </Content>
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2021 Created by Ant UED</Footer>

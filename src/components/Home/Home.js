@@ -7,6 +7,8 @@ import { Link, NavLink } from 'react-router-dom';
 import { Dropdown } from 'primereact/dropdown';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
+import parse from 'html-react-parser';
+
 function Home() {
   const sizes = [
     { name: 'S', code: 'S' },
@@ -848,8 +850,8 @@ function Home() {
                           </div>
                         </div>
                         <h3>{formatCurrency(view.price)}</h3>
-                        <div className="quickview-peragraph">
-                          <p>{view.description ? view.description : ''}</p>
+                        <div className="quickview-peragraph edit-ckeditor-show">
+                          <p>{view.description ? parse(view.description) : ''}</p>
                         </div>
                         <div className="size">
                           <div className="row">

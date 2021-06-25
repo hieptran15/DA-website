@@ -8,8 +8,8 @@ import CheckOut from './components/Checkout/CheckOut';
 import Contact from './components/Contact/Contact';
 import Blog_Slide_bar from './components/Blog-slide-bar/Blog_Slide_bar';
 import "./App.css"
-import Login from './components/Auth/Login';
-import Register from './components/Auth/Register';
+import Login from './components/Auth/login/Login';
+import Register from './components/Auth/register/Register';
 import Products from './components/Products/Products';
 import Product_details from './components/Product-details/Product_details';
 import { ScrollTop } from 'primereact/scrolltop';

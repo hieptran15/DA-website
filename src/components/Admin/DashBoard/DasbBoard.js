@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
+import { Rating } from 'primereact/rating';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import './DashBroard.css'
@@ -7,11 +8,16 @@ function DasbBoard() {
     const [products, setProducts] = useState([]);
     const [users, setUser] = useState([]);
     const [orders, setOrder] = useState([]);
+    const [totalMount, setTotalMount] = useState([]);
     useEffect(() => {
         getProducts();
         getUsers();
         getOrders();
     }, []);
+
+    const formatCurrency = (value) => {
+        return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+    }
     const getUsers = () => {
         Axios.get("http://localhost:8080/api/user/get-all-users").then((result) => {
             setUser(result.data);
@@ -19,7 +25,9 @@ function DasbBoard() {
     }
     const getOrders = () => {
         Axios.get('http://localhost:8080/api/order/get-all-order').then(res => {
-            setOrder(res.data)
+            setOrder(res.data);
+            const orderFinish = res.data.filter(x => x.status === "FINISHED").reduce((a,b)=> a + b.total, 0);
+            setTotalMount(orderFinish)
         })
     }
     const getProducts = () => {
@@ -27,24 +35,24 @@ function DasbBoard() {
             setProducts(result.data);
         });
     }
-
     const options = {
         chart: {
             type: 'areaspline'
         },
         xAxis: {
             categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec',
+                'T1',
+                'T2',
+                'T3',
+                'T4',
+                'T5',
+                'T6',
+                'T7',
+                'T8',
+                'T9',
+                'T10',
+                'T11',
+                'T12'
             ],
         },
         yAxis: {
@@ -100,11 +108,11 @@ function DasbBoard() {
                     <div className="col-lg-3 col-md-3 col-sm-6 col-12">
                         <div className="edit_review">
                             <div className="item">
-                                <p>0</p>
-                                <b>Reviews</b>
+                                <p>{formatCurrency(totalMount)}</p>
+                                <b>Total amount</b>
                             </div>
                             <div className="edit_icon">
-                                <i class="ti-comment-alt"></i>
+                                <i class="ti-shopping-cart-full"></i>
                             </div>
                         </div>
                     </div>
@@ -116,7 +124,7 @@ function DasbBoard() {
                     <HighchartsReact highcharts={Highcharts} options={options} />
                 </div>
                 <div className="top-selling">
-                    <div className="header-edit">Top Selling Products</div>
+                    <div className="header-edit">Top Rating Products</div>
                     <div className="item_body">
                         {products.length !== 0 ? products.map((value, key) => {
                             return (
@@ -126,11 +134,16 @@ function DasbBoard() {
                                             <img src={value.img_url} />
                                         </div>
                                         <div>
-                                            <b>{value.name}</b>
+                                            <div>
+                                                <b style={{marginLeft: "5px"}}>{value.name}</b>
+                                            </div>
+                                            <div className="list-revews">       
+                                                <Rating value={value.rate} readOnly stars={5} cancel={false} />
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="product_right">
-                                        {value.price}
+                                        {formatCurrency(value.price)}
                                     </div>
                                 </div>
                             )

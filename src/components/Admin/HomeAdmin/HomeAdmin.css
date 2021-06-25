@@ -8,6 +8,7 @@
     width: 100%;
     outline: none;
     border: 1px solid #80808033;
+    padding: 10px;
 }
 .edit-button{
     width: 75px;

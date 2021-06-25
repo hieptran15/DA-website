@@ -33,6 +33,7 @@ function ProductAdmin() {
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
   const [category, setCategory] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [product, setProduct] = useState(emptyProduct);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -53,8 +54,15 @@ function ProductAdmin() {
   useEffect(() => {
     Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
       setCategory(result.data)
-    })
-  }, [])
+    });
+    getAllBrand();
+  }, []);
+
+  const getAllBrand = () => {
+    Axios.get("http://localhost:8080/api/brand/get-all-brand").then((result) => {
+      setBrands(result.data)
+    });
+  }
   const formatCurrency = (value) => {
     return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
   }
@@ -91,6 +99,11 @@ function ProductAdmin() {
   const onCategoryChange = (e) => {
     let _product = { ...product };
     _product['category'] = e.value;
+    setProduct(_product);
+  }
+  const onBrandChange = (e) => {
+    let _product = { ...product };
+    _product['brand'] = e.value;
     setProduct(_product);
   }
   const onInputNumberChange = (e, name) => {
@@ -275,8 +288,8 @@ function ProductAdmin() {
               {category ? category.map((item, index) => {
                 return (
                   <div key={item._id} style={{ marginRight: "10px" }} className="p-field-radiobutton d-flex align-items-center p-col-6">
-                    <RadioButton style={{ marginRight: "5px" }} name="category" onChange={onCategoryChange} value={item.category} checked={product.category === item.category} />
-                    <label htmlFor="category1">{item.category}</label>
+                    <RadioButton inputId={item.category} style={{ marginRight: "5px" }} name="category" onChange={onCategoryChange} value={item.category} checked={product.category === item.category} />
+                    <label htmlFor={item.category}>{item.category}</label>
                   </div>
                 )
               }) : <div>empty</div>}
@@ -284,7 +297,16 @@ function ProductAdmin() {
           </div>
           <div className="p-field">
             <label htmlFor="brand">Brand</label>
-            <InputTextarea id="brand" onChange={(e) => onInputChange(e, 'brand')} value={product.brand} required rows={3} cols={20} />
+            <div className="p-formgrid p-grid d-flex flex-wrap">
+              {brands ? brands.map((item, index) => {
+                return (
+                  <div key={item._id} style={{ marginRight: "10px" }} className="p-field-radiobutton d-flex align-items-center p-col-6">
+                    <RadioButton inputId={item.brand} style={{ marginRight: "5px" }} name="brand" onChange={onBrandChange} value={item.brand} checked={product.brand === item.brand} />
+                    <label htmlFor={item.brand}>{item.brand}</label>
+                  </div>
+                )
+              }) : <div>empty</div>}
+            </div>
           </div>
           <div className="p-formgrid p-grid">
             <div className="p-field p-col">

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
+import { RadioButton } from 'primereact/radiobutton';
 import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
 import './Order.css'
@@ -11,13 +12,16 @@ import { Button } from 'primereact/button';
 import Modal from 'antd/lib/modal/Modal';
 import { Dialog } from 'primereact/dialog';
 function OrderAdmin() {
+    const listStatus = [{ name: 'FINISHED' }, { name: 'PENDING' }];
     const [order, setOrder] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState(null);
     const [globalFilter, setGlobalFilter] = useState(null);
     const [nameDetails, setNameDetails] = useState('');
     const [orderId, setOrderId] = useState(null);
+    const [valueStatus, setValueStatus] = useState('');
     const [modalViewOrderDetails, setViewModalDetails] = useState(false);
-    const [confirmDelete, setConfirmDelete] = useState(false)
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [changeStatus, setChangeStatus] = useState(false);
     const [orderDetails, setOrderDetails] = useState([]);
     const [check, setCheck] = useState(false);
     const toast = useRef(null);
@@ -26,7 +30,7 @@ function OrderAdmin() {
         Axios.get('http://localhost:8080/api/order/get-all-order').then(res => {
             setOrder(res.data)
         })
-    },[check]);
+    }, [check]);
     const header = (
         <div className="table-header">
             <h5 className="p-m-0">Manage orders</h5>
@@ -63,6 +67,24 @@ function OrderAdmin() {
             </React.Fragment>
         )
     }
+    const statusBodyTemplate = (rowData) => {
+        return (
+            <React.Fragment>
+                {rowData.status === "PENDING" && (
+                    <div onClick={() => updateStatus(rowData)} style={{ color: "#2196f3", fontWeight: "500", cursor: "pointer" }}>{rowData.status !== '' ? rowData.status : ''}</div>
+                )}
+                {rowData.status === "FINISHED" && (
+                    <div onClick={() => updateStatus(rowData)} style={{ color: "#dc3545", fontWeight: "500", cursor: "pointer" }}>{rowData.status !== '' ? rowData.status : ''}</div>
+                )}
+            </React.Fragment>
+        )
+    }
+    const updateStatus = (item) => {
+        console.log(item);
+        setOrderId(item._id);
+        setValueStatus(item.status)
+        setChangeStatus(true)
+    }
     const rowDatarowData = (item) => {
         console.log(item);
         setNameDetails(item.fullName)
@@ -82,6 +104,32 @@ function OrderAdmin() {
             </React.Fragment>
         )
     }
+    const saveStatusDialogFooter = () => {
+        return (
+            <React.Fragment>
+                <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteOrderDialog} />
+                <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={saveStatus} />
+            </React.Fragment>
+        )
+    }
+
+    const saveStatus = () => {
+        const options = {
+            status: valueStatus
+        }
+        try {
+            Axios.patch(`http://localhost:8080/api/order/update-status/${orderId}`, options).then(res => {
+                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'updated status', life: 3000 });
+                setCheck(!check);
+                setChangeStatus(false);
+            })
+        } catch (error) {
+            console.log(error);
+            toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'change status error', life: 3000 });
+            setChangeStatus(false);
+        }
+    }
+
     const deleteOrder = () => {
         try {
             Axios.delete(`http://localhost:8080/api/order/delete-order/${orderId}`).then(res => {
@@ -96,7 +144,8 @@ function OrderAdmin() {
         }
     }
     const hideDeleteOrderDialog = () => {
-        setConfirmDelete(false)
+        setConfirmDelete(false);
+        setChangeStatus(false);
     }
     const closeModalViewCart = () => {
         setViewModalDetails(false)
@@ -132,6 +181,7 @@ function OrderAdmin() {
                         <Column field="address" header="Address" sortable></Column>
                         <Column field="city" header="City" sortable></Column>
                         <Column field="total" header="Total" body={priceBodyTemplate} sortable></Column>
+                        <Column field="status" header="Status" body={statusBodyTemplate} sortable></Column>
                         <Column header="Action" body={actionBodyTemplate}></Column>
                     </DataTable>
                 </div>
@@ -165,7 +215,18 @@ function OrderAdmin() {
                     <span>Are you sure you want to delete order?</span>
                 </div>
             </Dialog>
-
+            <Dialog visible={changeStatus} style={{ width: '450px' }} header="Update status" modal footer={saveStatusDialogFooter} onHide={hideDeleteOrderDialog}>
+                <div style={{ margin: "10px 60px" }} className="confirmation-content d-flex justify-content-between">
+                    {listStatus.map((value) => {
+                        return (
+                            <div className="d-flex align-items-center">
+                                <RadioButton inputId={value.name} name="city" value={value} onChange={(e) => setValueStatus(value.name)} checked={value.name === valueStatus} />
+                                <label htmlFor={value.name}>{value.name}</label>
+                            </div>
+                        )
+                    })}
+                </div>
+            </Dialog>
         </div>
     )
 }
