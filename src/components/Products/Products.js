@@ -7,7 +7,7 @@ import Header from '../Header/Header';
 import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
 import { Paginator } from 'primereact/paginator';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { reload_cart } from '../../actions/actions';
 import parse from 'html-react-parser';
 import Footer from '../Footer/Footer';
@@ -40,6 +40,8 @@ function Products() {
     const toast = useRef(null);
     const dispatch = useDispatch();
     const query = new URLSearchParams(useLocation().search);
+    const LoginState = useSelector(state => state.login)
+    const { user, loading, error, token, carts, role } = LoginState;
     const keySearch = query.get("search");
     const { t, i18n } = useTranslation();
     useEffect(() => {
@@ -48,7 +50,7 @@ function Products() {
             setCountProdcut(result.data.count);
             setPageCount(result.data.pages);
         });
-    }, [keyCategory, typeSort, page, keySearch, priceMin, priceMax, keyBrand]);
+    }, [keyCategory, typeSort, page, keySearch, priceMin, priceMax, keyBrand, user]);
 
     useEffect(() => {
         Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
@@ -56,7 +58,7 @@ function Products() {
         });
         getAllBrand();
         window.scrollTo(0, 0)
-    }, [])
+    }, [user])
     const getAllBrand = () =>{
         Axios.get("http://localhost:8080/api/brand/get-all-brand").then((result) => {
             setBrands(result.data)

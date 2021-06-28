@@ -17,6 +17,7 @@ import { ScrollPanel } from 'primereact/scrollpanel';
 import HomeAdmin from './components/Admin/HomeAdmin/HomeAdmin';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import HistoryOrderUser from './components/HistoryOrderUser/HistoryOrderUser';
 function App() {
   // const [scrollClass, setScrollClass] = useState('');
   // useEffect(() => {
@@ -43,6 +44,7 @@ function App() {
           <Route path="/product" component={Products} />
           <Route path="/product-details" component={Product_details} />
           <Route path="/home-admin" component={HomeAdmin} />
+          <Route path="/history-order-user" component={HistoryOrderUser} />
         </Switch>
       </Router>
     </div>

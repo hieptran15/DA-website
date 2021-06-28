@@ -46,6 +46,7 @@ function Product_details() {
     const userName = JSON.parse(localStorage.getItem('userName'));
     const email = JSON.parse(localStorage.getItem('email'));
     const dispatch = useDispatch();
+    const tokens = JSON.parse(localStorage.getItem('aulogin'));
     const query = new URLSearchParams(useLocation().search);
     const userID = query.get("userId");
 

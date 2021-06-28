@@ -60,12 +60,17 @@ function DasbBoard() {
                 text: ''
             },
         },
+        tooltip: {
+            headerFormat: '<b>{series.name}</b>',
+            pointFormat: '{point.x1} : {point.y} đ',
+            clusterFormat: 'Clustered points: {point.clusterPointsAmount}'
+        },
         title: {
-            text: 'Summary'
+            text: 'Revenue'
         },
         series: [{
-            name: 'revenue',
-            data: [0, 40, 30, 50, 40, 100, 120, 140, 60, 170, 80, 190], color: '#f07f84'
+            name: 'Total',
+            data: [5000000, 40000000, 30000000, 53000000, 28000000, 100000000, 120000000, 140000000, 60000000, 70000000, 80000000, 150000000], color: '#f07f84'
         }]
     };
     return (
@@ -121,7 +126,7 @@ function DasbBoard() {
             <div className="list_widgets_body">
                 <div className="edit-chart">
                     {/* <div className="header-edit">Summary</div> */}
-                    <HighchartsReact highcharts={Highcharts} options={options} />
+                    <HighchartsReact  highcharts={Highcharts} options={options} />
                 </div>
                 <div className="top-selling">
                     <div className="header-edit">Top Rating Products</div>

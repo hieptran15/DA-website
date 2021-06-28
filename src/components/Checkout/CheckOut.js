@@ -20,16 +20,7 @@ function CheckOut() {
     { name: 'Thái bình', code: 'IST' },
     { name: 'Thành phố Hồ Chí Minh', code: 'PRS' }
   ];
-  const [cartItem, setCartItem] = useState(null);
-  const [keySelect, setKeySelect] = useState('Payments');
-  const [modalViewOrderSuccess, setModalViewOrderSuccess] = useState(false);
-  useEffect(() => {
-    setCartItem(JSON.parse(localStorage.getItem("cartItems")));
-    window.scrollTo(0, 0)
-  }, []);
-  const formatCurrency = (value) => {
-    return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
-  }
+
   let emptyValue = {
     fullName: '',
     email: '',
@@ -39,8 +30,33 @@ function CheckOut() {
     city: '',
     noteOrder: '',
   };
+
+  const [cartItem, setCartItem] = useState(null);
+  const [keySelect, setKeySelect] = useState('Payments');
+  const [modalViewOrderSuccess, setModalViewOrderSuccess] = useState(false);
+  const [valueMail, setValueMail] = useState('')
+  const emailUser = JSON.parse(localStorage.getItem('email'));
   const [formValues, setFormValues] = useState(emptyValue);
-  const [selectedCity, setSelectedCity] = useState()
+  const [selectedCity, setSelectedCity] = useState();
+
+  useEffect(() => {
+    setCartItem(JSON.parse(localStorage.getItem("cartItems")));
+    window.scrollTo(0, 0)
+    if (emailUser !== null) {
+      let _valueItem = { ...formValues };
+      _valueItem['email'] = emailUser;
+      setFormValues(_valueItem);
+    } else {
+      let _valueItem = { ...formValues };
+      _valueItem['email'] = '';
+      setFormValues(_valueItem);
+    }
+  }, []);
+
+  const formatCurrency = (value) => {
+    return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+  }
+
   const onInputChange = (e, name) => {
     const val = e.target.value;
     let _valueItem = { ...formValues };
@@ -181,7 +197,7 @@ function CheckOut() {
                         </div>
                       )
                     }) : <div className="product-details">empty</div>}
-                    <ul>                    
+                    <ul>
                       <li className="last">Total<span>{formatCurrency(cartItem !== null ? cartItem.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
                     </ul>
                   </div>
@@ -288,8 +304,8 @@ function CheckOut() {
       </section>
       <Modal footer={false} centered visible={modalViewOrderSuccess} width={500} onCancel={() => closeModalViewCart()}>
         <h2 style={{ color: '#63ab01' }}>Mua hàng thành công!</h2>
-        <p>Chúng tôi sẽ sớm liên hệ với bạn để giao hàng trong thời gian ngắn nhất</p>
-        <Link to="/">Tiếp tục mua hàng</Link>
+        <p style={{fontSize: "16px"}}>Chúng tôi sẽ sớm liên hệ với bạn để giao hàng trong thời gian ngắn nhất</p>
+        <Link to="/">Tiếp tục mua hàng <i className="ti-arrow-right"></i></Link>
       </Modal>
       {/* End Shop Newsletter */}
       <Footer />

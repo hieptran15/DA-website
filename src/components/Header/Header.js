@@ -8,47 +8,45 @@ import { useTranslation } from 'react-i18next';
 import './Header.css'
 function Header() {
   const listLangKey = [
-    {name:'Việt Nam', code: 'vi'},
-    {name:'English', code : 'en'}
+    { name: 'Việt Nam', code: 'vi' },
+    { name: 'English', code: 'en' }
   ]
-  const [cart, setCart] = useState(null);
+  const [cart, setCart] = useState([]);
   const [checkActive, setCheckActive] = useState('');
-  const [langKey, setlangKey]= useState({name:'Việt Nam', code: 'vi'},);
+  const [langKey, setlangKey] = useState({ name: 'Việt Nam', code: 'vi' },);
   const [langSelect, setlangSelect] = useState('vi')
   const [valueSearch, setValueSearch] = useState('')
   const LoginState = useSelector(state => state.login)
   const { user, loading, error, token, carts, role } = LoginState;
   const roleName = JSON.parse(localStorage.getItem('role'));
-  const tokens = JSON.parse(localStorage.getItem('aulogin'))
+  const tokens = JSON.parse(localStorage.getItem('aulogin'));
   const userName = JSON.parse(localStorage.getItem('userName'));
   const query = new URLSearchParams(useLocation().search);
-    const keySearch = query.get("search");
+  const keySearch = query.get("search");
   const dispatch = useDispatch();
 
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    setCart(JSON.parse(localStorage.getItem("cartItems")))
-    console.log(role);
-    console.log(roleName);
+    setCart(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [])
   }, [carts])
 
-  
+
   useEffect(() => {
     i18n.changeLanguage(langSelect);
   }, [langSelect])
 
   const logoutUser = () => {
     if (tokens || token) {
-      localStorage.setItem('aulogin', '')
-      localStorage.clear()
-      dispatch(login_user())
+      localStorage.setItem('aulogin', '');
+      localStorage.clear();
+      dispatch(login_user());
     }
   }
 
   const onLangChange = (event) => {
-      setlangKey(event.value);
-      setlangSelect(event.value.code)
+    setlangKey(event.value);
+    setlangSelect(event.value.code)
   }
 
   const testActive = (item) => {
@@ -72,12 +70,12 @@ function Header() {
     return (
       <div className="shopping-item">
         <div className="dropdown-cart-header">
-          <span>{cart !== null ? cart.length : 0}  Items</span>
+          <span>{ cart.length !== 0 ? cart.length : 0}  Items</span>
           <Link to="/cart">View Cart</Link>
         </div>
         <ul className="shopping-list">
           {
-            cart !== null ? cart.map((value, key) => {
+            cart.length !== 0 ? cart.map((value, key) => {
               return (
                 <li key={key}>
                   <a onClick={() => deleteCartItem(value)} className="remove" title="Remove this item"><i className="fa fa-remove" /></a>
@@ -89,12 +87,17 @@ function Header() {
             }) : <div>giỏ hàng trống</div>
           }
         </ul>
+
         <div className="bottom">
           <div className="total">
             <span>Total</span>
-            <span className="total-amount">{formatCurrency(cart !== null ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span>
+            <span className="total-amount">{formatCurrency( cart.length !== 0 ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span>
           </div>
-          <Link to="/checkout" className="btn animate">Checkout</Link>
+          {
+             cart.length !== 0 && (
+              <Link to="/checkout" className="btn animate">Checkout</Link>
+            )
+          }
         </div>
       </div>
     )
@@ -124,7 +127,7 @@ function Header() {
                   <ul className="list-main">
                     {/* <li><i className="ti-location-pin" /> Store location</li>
                     <li><i className="ti-alarm-clock" /> <a href="#">Daily deal</a></li> */}
-                    <li><a href="#">{t('language.1')}:</a><Dropdown value={langKey}  options={listLangKey} optionLabel="name" placeholder="language" onChange={onLangChange} /></li>
+                    <li><a href="#">{t('language.1')}:</a><Dropdown value={langKey} options={listLangKey} optionLabel="name" placeholder="language" onChange={onLangChange} /></li>
                     <li className="setting-admin"><i className="ti-user" />
                       <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
                         {user || userName ? userName || user : 'Account'}
@@ -133,8 +136,10 @@ function Header() {
                         <div>
                           {roleName === 'admin' || role === 'admin' ?
                             <li><i className="ti-settings" /><Link to="/home-admin">Manage</Link></li> : ''}
-                          {roleName === 'user' || role === 'user' ?
-                            <li><i className="ti-settings" /><Link to="/home-admin">Setting</Link></li> : ''}
+                          {roleName === 'ROLE_USER' || role === 'ROLE_USER' ?
+                            <li><i className="ti-id-badge" /><Link to="#">Profile</Link></li> : ''}
+                          {roleName === 'ROLE_USER' || role === 'ROLE_USER' ?
+                            <li><i className="ti-harddrives" /><Link to="/history-order-user">Order</Link></li> : ''}
                           {tokens || token ? <li><i className="ti-unlock" /><a onClick={() => logoutUser()} href="#">Logout</a></li> :
                             <li><i className="ti-lock" /><Link to="/login">Login</Link></li>
                           }
@@ -193,7 +198,7 @@ function Header() {
                     <a href="#" className="single-icon"><i className="fa fa-user-circle-o" aria-hidden="true" /></a>
                   </div>
                   <div className="sinlge-bar shopping">
-                    <Link to="/cart" className="single-icon"><i className="ti-bag" /> <span className="total-count">{cart !== null ? cart.length : 0}</span></Link>
+                    <Link to="/cart" className="single-icon"><i className="ti-bag" /> <span className="total-count">{cart.length !== 0 ? cart.length : 0}</span></Link>
                     {/* Shopping Item */}
                     {viewCart()}
                     {/*/ End Shopping Item */}
@@ -224,7 +229,9 @@ function Header() {
                             <li><a href="#">Shop<i className={`ti-angle-down`} /><span className="new">New</span></a>
                               <ul className="dropdown">
                                 <li><NavLink activeClassName="active-menu" to="/cart" onClick={() => testActive('cart')} >Cart</NavLink></li>
-                                <li><NavLink activeClassName="active-menu" to="/checkout" onClick={() => testActive('cart')}>Checkout</NavLink></li>
+                                {cart.length !== 0 && (
+                                  <li><NavLink activeClassName="active-menu" to="/checkout" onClick={() => testActive('cart')}>Checkout</NavLink></li>
+                                )}
                               </ul>
                             </li>
                             <li><a href="#">Pages</a></li>

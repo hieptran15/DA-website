@@ -7,12 +7,12 @@ import Footer from '../Footer/Footer'
 import Header from '../Header/Header'
 
 function Cart() {
-  const [cart, setCart] = useState(null)
+  const [cart, setCart] = useState([])
   const LoginState = useSelector(state => state.login)
   const { carts } = LoginState
   const dispatch = useDispatch();
   useEffect(() => {
-    setCart(JSON.parse(localStorage.getItem("cartItems")));
+    setCart(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : []);
     window.scrollTo(0, 0)
   }, [carts]);
 
@@ -87,7 +87,7 @@ function Cart() {
                     </tr>
                   </thead>
                   <tbody>
-                    {cart !== null ? cart.map((value, key) => {
+                    {cart.length !== 0 ? cart.map((value, key) => {
                       return (
                         <tr key={key}>
                           <td className="image" data-title="No"><img src={value.img_url} alt="#" /></td>
@@ -116,7 +116,7 @@ function Cart() {
                           <td className="action" data-title="Remove"><a onClick={() => deleteCartItem(value)}><i className="ti-trash remove-icon" /></a></td>
                         </tr>
                       )
-                    }) : <div>Giỏ hàng rỗng</div>
+                    }) : <h5 style={{ margin: "10px 5px" }}>Giỏ hàng trống</h5>
                     }
                   </tbody>
                 </table>
@@ -144,13 +144,15 @@ function Cart() {
                     <div className="col-lg-4 col-md-7 col-12">
                       <div className="right">
                         <ul>
-                          <li>Cart Subtotal<span>{formatCurrency(cart !== null ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
+                          <li>Cart Subtotal<span>{formatCurrency(cart.length !== 0 ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
                           <li>Shipping<span>Free</span></li>
                           <li>You Save<span>$20.00</span></li>
-                          <li className="last">You Pay<span>{formatCurrency(cart !== null ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
+                          <li className="last">You Pay<span>{formatCurrency(cart.length !== 0 ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
                         </ul>
                         <div className="button5">
-                          <Link to="/checkout" className="btn">Checkout</Link>
+                          {cart.length !== 0 && (
+                            <Link to="/checkout" className="btn">Checkout</Link>
+                          )}
                           <Link to="/" className="btn">Continue shopping</Link>
                         </div>
                       </div>
