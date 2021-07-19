@@ -87,7 +87,7 @@ function Login() {
                 <form className="form_Register">
                     <h2>Login</h2>
                     <div className="form-group">
-                        <div><strong style={{ color: 'red', margin: "5px 5px 5px 5px" }}>{error ? "email hoặc password sai...!" : ""}</strong></div>
+                        {/* <div><strong style={{ color: 'red', margin: "5px 5px 5px 5px" }}>{error ? "email hoặc password sai...!" : ""}</strong></div> */}
                         <label>Email <span className="required">*</span></label>
                         <input type="email" value={getValue.email} onChange={(e) => handleOnchange(e)} className="form-control form-control-sm" name="email" id aria-describedby="helpId" placeholder />
                     </div>
