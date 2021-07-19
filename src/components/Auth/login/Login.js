@@ -3,7 +3,7 @@ import { Modal } from 'antd';
 import 'antd/dist/antd.css';
 import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { login_user } from '../../../actions/actions';
+import { load_param, login_user } from '../../../actions/actions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from '../../Header/Header';
@@ -19,11 +19,12 @@ function Login() {
         password: ""
     })
     const LoginState = useSelector(state => state.login)
-    const { user, loading, error, token } = LoginState
+    const { user, loading, error, token } = LoginState;
+    const dispatch = useDispatch()
     useEffect(() => {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
+        dispatch(load_param(''))
     }, [])
-    const dispatch = useDispatch();
     const handleOnchange = (e) => {
         e.preventDefault()
         setValue({ ...getValue, [e.target.name]: e.target.value })
@@ -64,7 +65,6 @@ function Login() {
     }
     return (
         <>
-            <Header />
             {/* Breadcrumbs */}
             <div className="breadcrumbs">
                 <div className="container">
@@ -117,7 +117,6 @@ function Login() {
                 </Modal>
 
             </div>
-            <Footer />
         </>
     )
 }

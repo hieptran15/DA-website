@@ -35,8 +35,18 @@ h4.text-empty{
     text-align: center;
     padding: 10px;
 }
+.check-box-list .p-checkbox.p-component{
+    margin-right: 5px;
+}
 .edit-ckeditor-show {
     height: 48px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.edit-product-orther{
+    max-height: 540px;
+    overflow: auto;
+}
+.edit-product-orther span.p-rating-icon.pi {
+    font-size: 0.6rem;
 }

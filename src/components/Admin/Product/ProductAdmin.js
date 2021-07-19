@@ -268,12 +268,12 @@ function ProductAdmin() {
             <input type="file" onChange={e => onImageChange(e, 'img_url')} />
           </div>
           <div className="p-field">
-            <label htmlFor="name">Name</label>
+            <label className="edit-lable" htmlFor="name">Name</label>
             <InputText id="name" onChange={(e) => onInputChange(e, 'name')} value={product.name} required autoFocus />
             {submitted && !product.name && <small className="p-error">Name is required.</small>}
           </div>
           <div className="p-field">
-            <label htmlFor="description">Description</label>
+            <label className="edit-lable" htmlFor="description">Description</label>
             <CKEditor editor={ClassicEditor} data={product.description} onChange={(event, editor) => {
               const data = editor.getData();
               console.log({ event, editor, data });
@@ -283,7 +283,7 @@ function ProductAdmin() {
             }} />
           </div>
           <div className="p-field">
-            <label className="p-mb-3">Category</label>
+            <label  className="p-mb-3 edit-lable">Category</label>
             <div className="p-formgrid p-grid d-flex flex-wrap">
               {category ? category.map((item, index) => {
                 return (
@@ -296,7 +296,7 @@ function ProductAdmin() {
             </div>
           </div>
           <div className="p-field">
-            <label htmlFor="brand">Brand</label>
+            <label className="edit-lable" htmlFor="brand">Brand</label>
             <div className="p-formgrid p-grid d-flex flex-wrap">
               {brands ? brands.map((item, index) => {
                 return (
@@ -310,7 +310,7 @@ function ProductAdmin() {
           </div>
           <div className="p-formgrid p-grid">
             <div className="p-field p-col">
-              <label htmlFor="price">Price</label>
+              <label className="edit-lable" htmlFor="price">Price</label>
               <InputNumber id="price" name="price" onChange={(e) => onInputNumberChange(e, 'price')} value={product.price} mode="currency" currency="VND" locale="vi-VN" />
             </div>
             <div className="p-field p-col">

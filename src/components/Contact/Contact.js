@@ -3,13 +3,17 @@ import Footer from '../Footer/Footer'
 import Header from '../Header/Header'
 import { GMap } from 'primereact/gmap';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { load_param } from '../../actions/actions';
 function Contact() {
   const [googleMapsReady, setGoogleMapsReady] = useState(false);
   const [overlays, setOverlays] = useState([]);
   const google = window.google;
+  const dispatch = useDispatch();
   useEffect(() => {
     setGoogleMapsReady(true);
-  })
+    dispatch(load_param(''))
+  },[])
   const mapOptions = {
     center: { lat: 21.072687, lng: 105.773568 },
     zoom: 15,
@@ -31,7 +35,6 @@ function Contact() {
   }
   return (
     <div>
-      <Header />
       {/* Breadcrumbs */}
       <div className="breadcrumbs">
         <div className="container">
@@ -163,7 +166,6 @@ function Contact() {
         </div>
       </section>
       {/* End Shop Newsletter */}
-      <Footer />
     </div>
   )
 }

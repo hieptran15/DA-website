@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios"
 import { useSelector, useDispatch } from 'react-redux';
-import { registers } from '../../../actions/actions';
+import { load_param, registers } from '../../../actions/actions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link, Redirect } from 'react-router-dom';
@@ -16,11 +16,11 @@ function Register(props) {
     });
     const RegisterState = useSelector(state => state.register)
     const { user, loading, error, status } = RegisterState;
-
-    useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
     const dispatch = useDispatch();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        dispatch(load_param(''))
+    }, [])
     const redirect = props.location.search ? props.location.search.split("=")[1] : '/login';
     const handleOnchange = (e) => {
         e.preventDefault();

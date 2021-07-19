@@ -7,7 +7,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import { Modal, Button } from 'antd';
 import { useEffect } from 'react';
-import { reload_cart } from '../../actions/actions';
+import { load_param, reload_cart } from '../../actions/actions';
 import { Rating } from 'primereact/rating';
 import Axios from 'axios';
 import { useLocation } from 'react-router';
@@ -58,6 +58,7 @@ function Product_details() {
     }, [reload]);
     useEffect(() => {
         window.scrollTo(0, 0)
+        dispatch(load_param(''))
     }, []);
     const formatCurrency = (value) => {
         return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
@@ -130,7 +131,6 @@ function Product_details() {
     }
     return (
         <div>
-            <Header />
             {/* Breadcrumbs */}
             <div className="breadcrumbs">
                 <div className="container">
@@ -344,7 +344,6 @@ function Product_details() {
             )}
             {/* Modal end */}
             {/*/ End Contact */}
-            <Footer />
         </div>
     )
 }

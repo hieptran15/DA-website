@@ -8,7 +8,8 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import Modal from 'antd/lib/modal/Modal';
 import './HistoryOrderUser.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { load_param } from '../../actions/actions';
 function HistoryOrderUser() {
     const [order, setOrder] = useState([]);
     const [globalFilter, setGlobalFilter] = useState(null);
@@ -17,12 +18,14 @@ function HistoryOrderUser() {
     const emailUser = JSON.parse(localStorage.getItem('email'));
     const LoginState = useSelector(state => state.login)
     const { user, loading, error, token, carts, role } = LoginState;
+    const dispatch = useDispatch();
     useEffect(() => {
         Axios.get("http://localhost:8080/api/order/get-all-order").then((result) => {
             const sys = result.data.filter(x => x.email === emailUser)
             setOrder(sys);
         });
         window.scrollTo(0, 0);
+        dispatch(load_param(''))
     }, [user]);
     const formatCurrency = (value) => {
         return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
@@ -78,7 +81,7 @@ function HistoryOrderUser() {
     }
     return (
         <div>
-            <Header />
+           
             {/* Breadcrumbs */}
             <div className="breadcrumbs">
                 <div className="container">
@@ -144,7 +147,6 @@ function HistoryOrderUser() {
                     </Modal>
                 )
             }
-            <Footer />
         </div>
 
     )

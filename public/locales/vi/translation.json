@@ -1,14 +1,72 @@
 {
-    "language":{
+    "language": {
         "1": "Ngôn ngữ"
     },
     "search": "Tìm kiếm sản phẩm ...",
     "category": "Danh mục",
-    "home":{
-        "menu":{
+    "home": {
+        "menu": {
             "home": "Trang chủ",
             "product": "Sản phẩm",
-            "service": "Dịch vụ"
+            "service": "Dịch vụ",
+            "cart": "Giỏ hàng",
+            "checkout": "Thanh toán",
+            "contactus": "Liên hệ",
+            "news": "Tin tức",
+            "introduce": "Giới thiệu",
+            "manage": "Quản lý",
+            "orderHistory": "Lịch sử đơn hàng",
+            "profile": "Hồ sơ",
+            "login": "Đăng nhập",
+            "logout": "Đăng xuất",
+            "viewCart": "Xem giỏ hàng",
+            "items": "Sản phẩm",
+            "emptyCart": "Giỏ hàng rỗng",
+            "total": "Tổng"
+        },
+        "carousel": {
+            "upto": "Khuyễn mãi lên tới 50%",
+            "shirtForMan": "Sơ mi nam",
+            "description1": "Áo Denim của Asos đem đến sự tự tin",
+            "description2": "và sành điệu với gam màu hồng hiện đại",
+            "shopNow": "Mua ngay"
+        },
+        "banner": {
+            "manCollection": "Bộ sưu tập nam",
+            "summerTravel": "Bộ sưu tập du lịch",
+            "summerTravel2": "mùa hè",
+            "bagCollection": "Bộ sưu tập túi",
+            "awesomeBag": "Túi đẹp 2021",
+            "flashSale": "Siêu giảm giá",
+            "midSeason": "Giữa mùa giảm giá",
+            "midSeason2": "tới 40%",
+            "discoverNow": "Khám phá ngay"
+        },
+        "product": {
+            "trendingItem": "Sản phẩm thịnh hành",
+            "noProducts": "Không có sản phẩm nào"
+        },
+        "homeList": {
+            "onSale": "Giảm giá",
+            "bestSeller": "Tốt nhất",
+            "topViewed": "Xem nhiều"
+        },
+        "shopBlog": {
+            "fromBlog": "Blog của chúng tôi"
+        },
+        "shopServices": {
+            "freeShip": "Giao hàng miễn phí",
+            "freeReturn": "Trả lại miễn phí",
+            "sucurePayment": "Thanh toán an toàn",
+            "bestPeice": "Giá tốt nhất",
+            "ordersOver": "Đơn hàng trên ",
+            "dayReturns": "Trả hàng trong 30 ngày",
+            "securePayment": "Thanh toán an toàn 100%",
+            "guaranteedPrice": "Giá đảm bảo",
+            "newsletter": "Bản tin",
+            "description": "Đăng ký bản tin của chúng tôi và được giảm giá ",
+            "description2": "khi mua hàng đầu tiên của bạn",
+            "subscribe": "Đăng ký"
         }
     }
 }

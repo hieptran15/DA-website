@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { reload_cart } from '../../actions/actions'
+import { load_param, reload_cart } from '../../actions/actions'
 import Footer from '../Footer/Footer'
 import Header from '../Header/Header'
 
@@ -13,7 +13,8 @@ function Cart() {
   const dispatch = useDispatch();
   useEffect(() => {
     setCart(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : []);
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
+    dispatch(load_param(''))
   }, [carts]);
 
   const deleteCartItem = (res) => {
@@ -51,7 +52,6 @@ function Cart() {
   }
   return (
     <>
-      <Header />
       <div>
         {/* Breadcrumbs */}
         <div className="breadcrumbs">
@@ -344,7 +344,6 @@ function Cart() {
         </div>
         {/* Modal end */}
       </div>
-      <Footer />
     </>
   )
 }

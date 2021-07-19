@@ -31,9 +31,9 @@ function Header() {
     setCart(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [])
   }, [carts])
 
-
   useEffect(() => {
     i18n.changeLanguage(langSelect);
+    console.log('lang');
   }, [langSelect])
 
   const logoutUser = () => {
@@ -70,8 +70,8 @@ function Header() {
     return (
       <div className="shopping-item">
         <div className="dropdown-cart-header">
-          <span>{ cart.length !== 0 ? cart.length : 0}  Items</span>
-          <Link to="/cart">View Cart</Link>
+          <span>{cart.length !== 0 ? cart.length : 0}  {t('home.menu.items')}</span>
+          <Link to="/cart">{t('home.menu.viewCart')}</Link>
         </div>
         <ul className="shopping-list">
           {
@@ -84,18 +84,18 @@ function Header() {
                   <p className="quantity">{value.count} x <span className="amount">{formatCurrency(value.price)}</span></p>
                 </li>
               )
-            }) : <div>giỏ hàng trống</div>
+            }) : <div>{t('home.menu.emptyCart')}</div>
           }
         </ul>
 
         <div className="bottom">
           <div className="total">
-            <span>Total</span>
-            <span className="total-amount">{formatCurrency( cart.length !== 0 ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span>
+            <span>{t('home.menu.total')}</span>
+            <span className="total-amount">{formatCurrency(cart.length !== 0 ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span>
           </div>
           {
-             cart.length !== 0 && (
-              <Link to="/checkout" className="btn animate">Checkout</Link>
+            cart.length !== 0 && (
+              <Link to="/checkout" className="btn animate">{t('home.menu.checkout')}</Link>
             )
           }
         </div>
@@ -115,8 +115,8 @@ function Header() {
                 {/* Top Left */}
                 <div className="top-left">
                   <ul className="list-main">
-                    <li><i className="ti-headphone-alt" /> +060 (800) 801-582</li>
-                    <li><i className="ti-email" /> support@shophub.com</li>
+                    <li><i className="ti-headphone-alt" /> 034 2925252</li>
+                    <li><i className="ti-email" />Hieptv@gmail.com</li>
                   </ul>
                 </div>
                 {/*/ End Top Left */}
@@ -135,13 +135,13 @@ function Header() {
                       <ul className="setting-admin-item">
                         <div>
                           {roleName === 'admin' || role === 'admin' ?
-                            <li><i className="ti-settings" /><Link to="/home-admin">Manage</Link></li> : ''}
+                            <li><i className="ti-settings" /><Link to="/home-admin">{t('home.menu.manage')}</Link></li> : ''}
                           {roleName === 'ROLE_USER' || role === 'ROLE_USER' ?
-                            <li><i className="ti-id-badge" /><Link to="#">Profile</Link></li> : ''}
+                            <li><i className="ti-id-badge" /><Link to="#">{t('home.menu.profile')}</Link></li> : ''}
                           {roleName === 'ROLE_USER' || role === 'ROLE_USER' ?
-                            <li><i className="ti-harddrives" /><Link to="/history-order-user">Order</Link></li> : ''}
-                          {tokens || token ? <li><i className="ti-unlock" /><a onClick={() => logoutUser()} href="#">Logout</a></li> :
-                            <li><i className="ti-lock" /><Link to="/login">Login</Link></li>
+                            <li><i className="ti-harddrives" /><Link to="/history-order-user">{t('home.menu.orderHistory')}</Link></li> : ''}
+                          {tokens || token ? <li><i className="ti-unlock" /><a onClick={() => logoutUser()} href="#">{t('home.menu.logout')}</a></li> :
+                            <li><i className="ti-lock" /><Link to="/login">{t('home.menu.login')}</Link></li>
                           }
                         </div>
                       </ul>
@@ -228,19 +228,20 @@ function Header() {
                             <li><a href="#">{t('home.menu.service')}</a></li>
                             <li><a href="#">Shop<i className={`ti-angle-down`} /><span className="new">New</span></a>
                               <ul className="dropdown">
-                                <li><NavLink activeClassName="active-menu" to="/cart" onClick={() => testActive('cart')} >Cart</NavLink></li>
+                                <li><NavLink activeClassName="active-menu" to="/cart" onClick={() => testActive('cart')} >{t('home.menu.cart')}</NavLink></li>
                                 {cart.length !== 0 && (
-                                  <li><NavLink activeClassName="active-menu" to="/checkout" onClick={() => testActive('cart')}>Checkout</NavLink></li>
+                                  <li><NavLink activeClassName="active-menu" to="/checkout" onClick={() => testActive('cart')}>{t('home.menu.checkout')}</NavLink></li>
                                 )}
                               </ul>
                             </li>
-                            <li><a href="#">Pages</a></li>
-                            <li><a href="#">Blog<i className="ti-angle-down" /></a>
+                            <li><NavLink activeClassName="active-menu" to="/blog">{t('home.menu.introduce')}</NavLink></li>
+                            {/* <li><a href="#">Blog<i className="ti-angle-down" /></a>
                               <ul className="dropdown">
-                                <li><Link to="/blog">Blog Single Sidebar</Link></li>
+                                
                               </ul>
-                            </li>
-                            <li><NavLink activeClassName="active-menu" to="/contact">Contact Us</NavLink></li>
+                            </li> */}
+                            <li><NavLink activeClassName="active-menu" to="/blog">{t('home.menu.news')}</NavLink></li>
+                            <li><NavLink activeClassName="active-menu" to="/contact">{t('home.menu.contactus')}</NavLink></li>
                           </ul>
                         </div>
                       </div>

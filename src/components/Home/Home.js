@@ -1,13 +1,14 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from 'antd';
-import { reload_cart } from '../../actions/actions';
+import { load_param, reload_cart } from '../../actions/actions';
 import { Link, NavLink } from 'react-router-dom';
 import { Dropdown } from 'primereact/dropdown';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import parse from 'html-react-parser';
+import { useTranslation } from 'react-i18next';
 
 function Home() {
   const sizes = [
@@ -34,6 +35,8 @@ function Home() {
   const [viewAddCart, setViewAddCart] = useState(null);
   const [number, setNumber] = useState(1);
   const [modalViewAddCart, setModalViewAddCart] = useState(false);
+  const loadReducer = useSelector(state => state.load)
+  const { loadParma } = loadReducer;
   const dispatch = useDispatch();
   useEffect(() => {
     Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
@@ -45,7 +48,10 @@ function Home() {
       }
     });
     window.scrollTo(0, 0)
+    dispatch(load_param(''))
   }, [])
+
+  const { t, i18n } = useTranslation();
 
   const formatCurrency = (value) => {
     return value.toLocaleString('vi', { style: 'currency', currency: 'VND' });
@@ -147,7 +153,7 @@ function Home() {
   };
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       {/* Slider Area */}
       <section className="hero-slider">
         {/* Single Slider */}
@@ -167,10 +173,10 @@ function Home() {
                         <div className="row">
                           <div className="col-lg-7 col-12">
                             <div className="hero-text">
-                              <h1><span>UP TO 50% OFF </span>Shirt For Man</h1>
-                              <p>Maboriosam in a nesciung eget magnae <br /> dapibus disting tloctio in the find it pereri <br /> odiy maboriosm.</p>
+                              <h1><span>{t('home.carousel.upto')}</span>{t('home.carousel.shirtForMan')}</h1>
+                              <p>{t('home.carousel.description1')} <br /> {t('home.carousel.description2')}</p>
                               <div className="button">
-                                <a href="#" className="btn">Shop Now!</a>
+                                <a href="#" className="btn">{t('home.carousel.shopNow')}</a>
                               </div>
                             </div>
                           </div>
@@ -190,10 +196,10 @@ function Home() {
                         <div className="row">
                           <div className="col-lg-7 col-12">
                             <div className="hero-text">
-                              <h1><span>UP TO 50% OFF </span>Shirt For Man</h1>
-                              <p>Maboriosam in a nesciung eget magnae <br /> dapibus disting tloctio in the find it pereri <br /> odiy maboriosm.</p>
+                              <h1><span>{t('home.carousel.upto')}</span>{t('home.carousel.shirtForMan')}</h1>
+                              <p>{t('home.carousel.description1')} <br /> {t('home.carousel.description2')}</p>
                               <div className="button">
-                                <a href="#" className="btn">Shop Now!</a>
+                                <a href="#" className="btn">{t('home.carousel.shopNow')}</a>
                               </div>
                             </div>
                           </div>
@@ -213,10 +219,10 @@ function Home() {
                         <div className="row">
                           <div className="col-lg-7 col-12">
                             <div className="hero-text">
-                              <h1><span>UP TO 50% OFF </span>Shirt For Man</h1>
-                              <p>Maboriosam in a nesciung eget magnae <br /> dapibus disting tloctio in the find it pereri <br /> odiy maboriosm.</p>
+                              <h1><span>{t('home.carousel.upto')}</span>{t('home.carousel.shirtForMan')}</h1>
+                              <p>{t('home.carousel.description1')} <br /> {t('home.carousel.description2')}</p>
                               <div className="button">
-                                <a href="#" className="btn">Shop Now!</a>
+                                <a href="#" className="btn">{t('home.carousel.shopNow')}</a>
                               </div>
                             </div>
                           </div>
@@ -251,9 +257,9 @@ function Home() {
               <div className="single-banner">
                 <img src="images\mini-banner1.jpg" alt="#" />
                 <div className="content">
-                  <p>Man's Collectons</p>
-                  <h3>Summer travel <br /> collection</h3>
-                  <a href="#">Discover Now</a>
+                  <p>{t('home.banner.manCollection')}</p>
+                  <h3>{t('home.banner.summerTravel')}<br /> {t('home.banner.summerTravel2')}</h3>
+                  <a href="#">{t('home.banner.discoverNow')}</a>
                 </div>
               </div>
             </div>
@@ -263,9 +269,9 @@ function Home() {
               <div className="single-banner">
                 <img src="images\mini-banner2.jpg" alt="#" />
                 <div className="content">
-                  <p>Bag Collectons</p>
-                  <h3>Awesome Bag <br /> 2020</h3>
-                  <a href="#">Shop Now</a>
+                  <p>{t('home.banner.bagCollection')}</p>
+                  <h3>{t('home.banner.awesomeBag')}</h3>
+                  <a href="#">{t('home.carousel.shopNow')}</a>
                 </div>
               </div>
             </div>
@@ -275,9 +281,9 @@ function Home() {
               <div className="single-banner tab-height">
                 <img src="images\mini-banner3.jpg" alt="#" />
                 <div className="content">
-                  <p>Flash Sale</p>
-                  <h3>Mid Season <br /> Up to <span>40%</span> Off</h3>
-                  <a href="#">Discover Now</a>
+                  <p>{t('home.banner.flashSale')}</p>
+                  <h3>{t('home.banner.midSeason')} <br /> {t('home.banner.midSeason2')}</h3>
+                  <a href="#">{t('home.banner.discoverNow')}</a>
                 </div>
               </div>
             </div>
@@ -292,7 +298,7 @@ function Home() {
           <div className="row">
             <div className="col-12">
               <div className="section-title">
-                <h2>Trending Item</h2>
+                <h2>{t('home.product.trendingItem')}</h2>
               </div>
             </div>
           </div>
@@ -347,9 +353,8 @@ function Home() {
                                 </Link>
                               </div>
                             )
-                          }) : <h3>Không có sản phẩm nào</h3>
+                          }) : <h3>{t('home.product.noProducts')}</h3>
                         }
-
                       </div>
                     </div>
                     {/*/ End Single Tab */}
@@ -369,7 +374,7 @@ function Home() {
               <div className="row">
                 <div className="col-12">
                   <div className="shop-section-title">
-                    <h1>On sale</h1>
+                    <h1>{t('home.homeList.onSale')}</h1>
                   </div>
                 </div>
               </div>
@@ -384,8 +389,8 @@ function Home() {
                   </div>
                   <div className="col-lg-6 col-md-6 col-12 no-padding">
                     <div className="content">
-                      <h4 className="title"><a href="#">Licity jelly leg flat Sandals</a></h4>
-                      <p className="price with-discount">$59</p>
+                      <h4 className="title"><a href="#">Đồ nữ</a></h4>
+                      <p className="price with-discount">200.000 đ</p>
                     </div>
                   </div>
                 </div>
@@ -402,8 +407,8 @@ function Home() {
                   </div>
                   <div className="col-lg-6 col-md-6 col-12 no-padding">
                     <div className="content">
-                      <h5 className="title"><a href="#">Licity jelly leg flat Sandals</a></h5>
-                      <p className="price with-discount">$44</p>
+                      <h4 className="title"><a href="#">Đồ nữ</a></h4>
+                      <p className="price with-discount">200.000 đ</p>
                     </div>
                   </div>
                 </div>
@@ -420,8 +425,8 @@ function Home() {
                   </div>
                   <div className="col-lg-6 col-md-6 col-12 no-padding">
                     <div className="content">
-                      <h5 className="title"><a href="#">Licity jelly leg flat Sandals</a></h5>
-                      <p className="price with-discount">$89</p>
+                      <h4 className="title"><a href="#">Đồ nữ</a></h4>
+                      <p className="price with-discount">200.000 đ</p>
                     </div>
                   </div>
                 </div>
@@ -432,7 +437,7 @@ function Home() {
               <div className="row">
                 <div className="col-12">
                   <div className="shop-section-title">
-                    <h1>Best Seller</h1>
+                    <h1>{t('home.homeList.bestSeller')}</h1>
                   </div>
                 </div>
               </div>
@@ -447,8 +452,8 @@ function Home() {
                   </div>
                   <div className="col-lg-6 col-md-6 col-12 no-padding">
                     <div className="content">
-                      <h5 className="title"><a href="#">Licity jelly leg flat Sandals</a></h5>
-                      <p className="price with-discount">$65</p>
+                      <h4 className="title"><a href="#">Đồ nữ</a></h4>
+                      <p className="price with-discount">200.000 đ</p>
                     </div>
                   </div>
                 </div>
@@ -465,8 +470,8 @@ function Home() {
                   </div>
                   <div className="col-lg-6 col-md-6 col-12 no-padding">
                     <div className="content">
-                      <h5 className="title"><a href="#">Licity jelly leg flat Sandals</a></h5>
-                      <p className="price with-discount">$33</p>
+                      <h5 className="title"><a href="#">Áo nam</a></h5>
+                      <p className="price with-discount">300.000 đ</p>
                     </div>
                   </div>
                 </div>
@@ -483,8 +488,8 @@ function Home() {
                   </div>
                   <div className="col-lg-6 col-md-6 col-12 no-padding">
                     <div className="content">
-                      <h5 className="title"><a href="#">Licity jelly leg flat Sandals</a></h5>
-                      <p className="price with-discount">$77</p>
+                      <h4 className="title"><a href="#">Đồ nữ</a></h4>
+                      <p className="price with-discount">200.000 đ</p>
                     </div>
                   </div>
                 </div>
@@ -495,7 +500,7 @@ function Home() {
               <div className="row">
                 <div className="col-12">
                   <div className="shop-section-title">
-                    <h1>Top viewed</h1>
+                    <h1>{t('home.homeList.topViewed')}</h1>
                   </div>
                 </div>
               </div>
@@ -510,8 +515,8 @@ function Home() {
                   </div>
                   <div className="col-lg-6 col-md-6 col-12 no-padding">
                     <div className="content">
-                      <h5 className="title"><a href="#">Licity jelly leg flat Sandals</a></h5>
-                      <p className="price with-discount">$22</p>
+                      <h4 className="title"><a href="#">Đồ nữ</a></h4>
+                      <p className="price with-discount">200.000 đ</p>
                     </div>
                   </div>
                 </div>
@@ -528,8 +533,8 @@ function Home() {
                   </div>
                   <div className="col-lg-6 col-md-6 col-12 no-padding">
                     <div className="content">
-                      <h5 className="title"><a href="#">Licity jelly leg flat Sandals</a></h5>
-                      <p className="price with-discount">$35</p>
+                      <h5 className="title"><a href="#">Áo nam</a></h5>
+                      <p className="price with-discount">300.000 đ</p>
                     </div>
                   </div>
                 </div>
@@ -546,8 +551,8 @@ function Home() {
                   </div>
                   <div className="col-lg-6 col-md-6 col-12 no-padding">
                     <div className="content">
-                      <h5 className="title"><a href="#">Licity jelly leg flat Sandals</a></h5>
-                      <p className="price with-discount">$99</p>
+                      <h5 className="title"><a href="#">Áo nam</a></h5>
+                      <p className="price with-discount">300.000 đ</p>
                     </div>
                   </div>
                 </div>
@@ -564,7 +569,7 @@ function Home() {
           <div className="row">
             <div className="col-12">
               <div className="section-title">
-                <h2>From Our Blog</h2>
+                <h2>{t('home.shopBlog.fromBlog')}</h2>
               </div>
             </div>
           </div>
@@ -617,8 +622,8 @@ function Home() {
               {/* Start Single Service */}
               <div className="single-service">
                 <i className="ti-rocket" />
-                <h4>Free shiping</h4>
-                <p>Orders over $100</p>
+                <h4>{t('home.shopServices.freeShip')}</h4>
+                <p>{t('home.shopServices.ordersOver')} 500.000 đ</p>
               </div>
               {/* End Single Service */}
             </div>
@@ -626,8 +631,8 @@ function Home() {
               {/* Start Single Service */}
               <div className="single-service">
                 <i className="ti-reload" />
-                <h4>Free Return</h4>
-                <p>Within 30 days returns</p>
+                <h4>{t('home.shopServices.freeReturn')}</h4>
+                <p>{t('home.shopServices.dayReturns')}</p>
               </div>
               {/* End Single Service */}
             </div>
@@ -635,8 +640,8 @@ function Home() {
               {/* Start Single Service */}
               <div className="single-service">
                 <i className="ti-lock" />
-                <h4>Sucure Payment</h4>
-                <p>100% secure payment</p>
+                <h4>{t('home.shopServices.sucurePayment')}</h4>
+                <p>{t('home.shopServices.securePayment')}</p>
               </div>
               {/* End Single Service */}
             </div>
@@ -644,8 +649,8 @@ function Home() {
               {/* Start Single Service */}
               <div className="single-service">
                 <i className="ti-tag" />
-                <h4>Best Peice</h4>
-                <p>Guaranteed price</p>
+                <h4>{t('home.shopServices.bestPeice')}</h4>
+                <p>{t('home.shopServices.guaranteedPrice')}</p>
               </div>
               {/* End Single Service */}
             </div>
@@ -661,11 +666,11 @@ function Home() {
               <div className="col-lg-8 offset-lg-2 col-12">
                 {/* Start Newsletter Inner */}
                 <div className="inner">
-                  <h4>Newsletter</h4>
-                  <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
+                  <h4>{t('home.shopServices.newsletter')}</h4>
+                  <p> {t('home.shopServices.description')} <span>10%</span> {t('home.shopServices.description2')}</p>
                   <form action="mail/mail.php" method="get" target="_blank" className="newsletter-inner">
-                    <input name="EMAIL" placeholder="Your email address" required type="email" />
-                    <button className="btn">Subscribe</button>
+                    <input name="EMAIL" placeholder="Email" required type="email" />
+                    <button className="btn">{t('home.shopServices.subscribe')}</button>
                   </form>
                 </div>
                 {/* End Newsletter Inner */}
@@ -786,7 +791,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
       {viewAddCart && (
         <Modal footer={false} centered visible={modalViewAddCart} width={500} onCancel={() => closeModalViewCart()}>
           <div style={{ marginBottom: "15px", color: "#84b767", fontSize: "18px" }}><i style={{ marginRight: '10px' }} class="fa fa-check-circle"></i>Thêm vào giỏ hàng thành công!</div>

@@ -12,6 +12,8 @@ import './Checkout.css'
 import { Redirect } from 'react-router';
 import Modal from 'antd/lib/modal/Modal';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { load_param } from '../../actions/actions';
 function CheckOut() {
   const cities = [
     { name: 'Ninh Bình', code: 'NY' },
@@ -38,7 +40,7 @@ function CheckOut() {
   const emailUser = JSON.parse(localStorage.getItem('email'));
   const [formValues, setFormValues] = useState(emptyValue);
   const [selectedCity, setSelectedCity] = useState();
-
+  const dispatch = useDispatch();
   useEffect(() => {
     setCartItem(JSON.parse(localStorage.getItem("cartItems")));
     window.scrollTo(0, 0)
@@ -51,6 +53,7 @@ function CheckOut() {
       _valueItem['email'] = '';
       setFormValues(_valueItem);
     }
+    dispatch(load_param(''))
   }, []);
 
   const formatCurrency = (value) => {
@@ -98,7 +101,6 @@ function CheckOut() {
   }
   return (
     <div>
-      <Header />
       {/* Breadcrumbs */}
       <div className="breadcrumbs">
         <div className="container">
@@ -308,7 +310,6 @@ function CheckOut() {
         <Link to="/">Tiếp tục mua hàng <i className="ti-arrow-right"></i></Link>
       </Modal>
       {/* End Shop Newsletter */}
-      <Footer />
     </div>
   )
 }

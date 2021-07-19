@@ -7,8 +7,9 @@ import Header from '../Header/Header';
 import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
 import { Paginator } from 'primereact/paginator';
+import { Rating } from 'primereact/rating';
 import { useDispatch, useSelector } from 'react-redux';
-import { reload_cart } from '../../actions/actions';
+import { load_param, reload_cart } from '../../actions/actions';
 import parse from 'html-react-parser';
 import Footer from '../Footer/Footer';
 import { Link, NavLink, useLocation } from 'react-router-dom';
@@ -29,9 +30,10 @@ function Products() {
     const [viewAddCart, setViewAddCart] = useState(null);
     const [keyCategory, setKeyCategory] = useState('');
     const [keyBrand, setKeyBrand] = useState('');
-    const [valueRange, setValueRange] = useState('')
+    const [valueRange, setValueRange] = useState('');
     const [priceMin, setPriceMin] = useState(0);
     const [priceMax, setPriceMax] = useState(0);
+    const [productOther, setProductsOther] = useState([]);
     const [countProduct, setCountProdcut] = useState(0);
     const [modalView, setModalView] = useState(false);
     const [modalViewAddCart, setModalViewAddCart] = useState(false);
@@ -50,6 +52,7 @@ function Products() {
             setCountProdcut(result.data.count);
             setPageCount(result.data.pages);
         });
+        dispatch(load_param(''))
     }, [keyCategory, typeSort, page, keySearch, priceMin, priceMax, keyBrand, user]);
 
     useEffect(() => {
@@ -57,11 +60,17 @@ function Products() {
             setCategory(result.data);
         });
         getAllBrand();
+        getProducts();
         window.scrollTo(0, 0)
     }, [user])
-    const getAllBrand = () =>{
+    const getAllBrand = () => {
         Axios.get("http://localhost:8080/api/brand/get-all-brand").then((result) => {
             setBrands(result.data)
+        });
+    }
+    const getProducts = () => {
+        Axios.get("http://localhost:8080/api/product/list-all-product").then((result) => {
+            setProductsOther(result.data);
         });
     }
     const onSortChange = (e) => {
@@ -180,7 +189,6 @@ function Products() {
     }
     return (
         <>
-            <Header />
             {/* Breadcrumbs */}
             <Toast ref={toast} />
             <div className="breadcrumbs">
@@ -256,63 +264,32 @@ function Products() {
                                     {/* Single Widget */}
                                     <div className="single-widget recent-post">
                                         <h3 className="title">Other products</h3>
-                                        {/* Single Post */}
-                                        <div className="single-post first">
-                                            <div className="image">
-                                                <img src="images\single-shop-img1.png" alt="#" />
-                                            </div>
-                                            <div className="content">
-                                                <h5><a href="#">Girls Dress</a></h5>
-                                                <p className="price">$99.50</p>
-                                                <ul className="reviews">
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                    <li><i className="ti-star" /></li>
-                                                    <li><i className="ti-star" /></li>
-                                                </ul>
-                                            </div>
+                                        <div className="edit-product-orther">
+                                            {/* Single Post */}
+                                            {
+                                                productOther.length !== 0 ? productOther.map((value, key) => {
+                                                    return (
+                                                        <div key={value._id} className="single-post first">
+                                                            <div className="image">
+                                                            <Link to={`/product-details?userId=${value._id}`}>
+                                                                <img src={value.img_url} alt="#" />
+                                                            </Link>                                                   
+                                                            </div>
+                                                            <div className="content">
+                                                                <h5><Link to={`/product-details?userId=${value._id}`}>{value.name}</Link></h5>
+                                                                <p className="price">{formatCurrency(value.price)}</p>
+                                                                <Rating value={value.rate} readOnly stars={5} cancel={false} />
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }) : <div>không có sản phẩm</div>
+                                            }
+
+                                            {/* End Single Post */}
                                         </div>
-                                        {/* End Single Post */}
-                                        {/* Single Post */}
-                                        <div className="single-post first">
-                                            <div className="image">
-                                                <img src="images\single-shop-img2.png" alt="#" />
-                                            </div>
-                                            <div className="content">
-                                                <h5><a href="#">Women Clothings</a></h5>
-                                                <p className="price">$99.50</p>
-                                                <ul className="reviews">
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                    <li><i className="ti-star" /></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        {/* End Single Post */}
-                                        {/* Single Post */}
-                                        <div className="single-post first">
-                                            <div className="image">
-                                                <img src="images\single-shop-img3.png" alt="#" />
-                                            </div>
-                                            <div className="content">
-                                                <h5><a href="#">Man Tshirt</a></h5>
-                                                <p className="price">$99.50</p>
-                                                <ul className="reviews">
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                    <li className="yellow"><i className="ti-star" /></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        {/* End Single Post */}
                                     </div>
                                     {/*/ End Single Widget */}
-                                    {/* Single Widget */}                               
+                                    {/* Single Widget */}
                                 </div>
                             </div>
                             <div className="col-lg-9 col-md-8 col-12">
@@ -422,11 +399,11 @@ function Products() {
                                 <div className="col-lg-8 offset-lg-2 col-12">
                                     {/* Start Newsletter Inner */}
                                     <div className="inner">
-                                        <h4>Newsletter</h4>
-                                        <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
+                                        <h4>{t('home.shopServices.newsletter')}</h4>
+                                        <p> {t('home.shopServices.description')} <span>10%</span> {t('home.shopServices.description2')}</p>
                                         <form action="mail/mail.php" method="get" target="_blank" className="newsletter-inner">
-                                            <input name="EMAIL" placeholder="Your email address" required type="email" />
-                                            <button className="btn">Subscribe</button>
+                                            <input name="EMAIL" placeholder="Email" required type="email" />
+                                            <button className="btn">{t('home.shopServices.subscribe')}</button>
                                         </form>
                                     </div>
                                     {/* End Newsletter Inner */}
@@ -567,7 +544,6 @@ function Products() {
                 )}
                 {/* Modal end */}
             </div>
-            <Footer />
         </>
     )
 }

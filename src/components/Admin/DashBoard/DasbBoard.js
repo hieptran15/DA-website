@@ -20,7 +20,7 @@ function DasbBoard() {
     }
     const getUsers = () => {
         Axios.get("http://localhost:8080/api/user/get-all-users").then((result) => {
-            setUser(result.data);
+            setUser(result.data.filter(x => x.role === "ROLE_USER"));
         });
     }
     const getOrders = () => {
@@ -37,7 +37,8 @@ function DasbBoard() {
     }
     const options = {
         chart: {
-            type: 'areaspline'
+            type: 'areaspline',
+            renderTo: 'chart',
         },
         xAxis: {
             categories: [

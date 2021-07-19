@@ -1,14 +1,72 @@
 {
-    "language":{
+    "language": {
         "1": "Language"
     },
     "search": "Search products here...",
     "category": "Categorys",
-    "home":{
-        "menu":{
+    "home": {
+        "menu": {
             "home": "Home",
             "product": "Products",
-            "service": "Service"
+            "service": "Service",
+            "cart": "Cart",
+            "checkout": "Checkout",
+            "contactus": "Contact us",
+            "news": "News",
+            "introduce": "Introduce",
+            "manage": "Manage",
+            "orderHistory": "Order history",
+            "profile": "Profile",
+            "login": "Login",
+            "logout": "Logout",
+            "viewCart": "View Cart",
+            "items": "Items",
+            "emptyCart": "Empty cart",
+            "total": "Total"
+        },
+        "carousel": {
+            "upto": "UP TO 50% OFF",
+            "shirtForMan": "Shirt For Man",
+            "description1": "Asos Denim Pants come from confident",
+            "description2": "and stylish with modern pink color",
+            "shopNow": "Shop now"
+        },
+        "banner": {
+            "manCollection": "Man's Collection",
+            "summerTravel": "Summer Travel ",
+            "summerTravel2": "Collection",
+            "bagCollection": "Bag Collection",
+            "awesomeBag": "Awesome Bag 2021",
+            "flashSale": "Flash Sale",
+            "midSeason": "Mid Season Up To",
+            "midSeason2": "40% Off",
+            "discoverNow": "Discover Now"
+        },
+        "product": {
+            "trendingItem": "Trending Item",
+            "noProducts": "Not Products"
+        },
+        "homeList": {
+            "onSale": "On Sale",
+            "bestSeller": "Best Seller",
+            "topViewed": "Top Viewed"
+        },
+        "shopBlog": {
+            "fromBlog": "From Our Blog"
+        },
+        "shopServices": {
+            "freeShip": "FREE SHIPING",
+            "freeReturn": "Free Return",
+            "sucurePayment": "Sucure Payment",
+            "bestPeice": "Best Peice",
+            "ordersOver": "Orders over",
+            "dayReturns": "Within 30 days returns",
+            "securePayment": "100% secure payment",
+            "guaranteedPrice": "Guaranteed price",
+            "newsletter": "Newsletter",
+            "description": "Subscribe to our newsletter and get ",
+            "description2": "off your first purchase",
+            "subscribe": "Subscribe"
         }
     }
 }

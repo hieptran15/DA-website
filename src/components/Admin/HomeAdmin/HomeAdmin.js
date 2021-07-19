@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd';
 import '../admin.css'
 import {
@@ -9,6 +9,7 @@ import {
   DotChartOutlined,
   SlackOutlined,
   UserOutlined,
+  IdcardOutlined
 } from '@ant-design/icons';
 import { useState } from 'react';
 import Category from '../Category/Category';
@@ -18,9 +19,12 @@ import ProductAdmin from '../Product/ProductAdmin';
 import DasbBoard from '../DashBoard/DasbBoard';
 import Brands from '../Brands/Brands';
 import User from '../User/User';
+import Blog from '../Blog/Blog';
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import "./HomeAdmin.css"
+import { useDispatch, useSelector } from 'react-redux';
+import { load_param } from '../../../actions/actions';
 function HomeAdmin() {
   const { Header, Content, Footer, Sider } = Layout;
   const { SubMenu } = Menu;
@@ -29,6 +33,11 @@ function HomeAdmin() {
   const toggler = () => {
     setCollapsed(!collapsed)
   }
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    console.log('admin');
+      dispatch(load_param('pararm'))
+  },[]);
   return (
     <div>
       <Layout style={{ minHeight: '100vh' }}>
@@ -59,18 +68,21 @@ function HomeAdmin() {
             <Menu.Item onClick={() => setKeyCheck('6')} key="6" icon={<UserOutlined />}>
               <a>User</a>
             </Menu.Item>
+            <Menu.Item onClick={() => setKeyCheck('7')} key="7" icon={<IdcardOutlined />}>
+              <a>Blog</a>
+            </Menu.Item>
             {/* <SubMenu key="sub1" icon={<UserOutlined />} title="User">
               <Menu.Item key="3">Tom</Menu.Item>
               <Menu.Item key="4">Bill</Menu.Item>
               <Menu.Item key="5">Alex</Menu.Item>
             </SubMenu> */}
-            <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
+            {/* <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
               <Menu.Item key="6">Team 1</Menu.Item>
               <Menu.Item key="8">Team 2</Menu.Item>
             </SubMenu>
             <Menu.Item key="9" icon={<FileOutlined />}>
               Files
-            </Menu.Item>
+            </Menu.Item> */}
           </Menu>
         </Sider>
         <Layout className="site-layout">
@@ -145,6 +157,15 @@ function HomeAdmin() {
                 </Breadcrumb>
               </div>
               <User />
+            </div>}
+            {keyCheck === '7' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
+              <div>
+                <Breadcrumb style={{ margin: '16px 0' }}>
+                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Home</Link></Breadcrumb.Item>
+                  <Breadcrumb.Item>Blog</Breadcrumb.Item>
+                </Breadcrumb>
+              </div>
+              <Blog />
             </div>}
           </Content>
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2021 Created by Ant UED</Footer>
