@@ -68,5 +68,44 @@
             "description2": "off your first purchase",
             "subscribe": "Subscribe"
         }
+    },
+    "products": {
+        "brands": "Brands",
+        "filterPrice": "Filter by price",
+        "otherProducts": "Other Products",
+        "sortBy": "Sort By:",
+        "addToCart": "ADD TO CART",
+        "customReview": "customer review",
+        "price": "Price",
+        "notProduct": "Not products",
+        "default": "Default",
+        "pricesIncrease": "Prices increase",
+        "reducedPrice": "Reduced price"
+    },
+    "productDetails": {
+        "inStock": "in stock",
+        "chooseSize": "Choose size",
+        "chooseColor": "Choose color",
+        "counselor": "Counselor",
+        "productDescription": "Product Description",
+        "returnPolicy": "Return policy",
+        "productReviews": "Product Reviews",
+        "WritecustomerReview": "Write a customer review",
+        "Rating": "Rating",
+        "notComment": "Not comment"
+    },
+    "cart": {
+        "image": "Image",
+        "name": "Name",
+        "price": "Price",
+        "quantity": "Quantity",
+        "total": "Total",
+        "shiping": "Shiping",
+        "youPay": "You pay",
+        "checkout": "Check out",
+        "continueshoping": "Continue shoping",
+        "emptyCart": "Empty cart",
+        "apply": "Apply",
+        "keyPrice": "Enter your coupon"
     }
 }

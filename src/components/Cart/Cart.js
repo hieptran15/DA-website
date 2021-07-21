@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { load_param, reload_cart } from '../../actions/actions'
@@ -7,6 +8,7 @@ import Footer from '../Footer/Footer'
 import Header from '../Header/Header'
 
 function Cart() {
+  const { t, i18n } = useTranslation();
   const [cart, setCart] = useState([])
   const LoginState = useSelector(state => state.login)
   const { carts } = LoginState
@@ -78,11 +80,11 @@ function Cart() {
                 <table className="table shopping-summery">
                   <thead>
                     <tr className="main-hading">
-                      <th>Image</th>
-                      <th>NAME</th>
-                      <th className="text-center">UNIT PRICE</th>
-                      <th className="text-center">QUANTITY</th>
-                      <th className="text-center">TOTAL</th>
+                      <th>{t('cart.image')}</th>
+                      <th>{t('cart.name')}</th>
+                      <th className="text-center">{t('cart.price')}</th>
+                      <th className="text-center">{t('cart.quantity')}</th>
+                      <th className="text-center">{t('cart.total')}</th>
                       <th className="text-center"><i className="ti-trash remove-icon" /></th>
                     </tr>
                   </thead>
@@ -116,7 +118,7 @@ function Cart() {
                           <td className="action" data-title="Remove"><a onClick={() => deleteCartItem(value)}><i className="ti-trash remove-icon" /></a></td>
                         </tr>
                       )
-                    }) : <h5 style={{ margin: "10px 5px" }}>Giỏ hàng trống</h5>
+                    }) : <h5 style={{ margin: "10px 5px" }}>{t('cart.emptyCart')}</h5>
                     }
                   </tbody>
                 </table>
@@ -131,29 +133,28 @@ function Cart() {
                     <div className="col-lg-8 col-md-5 col-12">
                       <div className="left">
                         <div className="coupon">
-                          <form action="#" target="_blank">
-                            <input name="Coupon" placeholder="Enter Your Coupon" />
-                            <button className="btn">Apply</button>
+                          <form target="_blank">
+                            <input name="Coupon" placeholder={t('cart.keyPrice')} />
+                            <button className="btn">{t('cart.apply')}</button>
                           </form>
                         </div>
-                        <div className="checkbox">
+                        {/* <div className="checkbox">
                           <label className="checkbox-inline" htmlFor={2}><input name="news" id={2} type="checkbox" /> Shipping (+10$)</label>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <div className="col-lg-4 col-md-7 col-12">
                       <div className="right">
                         <ul>
-                          <li>Cart Subtotal<span>{formatCurrency(cart.length !== 0 ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
-                          <li>Shipping<span>Free</span></li>
-                          <li>You Save<span>$20.00</span></li>
-                          <li className="last">You Pay<span>{formatCurrency(cart.length !== 0 ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
+                          <li>{t('cart.total')}<span>{formatCurrency(cart.length !== 0 ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
+                          <li>{t('cart.shiping')}<span>Free</span></li>
+                          <li className="last">{t('cart.youPay')}<span>{formatCurrency(cart.length !== 0 ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
                         </ul>
                         <div className="button5">
                           {cart.length !== 0 && (
-                            <Link to="/checkout" className="btn">Checkout</Link>
+                            <Link to="/checkout" className="btn">{t('cart.checkout')}</Link>
                           )}
-                          <Link to="/" className="btn">Continue shopping</Link>
+                          <Link to="/" className="btn">{t('cart.continueshoping')}</Link>
                         </div>
                       </div>
                     </div>

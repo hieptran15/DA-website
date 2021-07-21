@@ -17,7 +17,9 @@ import parse from 'html-react-parser';
 import InnerImageZoom from 'react-inner-image-zoom';
 import "./Project-details.css";
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css'
+import { useTranslation } from 'react-i18next';
 function Product_details() {
+    const { t, i18n } = useTranslation();
     const sizes = [
         { name: 'S', code: 'S' },
         { name: 'L', code: 'L' },
@@ -164,10 +166,10 @@ function Product_details() {
                                     <div className="quickview-ratting-review">
                                         <div className="quickview-ratting-wrap edit-rating-page">
                                             <Rating value={listReviews.length !== 0 ? (listReviews.reduce((a, b) => a + b.rating, 0)) / listReviews.length : 0} readOnly stars={5} cancel={false} />
-                                            <a> ({listReviews.length !== 0 ? listReviews.length : 0} customer review)</a>
+                                            <a> ({listReviews.length !== 0 ? listReviews.length : 0} {t('products.customReview')})</a>
                                         </div>
                                         <div className="quickview-stock">
-                                            <span><i className="fa fa-check-circle-o" /> in stock</span>
+                                            <span><i className="fa fa-check-circle-o" /> {t('productDetails.inStock')}</span>
                                         </div>
                                     </div>
                                     <h3>{data ? formatCurrency(data.price) : ''}</h3>
@@ -178,11 +180,11 @@ function Product_details() {
                                         <div className="row">
                                             <div className="col-lg-6 col-12">
                                                 <h5 className="title">Size</h5>
-                                                <Dropdown value={selectedSize} options={sizes} optionLabel="name" onChange={onSizeChange} placeholder="Chọn size" />
+                                                <Dropdown value={selectedSize} options={sizes} optionLabel="name" onChange={onSizeChange} placeholder={t('productDetails.chooseSize')} />
                                             </div>
                                             <div className="col-lg-6 col-12">
                                                 <h5 className="title">Color</h5>
-                                                <Dropdown value={selectedColor} options={colors} optionLabel="name" onChange={onColorChange} placeholder="Chọn color" />
+                                                <Dropdown value={selectedColor} options={colors} optionLabel="name" onChange={onColorChange} placeholder={t('productDetails.chooseColor')} />
                                             </div>
                                         </div>
                                     </div>
@@ -204,7 +206,7 @@ function Product_details() {
                                         {/*/ End Input Order */}
                                     </div>
                                     <div className="add-to-cart">
-                                        <a href="#" className="btn" onClick={() => onlyAddCart(data)}>Add to cart</a>
+                                        <a href="#" className="btn" onClick={() => onlyAddCart(data)}>{t('products.addToCart')}</a>
                                     </div>
                                 </div>
                                 <div className="contact-Staff">
@@ -213,7 +215,7 @@ function Product_details() {
                                             <img style={{ width: "40px", borderRadius: "50%" }} src="./images/logoDefault.jpg" />
                                         </div>
                                         <div className="edit-text">
-                                            <p>Kinh doanh 1</p>
+                                            <p>{t('productDetails.counselor')} 1</p>
                                             <p>1234335356</p>
                                         </div>
                                     </a>
@@ -222,7 +224,7 @@ function Product_details() {
                                             <img style={{ width: "40px", borderRadius: "50%" }} src="./images/logoDefault.jpg" />
                                         </div>
                                         <div className="edit-text">
-                                            <p>Kinh doanh 2</p>
+                                            <p>{t('productDetails.counselor')} 2</p>
                                             <p>1234335356</p>
                                         </div>
                                     </a>
@@ -233,10 +235,10 @@ function Product_details() {
                     <div className="product-tab">
                         <ul className="list-style">
                             <li onClick={() => setCheckey('des')} className={'test' + ' ' + (checkey === 'des' ? 'activeList' : '')}>
-                                <a>Mô tả sản phẩm</a>
+                                <a>{t('productDetails.productDescription')}</a>
                             </li>
                             <li onClick={() => setCheckey('plo')} className={checkey === 'plo' ? 'activeList' : ''}>
-                                <a>Chính sách đổi trả</a>
+                                <a>{t('productDetails.returnPolicy')}</a>
                             </li>
                         </ul>
                         <div className="tab-content edit">
@@ -278,7 +280,7 @@ function Product_details() {
                     </div>
                     <div className="Reviews">
                         <div className="Reviews-item">
-                            <h2>Đánh giá sản phẩm</h2>
+                            <h2>{t('productDetails.productReviews')}</h2>
                             {listReviews.length !== 0 ? listReviews.map((value, key) => {
                                 return (
                                     <div key={value._id} className="list-revews">
@@ -293,12 +295,12 @@ function Product_details() {
                                         <p style={{ marginLeft: "50px" }}>{value.comment}</p>
                                     </div>
                                 )
-                            }) : <p>Không có bình luận nào.</p>}
+                            }) : <p>{t('productDetails.notComment')}</p>}
                             {email !== null ? (
                                 <div className="addReviews">
-                                    <h4>Write a customer review</h4>
+                                    <h4>{t('productDetails.WritecustomerReview')}</h4>
                                     <div>
-                                        <p>Rating</p>
+                                        <p>{t('productDetails.Rating')}</p>
                                         <Rating cancel={false} onChange={(e) => setValueRating(e.value)} value={valueRating} stars={5} cancel={false} />
                                     </div>
                                     <div>

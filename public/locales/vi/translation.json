@@ -68,5 +68,44 @@
             "description2": "khi mua hàng đầu tiên của bạn",
             "subscribe": "Đăng ký"
         }
+    },
+    "products": {
+        "brands": "Thương hiệu",
+        "filterPrice": "Lọc theo giá",
+        "otherProducts": "Sản phẩm khác",
+        "sortBy": "Sắp xếp theo:",
+        "addToCart": "Thêm vào giỏ",
+        "customReview": "Đánh giá của khách hàng",
+        "price": "Giá",
+        "notProduct": "Không có sản phẩm nào",
+        "default": "Mặc định",
+        "pricesIncrease": "Giá tăng dần",
+        "reducedPrice": "Giá giảm dần"
+    },
+    "productDetails": {
+        "inStock": "Chính hãng",
+        "chooseSize": "Chọn size",
+        "chooseColor": "Chọn màu",
+        "counselor": "Nhân viên tư vấn",
+        "productDescription": "Mô tả sản phẩm",
+        "returnPolicy": "Chính sách đổi trả",
+        "productReviews": "Đánh giá sản phẩm",
+        "WritecustomerReview": "Nhận xét của khách hàng",
+        "Rating": "Đánh giá",
+        "notComment": "Không có bình luận nào"
+    },
+    "cart": {
+        "image": "Ảnh",
+        "name": "Tên sản phẩm",
+        "price": "Giá",
+        "quantity": "Số lượng",
+        "total": "Tổng tiền",
+        "shiping": "Giao hàng",
+        "youPay": "Số tiền trả",
+        "checkout": "Thanh toán",
+        "continueshoping": "Tiếp tục mua hàng",
+        "emptyCart": "Giỏ hàng trống",
+        "apply": "Áp dụng",
+        "keyPrice": "Nhập mã giảm giá"
     }
 }

@@ -16,7 +16,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import "./Products.css"
 function Products() {
-    const sort = [{ name: 'Mặc định', code: '' }, { name: 'Giá tăng dần', code: 'lowest' }, { name: 'Giá giảm dần', code: 'heightest' }];
+    const { t, i18n } = useTranslation();
     const [data, setData] = useState([]);
     const [category, setCategory] = useState([]);
     const [brands, setBrands] = useState([]);
@@ -24,7 +24,7 @@ function Products() {
     const [pageCount, setPageCount] = useState(0);
     const [getRow, setGetRow] = useState(0);
     const [typeSort, setTypeSort] = useState('');
-    const [valueSort, setValueSort] = useState({ name: 'Mặc định', code: '' });
+    const [valueSort, setValueSort] = useState({ name: t('products.default'), code: '' });
     const [view, setView] = useState(null);
     const [productViewType, setProductViewType] = useState('grid')
     const [viewAddCart, setViewAddCart] = useState(null);
@@ -45,7 +45,7 @@ function Products() {
     const LoginState = useSelector(state => state.login)
     const { user, loading, error, token, carts, role } = LoginState;
     const keySearch = query.get("search");
-    const { t, i18n } = useTranslation();
+    const sort = [{ name: t('products.default'), code: '' }, { name: t('products.pricesIncrease'), code: 'lowest' }, { name: t('products.reducedPrice'), code: 'heightest' }];
     useEffect(() => {
         Axios.get(`http://localhost:8080/api/product/get-product?searchKeyword=${keySearch ? keySearch : ''}&min=${priceMin}&max=${priceMax}&category=${keyCategory}&brand=${keyBrand}&price=${typeSort}&page=${page}`).then((result) => {
             setData(result.data.datas);
@@ -225,7 +225,7 @@ function Products() {
                                         </ul>
                                     </div>
                                     <div className="single-widget category">
-                                        <h3 className="title">Brands</h3>
+                                        <h3 className="title">{t('products.brands')}</h3>
                                         <ul className="categor-list">
                                             {brands ? brands.map((value, key) => {
                                                 return (
@@ -237,13 +237,13 @@ function Products() {
                                     {/*/ End Single Widget */}
                                     {/* Shop By Price */}
                                     <div className="single-widget range">
-                                        <h3 className="title">Shop by Price</h3>
+                                        <h3 className="title">{t('products.filterPrice')}</h3>
                                         <div className="price-filter">
                                             <div className="price-filter-inner">
                                                 <div id="slider-range" />
                                                 <div className="price_slider_amount">
                                                     <div className="label-input">
-                                                        <span>Range:</span><input type="text" id="amount" name="price" placeholder="Add Your Price" />
+                                                        <span>{t('products.price')}:</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -263,7 +263,7 @@ function Products() {
                                     {/*/ End Shop By Price */}
                                     {/* Single Widget */}
                                     <div className="single-widget recent-post">
-                                        <h3 className="title">Other products</h3>
+                                        <h3 className="title">{t('products.otherProducts')}</h3>
                                         <div className="edit-product-orther">
                                             {/* Single Post */}
                                             {
@@ -282,7 +282,7 @@ function Products() {
                                                             </div>
                                                         </div>
                                                     )
-                                                }) : <div>không có sản phẩm</div>
+                                                }) : <div>{t('products.notProduct')}</div>
                                             }
 
                                             {/* End Single Post */}
@@ -299,8 +299,8 @@ function Products() {
                                         <div className="shop-top">
                                             <div className="shop-shorter">
                                                 <div className="single-shorter">
-                                                    <label>Sort By :</label>
-                                                    <Dropdown value={valueSort} options={sort} optionLabel="name" placeholder="Giá..." onChange={onSortChange} />
+                                                    <label>{t('products.sortBy')}</label>
+                                                    <Dropdown value={valueSort} options={sort} optionLabel="name" placeholder={t('products.default')} onChange={onSortChange} />
                                                 </div>
                                             </div>
                                             <div className="shop-shorter-right">
@@ -336,7 +336,7 @@ function Products() {
                                                                         <a title="Compare" href="#"><i className="ti-bar-chart-alt" /><span>Add to Compare</span></a>
                                                                     </div>
                                                                     <div className="product-action-2">
-                                                                        <a title="Add to cart" onClick={() => onlyAddCart(value)}>Add to cart</a>
+                                                                        <a title="Add to cart" onClick={() => onlyAddCart(value)}>{t('products.addToCart')}</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -349,7 +349,7 @@ function Products() {
                                                         </div>
                                                     </div>
                                                 )
-                                            }) : <h4 className="text-empty">Không có sản phẩm nào</h4>}
+                                            }) : <h4 className="text-empty">{t('products.notProduct')}</h4>}
                                         </div>
                                     )}
                                     {productViewType === "list" && (
@@ -379,7 +379,7 @@ function Products() {
                                                         </div>
                                                     </div>
                                                 )
-                                            }) : <h4 className="text-empty">Không có sản phẩm nào</h4>}
+                                            }) : <h4 className="text-empty">{t('products.notProduct')}</h4>}
                                         </div>
                                     )}
                                 </div>
@@ -445,10 +445,10 @@ function Products() {
                                                                 <i className="yellow fa fa-star" />
                                                                 <i className="fa fa-star" />
                                                             </div>
-                                                            <a href="#"> (1 customer review)</a>
+                                                            <a href="#"> (1 {t('products.customReview')})</a>
                                                         </div>
                                                         <div className="quickview-stock">
-                                                            <span><i className="fa fa-check-circle-o" /> in stock</span>
+                                                            <span><i className="fa fa-check-circle-o" /> Chính hãng</span>
                                                         </div>
                                                     </div>
                                                     <h3>{formatCurrency(view.price)}</h3>
@@ -495,7 +495,7 @@ function Products() {
                                                         {/*/ End Input Order */}
                                                     </div>
                                                     <div className="add-to-cart">
-                                                        <a href="#" className="btn" onClick={() => addToCart(view)}>Add to cart</a>
+                                                        <a href="#" className="btn" onClick={() => addToCart(view)}>{t('products.addToCart')}</a>
                                                         {/* <a href="#" className="btn min"><i className="ti-heart" /></a>
                                                         <a href="#" className="btn min"><i className="fa fa-compress" /></a> */}
                                                     </div>

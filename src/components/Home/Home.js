@@ -339,7 +339,7 @@ function Home() {
                                           <a title="Compare" href="#"><i className="ti-bar-chart-alt" /><span>Add to Compare</span></a>
                                         </div>
                                         <div className="product-action-2">
-                                          <a title="Add to cart" onClick={() => onlyAddCart(value)}>Add to cart</a>
+                                          <a title={t('products.addToCart')} onClick={() => onlyAddCart(value)}>{t('products.addToCart')}</a>
                                         </div>
                                       </div>
                                     </div>
