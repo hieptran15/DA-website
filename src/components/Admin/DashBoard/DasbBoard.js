@@ -67,10 +67,10 @@ function DasbBoard() {
             clusterFormat: 'Clustered points: {point.clusterPointsAmount}'
         },
         title: {
-            text: 'Revenue'
+            text: 'Doanh thu'
         },
         series: [{
-            name: 'Total',
+            name: 'Tổng',
             data: [5000000, 40000000, 30000000, 53000000, 28000000, 100000000, 120000000, 140000000, 60000000, 70000000, 80000000, 150000000], color: '#f07f84'
         }]
     };
@@ -82,7 +82,7 @@ function DasbBoard() {
                         <div className="edit_order">
                             <div className="item">
                                 <p>{orders.length !== 0 ? orders.length : 0}</p>
-                                <b>Order</b>
+                                <b>Đơn hàng</b>
                             </div>
                             <div className="edit_icon">
                                 <i class="ti-package"></i>
@@ -93,7 +93,7 @@ function DasbBoard() {
                         <div className="edit_product">
                             <div className="item">
                                 <p>{products.length !== 0 ? products.length : 0}</p>
-                                <b>Products</b>
+                                <b>Sản phẩm</b>
                             </div>
                             <div className="edit_icon">
                                 <i class="ti-receipt"></i>
@@ -104,7 +104,7 @@ function DasbBoard() {
                         <div className="edit_customer">
                             <div className="item">
                                 <p>{users.length !== 0 ? users.length : 0}</p>
-                                <b>Customers</b>
+                                <b>Khách hàng</b>
                             </div>
                             <div className="edit_icon">
                                 <i class="fa fa-users"></i>
@@ -115,7 +115,7 @@ function DasbBoard() {
                         <div className="edit_review">
                             <div className="item">
                                 <p>{formatCurrency(totalMount)}</p>
-                                <b>Total amount</b>
+                                <b>Tổng thu nhập</b>
                             </div>
                             <div className="edit_icon">
                                 <i class="ti-shopping-cart-full"></i>
@@ -130,7 +130,7 @@ function DasbBoard() {
                     <HighchartsReact  highcharts={Highcharts} options={options} />
                 </div>
                 <div className="top-selling">
-                    <div className="header-edit">Top Rating Products</div>
+                    <div className="header-edit">Top Đánh giá sản phẩm</div>
                     <div className="item_body">
                         {products.length !== 0 ? products.map((value, key) => {
                             return (

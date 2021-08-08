@@ -107,5 +107,54 @@
         "emptyCart": "Giỏ hàng trống",
         "apply": "Áp dụng",
         "keyPrice": "Nhập mã giảm giá"
+    },
+    "checkout": {
+        "userInformation": "Thông tin khách hàng",
+        "name": "Tên",
+        "Address": "Địa chỉ",
+        "phone": "SĐT",
+        "postalCode": "Mã bưu điện",
+        "city": "Thành phố",
+        "note": "Ghi chú",
+        "order": "Đơn hàng",
+        "product": "Sản phẩm",
+        "payment": "Phương thức thanh toán",
+        "checkoutPayment": "Thanh toán khi nhận hàng",
+        "processCheckout": "Xử lý thanh toán"
+    },
+    "contact": {
+        "getInTouch": "Liên hệ",
+        "writeUsAMessage": "Viết tin nhắn cho chúng tôi",
+        "yourSubjects": "Đối tượng của bạn",
+        "message": "Tin nhắn",
+        "callUsNow": "Gọi cho chúng tôi ngay:",
+        "ourAddress": "Địa chỉ của chúng tôi:",
+        "sendMessage": "Gửi tin nhắn"
+    },
+    "news": {
+        "comment": "Bình luận",
+        "leaveAComment": "Để lại bình luận",
+        "postComment": "Gửi bình luận",
+        "category": "Danh mục",
+        "thisPost": "Bài viết gần đây",
+        "tag": "Thẻ"
+    },
+    "breadCrumb": {
+        "home": "Trang chủ",
+        "products": "Sản phẩm",
+        "cart": "Giỏ hàng",
+        "checkOut": "Thanh toán",
+        "blog": "Blog",
+        "contact": "Liên hệ",
+        "details": "Chi tiết sản phẩm"
+    },
+    "auth": {
+        "login": "Đăng nhập",
+        "password": "Mật khẩu",
+        "registerAcc": "Đăng ký tài khoản",
+        "lostPass": "Quên mật khẩu",
+        "resgister": "Đăng ký",
+        "UserName": "Tên sử dụng",
+        "haveAccount": "Đã có tài khoản"
     }
 }

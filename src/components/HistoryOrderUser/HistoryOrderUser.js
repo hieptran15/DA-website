@@ -10,7 +10,9 @@ import Modal from 'antd/lib/modal/Modal';
 import './HistoryOrderUser.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { load_param } from '../../actions/actions';
+import { useTranslation } from 'react-i18next';
 function HistoryOrderUser() {
+    const { t, i18n } = useTranslation();
     const [order, setOrder] = useState([]);
     const [globalFilter, setGlobalFilter] = useState(null);
     const [orderDetail, setOrderDetails] = useState([]);
@@ -89,8 +91,8 @@ function HistoryOrderUser() {
                         <div className="col-12">
                             <div className="bread-inner">
                                 <ul className="bread-list">
-                                    <li><a href="index1.html">Home<i className="ti-arrow-right" /></a></li>
-                                    <li className="active"><a href="blog-single.html">History order</a></li>
+                                    <li><a href="index1.html">{t('breadCrumb.home')}<i className="ti-arrow-right" /></a></li>
+                                    <li className="active"><a href="blog-single.html">Lịch sử đơn hàng</a></li>
                                 </ul>
                             </div>
                         </div>

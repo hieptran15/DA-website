@@ -197,8 +197,8 @@ function Products() {
                         <div className="col-12">
                             <div className="bread-inner">
                                 <ul className="bread-list">
-                                    <li><a href="index1.html">Home<i className="ti-arrow-right" /></a></li>
-                                    <li className="active"><a href="blog-single.html">Shop Grid</a></li>
+                                    <li><Link to={'/'}>{t('breadCrumb.home')}<i className="ti-arrow-right" /></Link></li>
+                                    <li className="active"><a>{t('breadCrumb.products')}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -384,7 +384,7 @@ function Products() {
                                     )}
                                 </div>
                                 <div className="edit-paginator">
-                                    <Paginator first={page} rows={6} totalRecords={countProduct} onPageChange={onBasicPageChange}></Paginator>
+                                    <Paginator first={page} rows={9} totalRecords={countProduct} onPageChange={onBasicPageChange}></Paginator>
                                 </div>
                             </div>
                         </div>

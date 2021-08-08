@@ -6,7 +6,9 @@ import Footer from '../Footer/Footer'
 import Header from '../Header/Header'
 import parse from 'html-react-parser';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 function Blog_Slide_bar() {
+  const { t, i18n } = useTranslation();
   const emptyComment = {
     name: '',
     email: '',
@@ -74,8 +76,8 @@ function Blog_Slide_bar() {
             <div className="col-12">
               <div className="bread-inner">
                 <ul className="bread-list">
-                  <li><a href="index1.html">Home<i className="ti-arrow-right" /></a></li>
-                  <li className="active"><a href="blog-single.html">Blog Single Sidebar</a></li>
+                  <li><a href="index1.html">{t('breadCrumb.home')}<i className="ti-arrow-right" /></a></li>
+                  <li className="active"><a href="blog-single.html">Blog</a></li>
                 </ul>
               </div>
             </div>
@@ -97,7 +99,7 @@ function Blog_Slide_bar() {
                     <div className="blog-detail">
                       <h2 className="blog-title">{blog ? blog.title : ''}</h2>
                       <div className="blog-meta">
-                        <span className="author"><a ><i className="fa fa-user" />By Admin</a><a ><i className="fa fa-calendar" />{blog ? dateFormat(blog.createdAt) : ''}</a><a ><i className="fa fa-comments" />Comment ({blog ? blog.reviews.length : 0})</a></span>
+                        <span className="author"><a ><i className="fa fa-user" />Admin</a><a ><i className="fa fa-calendar" />{blog ? dateFormat(blog.createdAt) : ''}</a><a ><i className="fa fa-comments" />{t('news.comment')}({blog ? blog.reviews.length : 0})</a></span>
                       </div>
                       <div className="content">
                         {/* <p>What a crazy time. I have five children in colleghigh school graduates.jpge or pursing post graduate studies  Each of my children attends college far from home, the closest of which is more than 800 miles away. While I miss being with my older children, I know that a college experience can be the source of great growth and experience can be the source of source of great growth and can provide them with even greater in future.</p>
@@ -125,7 +127,7 @@ function Blog_Slide_bar() {
                   </div>
                   <div className="col-12">
                     <div className="comments">
-                      <h3 className="comment-title">Comments ({blog ? blog.reviews.length : 0})</h3>
+                      <h3 className="comment-title">{t('news.comment')} ({blog ? blog.reviews.length : 0})</h3>
                       {/* Single Comment */}
                       {review.length !== 0 ? review.map((value, key) => {
                         return (
@@ -173,31 +175,31 @@ function Blog_Slide_bar() {
                     {email !== null ? (
                       <div className="reply">
                         <div className="reply-head">
-                          <h2 className="reply-title">Leave a Comment</h2>
+                          <h2 className="reply-title">{t('news.leaveAComment')}</h2>
                           {/* Comment Form */}
                           <form className="form">
                             <div className="row">
                               <div className="col-lg-6 col-md-6 col-12">
                                 <div className="form-group">
-                                  <label>Your Name<span>*</span></label>
+                                  <label>{t('checkout.name')}<span>*</span></label>
                                   <input style={{outline: 'none'}} type="text" name="name" onChange={(e) => onChangeInput(e, 'name')} placeholder required="required" />
                                 </div>
                               </div>
                               <div className="col-lg-6 col-md-6 col-12">
                                 <div className="form-group">
-                                  <label>Your Email<span>*</span></label>
+                                  <label>Email<span>*</span></label>
                                   <input style={{outline: 'none'}} type="email" name="email" value={commentItem.email} onChange={(e) => onChangeInput(e, 'email')} placeholder required="required" />
                                 </div>
                               </div>
                               <div className="col-12">
                                 <div className="form-group">
-                                  <label>Your Message<span>*</span></label>
+                                  <label>{t('contact.message')}<span>*</span></label>
                                   <textarea style={{outline: 'none'}} name="comment" onChange={(e) => onChangeInput(e, 'comment')} placeholder defaultValue={""} />
                                 </div>
                               </div>
                               <div className="col-12">
                                 <div className="form-group button">
-                                  <button onClick={(e) => addComment(e)} className="btn">Post comment</button>
+                                  <button onClick={(e) => addComment(e)} className="btn">{t('news.postComment')}</button>
                                 </div>
                               </div>
                             </div>
@@ -222,7 +224,7 @@ function Blog_Slide_bar() {
                 {/*/ End Single Widget */}
                 {/* Single Widget */}
                 <div className="single-widget category">
-                  <h3 className="title">Blog Categories</h3>
+                  <h3 className="title">{t('news.category')}</h3>
                   <ul className="categor-list">
                     <li><a href="#">Thời Trang Nam 2020</a></li>
                     <li><a href="#">Thời Trang Nam 2020</a></li>
@@ -233,7 +235,7 @@ function Blog_Slide_bar() {
                 {/*/ End Single Widget */}
                 {/* Single Widget */}
                 <div className="single-widget recent-post">
-                  <h3 className="title">Bài gần đây</h3>
+                  <h3 className="title">{t('news.thisPost')}</h3>
                   {/* Single Post */}
                   <div className="single-post">
                     <div className="image">
@@ -254,7 +256,7 @@ function Blog_Slide_bar() {
                 {/*/ End Single Widget */}
                 {/* Single Widget */}
                 <div className="single-widget side-tags">
-                  <h3 className="title">Tags</h3>
+                  <h3 className="title">{t('news.tag')}</h3>
                   <ul className="tag">
                     <li><a href="#">Ecommerce</a></li>
                   </ul>

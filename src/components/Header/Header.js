@@ -226,7 +226,7 @@ function Header() {
                             <li><NavLink exact to="/" activeClassName="active-menu" >{t('home.menu.home')}</NavLink></li>
                             <li><NavLink to="/product" activeClassName="active-menu" >{t('home.menu.product')}</NavLink></li>
                             <li><a href="#">{t('home.menu.service')}</a></li>
-                            <li><a href="#">Shop<i className={`ti-angle-down`} /><span className="new">New</span></a>
+                            <li><a href="#">Shop<i className={`ti-angle-down`} /></a>
                               <ul className="dropdown">
                                 <li><NavLink activeClassName="active-menu" to="/cart" onClick={() => testActive('cart')} >{t('home.menu.cart')}</NavLink></li>
                                 {cart.length !== 0 && (
@@ -234,7 +234,7 @@ function Header() {
                                 )}
                               </ul>
                             </li>
-                            <li><NavLink activeClassName="active-menu" to="/blog">{t('home.menu.introduce')}</NavLink></li>
+                            {/* <li><NavLink activeClassName="active-menu" to="/blog">{t('home.menu.introduce')}</NavLink></li> */}
                             {/* <li><a href="#">Blog<i className="ti-angle-down" /></a>
                               <ul className="dropdown">
                                 
