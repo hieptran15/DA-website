@@ -31,6 +31,7 @@ function Category() {
     });
     window.scrollTo(0, 0);
     console.log('hihihhi');
+    console.log('test nha');
   }, [check]);
 
   const openNew = (key) => {
