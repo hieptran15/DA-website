@@ -31,6 +31,8 @@ function Category() {
     });
     window.scrollTo(0, 0);
     console.log('hihihhi');
+    //sdjk
+    console.log('đây là master change');
   }, [check]);
 
   const openNew = (key) => {
