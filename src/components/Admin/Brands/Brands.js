@@ -28,6 +28,8 @@ function Brands() {
         });
         window.scrollTo(0, 0);
         console.log('brands sprint2');
+        //hihhh
+        console.log('brands');
     }, [check]);
 
     const openNew = (key) => {
