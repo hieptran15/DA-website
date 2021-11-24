@@ -26,7 +26,8 @@ function Brands() {
         Axios.get("http://localhost:8080/api/brand/get-all-brand").then((result) => {
             setBrands(result.data)
         });
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
+        console.log('brands sprint2');
     }, [check]);
 
     const openNew = (key) => {
