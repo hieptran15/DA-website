@@ -1,4 +1,4 @@
-import {actionType, login_user_Error, login_user_Success, registerError, registerSuccess,} from "../actions/actions";
+import {actionType, login_user, login_user_Error, login_user_Success, registerError, registerSuccess,} from "../actions/actions";
 import {takeLatest,put} from "redux-saga/effects";
 import Axios from "axios";
 function* sagaRegisterUser(value){
@@ -17,7 +17,8 @@ export function* watchSagaRegisterUser(){
 }
 
 function* sagaLoginUser(user){
-    const data=user.payload
+    const data=user.payload;
+    put(login_user());
     try {
         const response = yield Axios.post("http://localhost:8080/api/user/singIn",data)
             // const resjson = yield response.json()

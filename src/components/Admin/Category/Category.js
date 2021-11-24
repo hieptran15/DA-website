@@ -29,7 +29,8 @@ function Category() {
     Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
       setCategory(result.data)
     });
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
+    console.log('hihihhi');
   }, [check]);
 
   const openNew = (key) => {

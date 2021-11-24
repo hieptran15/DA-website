@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import { Modal } from 'antd';
 import { load_param, reload_cart } from '../../actions/actions';
 import { Link, NavLink } from 'react-router-dom';
@@ -10,7 +11,7 @@ import Header from '../Header/Header';
 import parse from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 
-function Home() {
+function Home(location, props) {
   const sizes = [
     { name: 'S', code: 'S' },
     { name: 'L', code: 'L' },
@@ -22,6 +23,8 @@ function Home() {
     { name: 'Cam' },
     { name: 'Vàng' },
   ];
+
+  let history = useHistory();
   const [category, setCategory] = useState([]);
   const [keyCategory, setKeyCategory] = useState('');
   const [cartItems, setCartItems] = useState(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : []);
@@ -39,6 +42,7 @@ function Home() {
   const { loadParma } = loadReducer;
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log(location);
     Axios.get("http://localhost:8080/api/category/get-all-category").then((result) => {
       setCategory(result.data);
       if (result.data.length !== 0) {
@@ -48,7 +52,12 @@ function Home() {
       }
     });
     window.scrollTo(0, 0)
-    dispatch(load_param(''))
+    dispatch(load_param(''));
+
+    // unmount function
+    return () => {
+      console.log('unmount');
+    }
   }, [])
 
   const { t, i18n } = useTranslation();
@@ -151,6 +160,11 @@ function Home() {
   const divStyle2 = {
     backgroundImage: 'url("/images/slider-image2.jpg")',
   };
+  const testNavigate = () => {
+    console.log('adfaa');
+    console.log(history);
+    location.history.push("/product", { data: ['tata'] });
+  }
   return (
     <>
       {/* <Header /> */}
@@ -298,7 +312,7 @@ function Home() {
           <div className="row">
             <div className="col-12">
               <div className="section-title">
-                <h2>{t('home.product.trendingItem')}</h2>
+                <h2 onClick={() => testNavigate()}>{t('home.product.trendingItem')}</h2>
               </div>
             </div>
           </div>

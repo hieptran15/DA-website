@@ -8,6 +8,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
 import { Paginator } from 'primereact/paginator';
 import { Rating } from 'primereact/rating';
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { load_param, reload_cart } from '../../actions/actions';
 import parse from 'html-react-parser';
@@ -15,7 +16,7 @@ import Footer from '../Footer/Footer';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import "./Products.css"
-function Products() {
+function Products(location) {
     const { t, i18n } = useTranslation();
     const [data, setData] = useState([]);
     const [category, setCategory] = useState([]);
@@ -40,6 +41,7 @@ function Products() {
     const [cartItems, setCartItems] = useState(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : []);
     const [number, setNumber] = useState(1);
     const toast = useRef(null);
+    let history = useHistory()
     const dispatch = useDispatch();
     const query = new URLSearchParams(useLocation().search);
     const LoginState = useSelector(state => state.login)
@@ -47,6 +49,8 @@ function Products() {
     const keySearch = query.get("search");
     const sort = [{ name: t('products.default'), code: '' }, { name: t('products.pricesIncrease'), code: 'lowest' }, { name: t('products.reducedPrice'), code: 'heightest' }];
     useEffect(() => {
+        console.log(history.location.state);
+        console.log('location', location);
         Axios.get(`http://localhost:8080/api/product/get-product?searchKeyword=${keySearch ? keySearch : ''}&min=${priceMin}&max=${priceMax}&category=${keyCategory}&brand=${keyBrand}&price=${typeSort}&page=${page}`).then((result) => {
             setData(result.data.datas);
             setCountProdcut(result.data.count);
