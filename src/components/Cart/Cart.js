@@ -15,10 +15,12 @@ function Cart() {
   const dispatch = useDispatch();
   useEffect(() => {
     setCart(localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : []);
-    window.scrollTo(0, 0);
     dispatch(load_param(''))
   }, [carts]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const deleteCartItem = (res) => {
     const cartItem = cart.slice();
     // setCartItems(cartItem.filter(x => x._id !== res._id))
@@ -62,8 +64,8 @@ function Cart() {
               <div className="col-12">
                 <div className="bread-inner">
                   <ul className="bread-list">
-                    <li><a href="index1.html">Home<i className="ti-arrow-right" /></a></li>
-                    <li className="active"><a href="blog-single.html">Cart</a></li>
+                    <li><a href="index1.html">{t('breadCrumb.home')}<i className="ti-arrow-right" /></a></li>
+                    <li className="active"><a href="blog-single.html">{t('breadCrumb.cart')}</a></li>
                   </ul>
                 </div>
               </div>
@@ -147,7 +149,7 @@ function Cart() {
                       <div className="right">
                         <ul>
                           <li>{t('cart.total')}<span>{formatCurrency(cart.length !== 0 ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
-                          <li>{t('cart.shiping')}<span>Free</span></li>
+                          <li>{t('cart.shiping')}<span>Miễn phí</span></li>
                           <li className="last">{t('cart.youPay')}<span>{formatCurrency(cart.length !== 0 ? cart.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
                         </ul>
                         <div className="button5">

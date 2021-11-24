@@ -107,5 +107,54 @@
         "emptyCart": "Empty cart",
         "apply": "Apply",
         "keyPrice": "Enter your coupon"
+    },
+    "checkout": {
+        "userInformation": "User information",
+        "name": "Full Name",
+        "Address": "Address",
+        "phone": "Phone",
+        "postalCode": "Postal Code",
+        "city": "City",
+        "note": "Note",
+        "order": "Order",
+        "product": "Products",
+        "payment": "Payments",
+        "checkoutPayment": "Checkout payments",
+        "processCheckout": "Process to checkout"
+    },
+    "contact": {
+        "getInTouch": "Get in touch",
+        "writeUsAMessage": "Write Us A Message",
+        "yourSubjects": "Your Subjects",
+        "message": "your message",
+        "callUsNow": "Call us Now",
+        "ourAddress": "Our Address",
+        "sendMessage": "SEND MESSAGE"
+    },
+    "news": {
+        "comment": "Comment",
+        "leaveAComment": "Leave A Comment",
+        "postComment": "POST COMMENT",
+        "category": "Category",
+        "thisPost": "this post",
+        "tag": "Tags"
+    },
+    "breadCrumb": {
+        "home": "Home",
+        "products": "Products",
+        "cart": "Cart",
+        "checkOut": "Check out",
+        "blog": "Blog",
+        "contact": "Contact",
+        "details": "Product details"
+    },
+    "auth": {
+        "login": "Login",
+        "password": "Password",
+        "registerAcc": "click to Register account",
+        "lostPass": "Lost your password",
+        "resgister": "Register",
+        "UserName": "UserName",
+        "haveAccount": "Already is account"
     }
 }

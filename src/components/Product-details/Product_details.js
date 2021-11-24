@@ -31,6 +31,13 @@ function Product_details() {
         { name: 'Cam' },
         { name: 'Vàng' },
     ];
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+      };
     const [data, setData] = useState(null);
     const [viewAddCart, setViewAddCart] = useState(null);
     const [listReviews, setListReviews] = useState([]);
@@ -140,8 +147,8 @@ function Product_details() {
                         <div className="col-12">
                             <div className="bread-inner">
                                 <ul className="bread-list">
-                                    <li><a href="index1.html">Home<i className="ti-arrow-right" /></a></li>
-                                    <li className="active"><a href="blog-single.html">Contact</a></li>
+                                    <li><Link to={'/'}>{t('breadCrumb.home')}<i className="ti-arrow-right" /></Link></li>
+                                    <li className="active"><a>{t('breadCrumb.details')}</a></li>
                                 </ul>
                             </div>
                         </div>

@@ -30,6 +30,7 @@
     "react-router-dom": "^5.2.0",
     "react-router-outlet": "^0.1.1",
     "react-scripts": "4.0.0",
+    "react-slick": "^0.28.1",
     "react-toastify": "^6.1.0",
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3",

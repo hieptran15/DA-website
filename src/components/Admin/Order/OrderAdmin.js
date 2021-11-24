@@ -33,7 +33,7 @@ function OrderAdmin() {
     }, [check]);
     const header = (
         <div className="table-header">
-            <h5 className="p-m-0">Manage orders</h5>
+            <h5 className="p-m-0">Quản lý đơn hàng</h5>
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />

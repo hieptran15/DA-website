@@ -10,7 +10,9 @@ import Header from '../../Header/Header';
 import Footer from '../../Footer/Footer';
 import { useEffect } from 'react';
 import './login.css'
+import { useTranslation } from 'react-i18next';
 function Login() {
+    const { t, i18n } = useTranslation();
     const [visible, setVisible] = useState(false);
     const [ShowVisible, setShowVisible] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
@@ -72,8 +74,8 @@ function Login() {
                         <div className="col-12">
                             <div className="bread-inner">
                                 <ul className="bread-list">
-                                    <li><Link to="/">Home<i className="ti-arrow-right" /></Link></li>
-                                    <li className="active"><a href="#">login</a></li>
+                                    <li><Link to="/">{t('breadCrumb.home')}<i className="ti-arrow-right" /></Link></li>
+                                    <li className="active"><a href="#">{t('auth.login')}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -85,26 +87,26 @@ function Login() {
             {/* {loading&&toast.success("Register success ! go to login")} */}
             <div className="edit_login">
                 <form className="form_Register">
-                    <h2>Login</h2>
+                    <h2>{t('auth.login')}</h2>
                     <div className="form-group">
                         {/* <div><strong style={{ color: 'red', margin: "5px 5px 5px 5px" }}>{error ? "email hoặc password sai...!" : ""}</strong></div> */}
                         <label>Email <span className="required">*</span></label>
                         <input type="email" value={getValue.email} onChange={(e) => handleOnchange(e)} className="form-control form-control-sm" name="email" id aria-describedby="helpId" placeholder />
                     </div>
                     <div className="form-group">
-                        <label>Password <span className="required">*</span></label>
+                        <label>{t('auth.password')}<span className="required">*</span></label>
                         <input type="password" value={getValue.password} onChange={(e) => handleOnchange(e)} className="form-control form-control-sm" name="password" id aria-describedby="helpId" placeholder />
                     </div>
                     <div className="d-flex justify-content-between">                
                         <p className="lost-password">
-                            <a onClick={() => showButton()} href="#">Lost your password?</a>
+                            <a onClick={() => showButton()} href="#">{t('auth.lostPass')}?</a>
                         </p>
                         <p className="edit-register">
-                            <Link to="/register" onClick={() => showButtonRegister()}>click to Register account</Link>
+                            <Link to="/register" onClick={() => showButtonRegister()}>{t('auth.registerAcc')}</Link>
                         </p>
                     </div>
                     <div className="form-group">
-                        <button onClick={(e) => login(e)} className="btn btn-primary editButton_Loading login">login {loading && <div className="loading_edit"><img src="images/loading.gif" /></div>}</button>
+                        <button onClick={(e) => login(e)} className="btn btn-primary editButton_Loading login">{t('auth.login')} {loading && <div className="loading_edit"><img src="images/loading.gif" /></div>}</button>
                     </div>
                 </form>
 

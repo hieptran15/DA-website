@@ -219,7 +219,7 @@ function ProductAdmin() {
   }
   const header = (
     <div className="table-header">
-      <h5 className="p-m-0">Manage Products</h5>
+      <h5 className="p-m-0">Quản lý sản phẩm</h5>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />

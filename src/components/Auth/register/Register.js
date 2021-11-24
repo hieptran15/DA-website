@@ -8,7 +8,9 @@ import { Link, Redirect } from 'react-router-dom';
 import Header from '../../Header/Header';
 import Footer from '../../Footer/Footer';
 import './register.css';
+import { useTranslation } from 'react-i18next';
 function Register(props) {
+    const { t, i18n } = useTranslation();
     const [getValue, setValue] = useState({
         name: "",
         email: "",
@@ -53,7 +55,6 @@ function Register(props) {
     } 
     return (
         <>
-            <Header />
             {/* Breadcrumbs */}
             <div className="breadcrumbs">
                 <div className="container">
@@ -61,8 +62,8 @@ function Register(props) {
                         <div className="col-12">
                             <div className="bread-inner">
                                 <ul className="bread-list">
-                                    <li><Link to="/">Home<i className="ti-arrow-right" /></Link></li>
-                                    <li className="active"><a href="#">login</a></li>
+                                    <li><Link to="/">{t('breadCrumb.home')}<i className="ti-arrow-right" /></Link></li>
+                                    <li className="active"><a href="#">{t('auth.resgister')}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -73,9 +74,9 @@ function Register(props) {
             <div className="edit_login">
 
                 <form className="form_Register">
-                    <h2>Register</h2>
+                    <h2>{t('auth.resgister')}</h2>
                     <div className="form-group">
-                        <label>Username<span className="required">*</span></label>
+                        <label>{t('auth.UserName')}<span className="required">*</span></label>
                         <input type="text" onChange={(e) => handleOnchange(e)} value={getValue.name} className="form-control form-control-sm" name="name" id="name" />
                     </div>
                     <div className="form-group">
@@ -84,14 +85,14 @@ function Register(props) {
                         <input type="email" onChange={(e) => handleOnchange(e)} value={getValue.email} className="form-control form-control-sm" name="email" id="email" />
                     </div>
                     <div className="form-group">
-                        <label>Password<span className="required">*</span></label>
+                        <label>{t('auth.password')}<span className="required">*</span></label>
                         <input type="password" onChange={(e) => handleOnchange(e)} value={getValue.password} className="form-control form-control-sm" name="password" id="password" />
                     </div>
                     <div className="form-group">
                         <button onClick={(v) => submibRegister(v)} className="btn btn-primary editButton_Loading">Register {loading && <div className="loading_edit"><img src="images/loading.gif" /></div>}</button>
                     </div>
                     <div className="form-group">
-                        <p><Link to="/login">already is account?</Link></p>
+                        <p><Link to="/login">{t('auth.haveAccount')}?</Link></p>
                     </div>
                 </form>
             </div>
@@ -99,7 +100,6 @@ function Register(props) {
                 <ToastContainer autoClose={3000} />
                 {loading && toast.success("Register success ! go to login")}
             </div>
-            <Footer />
         </>
     )
 }

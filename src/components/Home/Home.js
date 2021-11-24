@@ -146,8 +146,9 @@ function Home(location, props) {
   const getAllProducts = (value) => {
     setKeyCategory(value);
     if (value !== '') {
-      Axios.get(`http://localhost:8080/api/product/get-product?category=${value}`).then((result) => {
-        setProducts(result.data.datas);
+      Axios.get(`http://localhost:8080/api/product/list-all-product?category=${value}`).then((result) => {
+        console.log(result);
+        setProducts(result.data);
       })
     } else {
       setProducts([])

@@ -54,19 +54,19 @@ function HomeAdmin() {
               <Link to="/home-admin">DashBoard</Link>
             </Menu.Item>
             <Menu.Item onClick={() => setKeyCheck('2')} key="2" icon={<DesktopOutlined />}>
-              <a>Products</a>
+              <a>Sản phẩm</a>
             </Menu.Item>
             <Menu.Item onClick={() => setKeyCheck('3')} key="3" icon={<PieChartOutlined />}>
-              <a>Category</a>
+              <a>Danh mục</a>
             </Menu.Item>
             <Menu.Item onClick={() => setKeyCheck('4')} key="4" icon={<SlackOutlined />}>
-              <a>Brands</a>
+              <a>Thương hiệu</a>
             </Menu.Item>
             <Menu.Item onClick={() => setKeyCheck('5')} key="5" icon={<DotChartOutlined />}>
-              <a>Order</a>
+              <a>Đơn hàng</a>
             </Menu.Item>
             <Menu.Item onClick={() => setKeyCheck('6')} key="6" icon={<UserOutlined />}>
-              <a>User</a>
+              <a>Người dùng</a>
             </Menu.Item>
             <Menu.Item onClick={() => setKeyCheck('7')} key="7" icon={<IdcardOutlined />}>
               <a>Blog</a>
@@ -91,7 +91,7 @@ function HomeAdmin() {
               <div style={{ marginRight: "20px" }} className="d-flex justify-content-between align-items-center">
                 <div className="d-flex" style={{height: "40px",lineHeight: "40px", marginLeft:"40px", width: "320px"}}>
                   <input placeholder="Search..." type="text" className="edit-input"/>
-                  <button className="edit-button">Search</button>
+                  <button className="edit-button">Tìm kiếm</button>
                 </div>
                 <div className="d-flex">
                   <Link style={{ marginRight: "20px" }} to="/"><i class="fa fa-globe"></i>View website</Link>
@@ -107,7 +107,7 @@ function HomeAdmin() {
             {keyCheck === '1' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
               <div>
                 <Breadcrumb style={{ margin: '16px 0' }}>
-                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin">Home</Link></Breadcrumb.Item>
+                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin">Trang chủ</Link></Breadcrumb.Item>
                   <Breadcrumb.Item>dashBoard</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
@@ -116,8 +116,8 @@ function HomeAdmin() {
             {keyCheck === '2' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
               <div>
                 <Breadcrumb style={{ margin: '16px 0' }}>
-                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin">Home</Link></Breadcrumb.Item>
-                  <Breadcrumb.Item>Products</Breadcrumb.Item>
+                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin">Trang chủ</Link></Breadcrumb.Item>
+                  <Breadcrumb.Item>Sản phẩm</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
               <ProductAdmin />
@@ -125,8 +125,8 @@ function HomeAdmin() {
             {keyCheck === '3' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
               <div>
                 <Breadcrumb style={{ margin: '16px 0' }}>
-                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Home</Link></Breadcrumb.Item>
-                  <Breadcrumb.Item>Category</Breadcrumb.Item>
+                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Trang chủ</Link></Breadcrumb.Item>
+                  <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
               <Category />
@@ -134,8 +134,8 @@ function HomeAdmin() {
             {keyCheck === '4' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
               <div>
                 <Breadcrumb style={{ margin: '16px 0' }}>
-                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Home</Link></Breadcrumb.Item>
-                  <Breadcrumb.Item>Brands</Breadcrumb.Item>
+                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Trang chủ</Link></Breadcrumb.Item>
+                  <Breadcrumb.Item>Thương hiệu</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
               <Brands />
@@ -143,8 +143,8 @@ function HomeAdmin() {
             {keyCheck === '5' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
               <div>
                 <Breadcrumb style={{ margin: '16px 0' }}>
-                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Home</Link></Breadcrumb.Item>
-                  <Breadcrumb.Item>Order</Breadcrumb.Item>
+                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Trang chủ</Link></Breadcrumb.Item>
+                  <Breadcrumb.Item>Đơn hàng</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
               <OrderAdmin />
@@ -152,8 +152,8 @@ function HomeAdmin() {
             {keyCheck === '6' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
               <div>
                 <Breadcrumb style={{ margin: '16px 0' }}>
-                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Home</Link></Breadcrumb.Item>
-                  <Breadcrumb.Item>User</Breadcrumb.Item>
+                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Trang chủ</Link></Breadcrumb.Item>
+                  <Breadcrumb.Item>Người dùng</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
               <User />
@@ -161,14 +161,14 @@ function HomeAdmin() {
             {keyCheck === '7' && <div className="site-layout-background" style={{ padding: 0, minHeight: 360 }}>
               <div>
                 <Breadcrumb style={{ margin: '16px 0' }}>
-                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Home</Link></Breadcrumb.Item>
+                  <Breadcrumb.Item><Link onClick={() => setKeyCheck('1')} to="/home-admin" >Trang chủ</Link></Breadcrumb.Item>
                   <Breadcrumb.Item>Blog</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
               <Blog />
             </div>}
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2021 Created by Ant UED</Footer>
+          <Footer style={{ textAlign: 'center' }}>Ant thiết kế ©2021 tạo bởi Ant UED</Footer>
         </Layout>
       </Layout>
     </div>

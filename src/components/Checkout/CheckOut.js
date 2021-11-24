@@ -14,7 +14,9 @@ import Modal from 'antd/lib/modal/Modal';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { load_param } from '../../actions/actions';
+import { useTranslation } from 'react-i18next';
 function CheckOut() {
+  const { t, i18n } = useTranslation();
   const cities = [
     { name: 'Ninh Bình', code: 'NY' },
     { name: 'Hà nội', code: 'RM' },
@@ -108,8 +110,8 @@ function CheckOut() {
             <div className="col-12">
               <div className="bread-inner">
                 <ul className="bread-list">
-                  <li><a href="index1.html">Home<i className="ti-arrow-right" /></a></li>
-                  <li className="active"><a href="blog-single.html">Checkout</a></li>
+                  <li><a href="index1.html">{t('breadCrumb.home')}<i className="ti-arrow-right" /></a></li>
+                  <li className="active"><a href="blog-single.html">{t('breadCrumb.checkout')}</a></li>
                 </ul>
               </div>
             </div>
@@ -123,14 +125,14 @@ function CheckOut() {
           <div className="row">
             <div className="col-lg-8 col-12">
               <div className="checkout-form">
-                <h2>Make Your Checkout Here</h2>
-                <p>Please register in order to checkout more quickly</p>
+                <h2>{t('checkout.userInformation')}</h2>
+                {/* <p>Please register in order to checkout more quickly</p> */}
                 {/* Form */}
                 <form className="form edit-form" method="post" action="#">
                   <div className="row">
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
-                        <label>Full name<span>*</span></label>
+                        <label>{t('checkout.name')}<span>*</span></label>
                         <InputText id="fullName" name="fullName" value={formValues.fullName} onChange={(e) => onInputChange(e, 'fullName')} />
                       </div>
                     </div>
@@ -142,13 +144,13 @@ function CheckOut() {
                     </div>
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
-                        <label>Address<span>*</span></label>
+                        <label>{t('checkout.Address')}<span>*</span></label>
                         <InputText id="address" name="address" value={formValues.address} onChange={(e) => onInputChange(e, 'address')} />
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
-                        <label>Phone<span>*</span></label>
+                        <label>{t('checkout.phone')}<span>*</span></label>
                         <div>
                           <InputNumber id="phone" name="phone" value={formValues.phone} onChange={(e) => onInputNumberChange(e, 'phone')} />
                         </div>
@@ -156,7 +158,7 @@ function CheckOut() {
                     </div>
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
-                        <label>Postal Code<span>*</span></label>
+                        <label>{t('checkout.postalCode')}<span>*</span></label>
                         <div>
                           <InputNumber id="portCode" name="portCode" value={formValues.portCode} onChange={(e) => onInputNumberChange(e, 'portCode')} />
                         </div>
@@ -164,7 +166,7 @@ function CheckOut() {
                     </div>
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
-                        <label>City<span>*</span></label>
+                        <label>{t('checkout.city')}<span>*</span></label>
                         <div className="edit-dropDown">
                           <Dropdown id="city" name="city" value={selectedCity} options={cities} onChange={(e) => onDropdownChange(e, 'city')} optionLabel="name" placeholder="Select a City" />
                         </div>
@@ -172,7 +174,7 @@ function CheckOut() {
                     </div>
                     <div className="col-lg-6 col-md-6 col-12">
                       <div className="form-group">
-                        <label>Note<span>*</span></label>
+                        <label>{t('checkout.note')}<span>*</span></label>
                         <InputTextarea id="noteOrder" value={formValues.noteOrder} onChange={(e) => onInputChange(e, 'noteOrder')} rows={5} cols={30} />
                       </div>
                     </div>
@@ -185,7 +187,7 @@ function CheckOut() {
               <div className="order-details">
                 {/* Order Widget */}
                 <div className="single-widget">
-                  <h2>ORDER ({cartItem !== null ? cartItem.length : 0} product)</h2>
+                  <h2>{t('checkout.order')} ({cartItem !== null ? cartItem.length : 0} {t('checkout.product')})</h2>
                   <div className="content">
                     {cartItem !== null ? cartItem.map((value, key) => {
                       return (
@@ -198,19 +200,19 @@ function CheckOut() {
                           <p>{formatCurrency(value.price)}</p>
                         </div>
                       )
-                    }) : <div className="product-details">empty</div>}
+                    }) : <div className="product-details">{t('checkout.empty')}</div>}
                     <ul>
-                      <li className="last">Total<span>{formatCurrency(cartItem !== null ? cartItem.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
+                      <li className="last">{t('cart.total')}<span>{formatCurrency(cartItem !== null ? cartItem.reduce((a, c) => a + c.price * c.count, 0) : 0)}</span></li>
                     </ul>
                   </div>
                 </div>
                 {/*/ End Order Widget */}
                 {/* Order Widget */}
                 <div className="single-widget">
-                  <h2>Payments</h2>
+                  <h2>{t('checkout.payment')}</h2>
                   <div className="content">
                     <div className="checkbox">
-                      <label className="checkbox-inline" htmlFor={'1'}><Checkbox inputId="1" checked={keySelect === 'Payments'} onChange={e => selectCheckOut('Payments')} /> Check Payments</label>
+                      <label className="checkbox-inline" htmlFor={'1'}><Checkbox inputId="1" checked={keySelect === 'Payments'} onChange={e => selectCheckOut('Payments')} /> {t('checkout.checkoutPayment')}</label>
                       {/* <label className="checkbox-inline" htmlFor={'2'}><Checkbox inputId="2" checked={keySelect === 'Delivery'} onChange={e => selectCheckOut('Delivery')} /> Cash On Delivery</label>
                       <label className="checkbox-inline" htmlFor={'3'}><Checkbox inputId="3" checked={keySelect === 'PayPal'} onChange={e => selectCheckOut('PayPal')} /> PayPal</label> */}
                     </div>
@@ -228,7 +230,7 @@ function CheckOut() {
                 <div className="single-widget get-button">
                   <div className="content">
                     <button disabled={keySelect === '' || formValues.fullName === '' || formValues.phone === null || formValues.email === '' || formValues.address === ''} className="button" onClick={() => onSubmit()}>
-                      <a className="btn edit-process">proceed to checkout</a>
+                      <a className="btn edit-process">{t('checkout.processCheckout')}</a>
                     </button>
                   </div>
                 </div>
@@ -247,8 +249,8 @@ function CheckOut() {
               {/* Start Single Service */}
               <div className="single-service">
                 <i className="ti-rocket" />
-                <h4>Free shiping</h4>
-                <p>Orders over $100</p>
+                <h4>{t('home.shopServices.freeShip')}</h4>
+                <p>{t('home.shopServices.ordersOver')} 500.000 đ</p>
               </div>
               {/* End Single Service */}
             </div>
@@ -256,8 +258,8 @@ function CheckOut() {
               {/* Start Single Service */}
               <div className="single-service">
                 <i className="ti-reload" />
-                <h4>Free Return</h4>
-                <p>Within 30 days returns</p>
+                <h4>{t('home.shopServices.freeReturn')}</h4>
+                <p>{t('home.shopServices.dayReturns')}</p>
               </div>
               {/* End Single Service */}
             </div>
@@ -265,8 +267,8 @@ function CheckOut() {
               {/* Start Single Service */}
               <div className="single-service">
                 <i className="ti-lock" />
-                <h4>Sucure Payment</h4>
-                <p>100% secure payment</p>
+                <h4>{t('home.shopServices.sucurePayment')}</h4>
+                <p>{t('home.shopServices.securePayment')}</p>
               </div>
               {/* End Single Service */}
             </div>
@@ -274,8 +276,8 @@ function CheckOut() {
               {/* Start Single Service */}
               <div className="single-service">
                 <i className="ti-tag" />
-                <h4>Best Peice</h4>
-                <p>Guaranteed price</p>
+                <h4>{t('home.shopServices.bestPeice')}</h4>
+                <p>{t('home.shopServices.guaranteedPrice')}</p>
               </div>
               {/* End Single Service */}
             </div>
@@ -291,11 +293,11 @@ function CheckOut() {
               <div className="col-lg-8 offset-lg-2 col-12">
                 {/* Start Newsletter Inner */}
                 <div className="inner">
-                  <h4>Newsletter</h4>
-                  <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
+                  <h4>{t('home.shopServices.newsletter')}</h4>
+                  <p> {t('home.shopServices.description')} <span>10%</span> {t('home.shopServices.description2')}</p>
                   <form action="mail/mail.php" method="get" target="_blank" className="newsletter-inner">
-                    <input name="EMAIL" placeholder="Your email address" required type="email" />
-                    <button className="btn">Subscribe</button>
+                    <input name="EMAIL" placeholder="Email" required type="email" />
+                    <button className="btn">{t('home.shopServices.subscribe')}</button>
                   </form>
                 </div>
                 {/* End Newsletter Inner */}
