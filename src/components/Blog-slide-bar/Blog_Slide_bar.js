@@ -77,7 +77,7 @@ function Blog_Slide_bar() {
               <div className="bread-inner">
                 <ul className="bread-list">
                   <li><a href="index1.html">{t('breadCrumb.home')}<i className="ti-arrow-right" /></a></li>
-                  <li className="active"><a href="blog-single.html">Blog</a></li>
+                  <li className="active"><a href="blog-single.html">Blogs</a></li>
                 </ul>
               </div>
             </div>
